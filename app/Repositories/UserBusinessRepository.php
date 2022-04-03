@@ -1,0 +1,136 @@
+<?php
+namespace App\Repositories;
+use App\Repositories\Interfaces\UserBusinessInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
+use Auth;
+use File;
+use App\Helpers\UploadImageHelper;
+
+use App\Models\UserBusiness;
+use App\Models\UserBusinessImage;
+use App\Traits\ServiceTrait;
+
+use App\Models\UserBusinessCategoryService;
+class UserBusinessRepository implements UserBusinessInterface
+{
+	use ServiceTrait;
+
+	protected $user_business;
+	protected $request;
+
+
+	public function __construct(UserBusiness $user_business,Request $request)
+	{
+		$this->user_business = $user_business;
+		$this->request = $request;
+	}
+	public function find($id)
+    {
+        return $this->user_business->findOrfail($id);
+    }
+
+	public function createOrUpdate()
+	{
+		$request = $this->request;
+		// dd($request->shop_images);
+		$user_business = $request->id ? $this->find($request->id) : $this->user_business;
+		// if ($request->id && !$user_business) 
+		// {
+		// 	return response()->json([
+		// 		'success' => false,
+		// 		'msg' => 'not found'
+		// 	]);
+		// }
+		$user_business->user_id = Auth::id();
+		$user_business->name = $request->name;
+        $user_business->description = $request->description;
+        $user_business->address = $request->address;
+        $user_business->city = $request->city;
+        $user_business->state_id = $request->state_id;
+        $user_business->country_id = $request->country_id;
+        $user_business->latitude = $request->latitude;
+        $user_business->longitude = $request->longitude;
+        $user_business->save();
+        /*images*/
+        $path = public_path('uploads/user/'.Auth::id().'/business/'.$user_business->id);
+
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0777, true, true);
+        }
+
+        if (isset($request->cnic_front))
+        {
+            $file =$request->cnic_front;
+            $cnic_front = UploadImageHelper::upload($file,$path,@$user_business);
+            $user_business->cnic_front = $cnic_front;
+        }
+
+        if (isset($request->cnic_back))
+        {
+            $file =$request->cnic_back;
+            $cnic_back = UploadImageHelper::upload($file,$path,@$user_business);
+            $user_business->cnic_back = $cnic_back;
+        }
+
+        if (isset($request->license))
+        {
+            $file =$request->license;
+            $license = UploadImageHelper::upload($file,$path,@$user_business);
+            $user_business->license = $license;
+        }
+        /*required images*/
+        $user_business->save();
+        /*end*/
+
+        /*shop images*/
+        if (isset($request->shop_images))
+        {
+        	$path = public_path('uploads/user/'.Auth::id().'/business/'.$user_business->id.'/catalog');
+
+	        if (!File::isDirectory($path)) {
+	            File::makeDirectory($path, 0777, true, true);
+	        }
+        	foreach ($request->shop_images as $file) 
+        	{
+	            $file_name = UploadImageHelper::upload($file,$path,@$user_business);
+	            UserBusinessImage::create([
+	            	'user_business_id' => $user_business->id,
+	            	'name' => $file_name
+	            ]);
+	        }
+        }
+        return [
+        	'success' => 200,
+        	'data' => $user_business
+        ];
+	}
+
+	public function createUserBusinessService()
+	{
+		$request = $this->request;
+		// dd(Auth::user()->user_business);
+		// dd($request->all());
+		$user_business_id = $request->user_business_id?:Auth::user()->user_business->id;
+		// $user_business = $this->user_business->find($request->user_business_id);
+		$user_business_cat_service = new UserBusinessCategoryService;
+		$user_business_cat_service->user_business_id = $user_business_id;
+		$user_business_cat_service->category_id = $request->category_id;
+		/*creating service if not exist*/
+		$service = $this->createOrUpdateService($request);
+		/*end*/
+		$user_business_cat_service->service_id = $service->id;
+		$user_business_cat_service->category_id = $request->category_id;
+		$user_business_cat_service->duration = $request->duration;
+		$user_business_cat_service->charges = $request->charges;
+		$user_business_cat_service->save();
+
+		return [
+			'success' => 200,
+			'data' => $user_business_cat_service
+		];
+
+	}
+
+}
