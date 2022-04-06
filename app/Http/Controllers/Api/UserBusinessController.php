@@ -19,8 +19,18 @@ class UserBusinessController extends Controller
         $response = $this->user_business->createOrUpdate();
         
         return response()->json([
-         'success' => $response['success'],
-         'data' => $response['data']
+            'success' => $response['success'],
+            'data' => $response['data']
+        ]);
+    }
+
+    public function createOrUpdateSchedule(Request $request)
+    {
+        
+        $response = $this->user_business->createOrUpdateSchedule();
+        return response()->json([
+            'success' => $response['success'],
+            'data' => $response['data']
         ]);
     }
 
@@ -30,8 +40,8 @@ class UserBusinessController extends Controller
         $response = $this->user_business->createUserBusinessService();
 
         return response()->json([
-         'success' => $response['success'],
-         'data' => $response['data']
+            'success' => $response['success'],
+            'data' => $response['data']
         ]);
     }
 }

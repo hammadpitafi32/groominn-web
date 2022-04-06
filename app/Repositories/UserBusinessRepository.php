@@ -6,9 +6,12 @@ use Illuminate\Support\Facades\Hash;
 
 use Auth;
 use File;
+use Carbon\Carbon;
+
 use App\Helpers\UploadImageHelper;
 
 use App\Models\UserBusiness;
+use App\Models\UserBusinessSchedule;
 use App\Models\UserBusinessImage;
 use App\Traits\ServiceTrait;
 
@@ -28,7 +31,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	}
 	public function find($id)
     {
-        return $this->user_business->findOrfail($id);
+        return $this->user_business->with('user_business_schedules')->findOrfail($id);
     }
 
 	public function createOrUpdate()
@@ -105,6 +108,41 @@ class UserBusinessRepository implements UserBusinessInterface
         	'success' => 200,
         	'data' => $user_business
         ];
+	}
+
+	public function createOrUpdateSchedule()
+	{
+		$request = $this->request;
+		$user_business_id = $request->user_business_id;
+		$user_business = $this->user_business->find($user_business_id);
+		$existing_days = $user_business->user_business_schedules->pluck('day')->toArray();
+		$new_days = [];
+		$date = Carbon::now('+13:30');
+  
+		foreach ($request->days as $key => $schedule)
+		{
+			$day = date('l',strtotime($key));
+			$new_days[] = $day;
+			// dd(date('l'));
+			UserBusinessSchedule::updateOrCreate([
+					'user_business_id' => $user_business->id,
+					'day' => $day
+				],
+				[
+					'open_at' => date('H:i',strtotime($schedule['open_at'])),
+					'close_at' => date('H:i',strtotime($schedule['close_at'])),
+				]
+			);
+		}
+		/*delete if exist but not selected*/
+		$delete_days = array_diff($existing_days,$new_days);
+		$this->user_business->find($user_business_id)->user_business_schedules()->whereIn('day',$delete_days)->delete();
+
+		return [
+        	'success' => 200,
+        	'data' => $user_business
+        ];
+		
 	}
 
 	public function createUserBusinessService()

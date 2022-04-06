@@ -9,6 +9,7 @@
         "dipeshsukhia/laravel-country-state-city-data": "^2.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "label84/laravel-hours-helper": "^1.2",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",

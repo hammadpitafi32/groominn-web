@@ -70,6 +70,6 @@ class Kernel extends HttpKernel
         'auth.role' => \App\Http\Middleware\RoleAuthorization::class,
 
         'provider.jwt' => \App\Http\Middleware\ProviderJwtAuthorization::class,
-        'client.jwt' => \App\Http\Middleware\ProviderJwtAuthorization::class,
+        'client.jwt' => \App\Http\Middleware\ClientJwtAuthorization::class,
     ];
 }
