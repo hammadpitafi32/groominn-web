@@ -13,20 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+
+Route::any('/{any}', function () {
     return view('welcome');
-});
+})->where(['any' => '.*']);
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
-    Route::get('/', 'AdminController@index');
-    // Route::get('users', 'AdminController@providerList');
-    Route::get('users/{type}', 'UserController@list');
-    Route::post('create-user', 'UserController@createOrUpdate')->name('create-user');
-});
+// Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
+//     Route::get('/', 'AdminController@index');
+//     // Route::get('users', 'AdminController@providerList');
+//     Route::get('users/{type}', 'UserController@list');
+//     Route::post('create-user', 'UserController@createOrUpdate')->name('create-user');
+// });
 
 
 
