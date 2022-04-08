@@ -1,0 +1,154 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "title": "Hair Dressing",
+            "sub_categories": [
+                {
+                    "title": "Pixie cut",
+                    "price": "52$"
+                },
+                {
+                    "title": "Bob",
+                    "price": "12$"
+                },
+                {
+                    "title": "Pixie cut",
+                    "price": "35$"
+                },
+                {
+                    "title": "Medium length",
+                    "price": "12$"
+                },
+                {
+                    "title": "Long blonde",
+                    "price": "12$"
+                },
+                {
+                    "title": "Dreadlocks",
+                    "price": "12$"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "title": "Massage",
+            "sub_categories": [
+                {
+                    "title": "Pixie cut",
+                    "price": "52$"
+                },
+                {
+                    "title": "Bob",
+                    "price": "12$"
+                },
+                {
+                    "title": "Pixie cut",
+                    "price": "35$"
+                },
+                {
+                    "title": "Medium length",
+                    "price": "12$"
+                },
+                {
+                    "title": "Long blonde",
+                    "price": "12$"
+                },
+                {
+                    "title": "Dreadlocks",
+                    "price": "12$"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "title": "Skin cares",
+            "sub_categories": [
+                {
+                    "title": "Pixie cut",
+                    "price": "52$"
+                },
+                {
+                    "title": "Bob",
+                    "price": "12$"
+                },
+                {
+                    "title": "Pixie cut",
+                    "price": "35$"
+                },
+                {
+                    "title": "Medium length",
+                    "price": "12$"
+                },
+                {
+                    "title": "Long blonde",
+                    "price": "12$"
+                },
+                {
+                    "title": "Dreadlocks",
+                    "price": "12$"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "title": "Waxing",
+            "sub_categories": [
+                {
+                    "title": "Pixie cut",
+                    "price": "52$"
+                },
+                {
+                    "title": "Bob",
+                    "price": "12$"
+                },
+                {
+                    "title": "Pixie cut",
+                    "price": "35$"
+                },
+                {
+                    "title": "Medium length",
+                    "price": "12$"
+                },
+                {
+                    "title": "Long blonde",
+                    "price": "12$"
+                },
+                {
+                    "title": "Dreadlocks",
+                    "price": "12$"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "title": "Nail painting",
+            "sub_categories": [
+                {
+                    "title": "Pixie cut",
+                    "price": "52$"
+                },
+                {
+                    "title": "Bob",
+                    "price": "12$"
+                },
+                {
+                    "title": "Pixie cut",
+                    "price": "35$"
+                },
+                {
+                    "title": "Medium length",
+                    "price": "12$"
+                },
+                {
+                    "title": "Long blonde",
+                    "price": "12$"
+                },
+                {
+                    "title": "Dreadlocks",
+                    "price": "12$"
+                }
+            ]
+        }
+    ]
+}

@@ -1,7 +1,9 @@
 <template>
   <Header />
-  <Sidebar v-if="route.name !== 'home' && route.name !== 'login' && route.name !== 'register'" />
-  <router-view :class="route.name !== 'home' && route.name !== 'login' && route.name !== 'register' && 'pt-5 mt-5 mar-left'" />
+  <Sidebar v-if="route.meta.sidebar" />
+  <main :class="route.meta.sidebar && 'pt-5 mt-5 mar-left'">
+    <router-view />
+  </main>
   <Footer v-if="route.name == 'home'" />
 </template>
 
@@ -11,7 +13,9 @@ import Footer from "./layout/Footer.vue";
 
 import { useRoute } from "vue-router";
 import Sidebar from "./layout/Sidebar.vue";
+import { onMounted } from "@vue/runtime-core";
 
 const route = useRoute();
+
 </script>
 

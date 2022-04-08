@@ -2,7 +2,6 @@ require('./bootstrap');
 import { createApp } from 'vue'
 import 'mdb-vue-ui-kit/css/mdb.min.css';
 import { MDBContainer, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardImg, MDBCardBody, MDBCardTitle, MDBCardText, MDBIcon } from 'mdb-vue-ui-kit';
-// import '@fortawesome/fontawesome-free/css/all.css'
 import './assets/css/style.css';
 import App from './App.vue';
 import router from './router/router';

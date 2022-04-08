@@ -106,6 +106,10 @@
            color: #8C96A2;
            font-weight: bold;
        }
+
+       .heading-color{
+           color: #343434;
+       }
        
        .main-navbar .nav-item .nav-link {
            color: #343434;
@@ -400,3 +404,47 @@
        .custom-file-type {
            display: none;
        }
+       .category-tabs .nav-tabs .nav-link{
+           font-size: .85rem;
+       }
+       .category-tabs .nav-tabs .nav-link{
+        border: none;
+       }
+       .category-tabs .nav-tabs .nav-link.active, .category-tabs .nav-tabs .nav-link:hover{
+           color: var(--theme-orange-color);
+           background-color: transparent;
+           position: relative;
+       }
+       .category-tabs .nav-tabs .nav-link.active::before, .category-tabs .nav-tabs .nav-link.active::after{
+           content: '';
+           position: absolute;
+           bottom: 0;
+           left: 0;
+           width: 30px;
+           height: 3px;
+           border-radius: 10px;
+           background-color: var(--theme-orange-color);
+       }
+       .category-tabs .nav-tabs .nav-link.active::after{
+        width: 4px;
+        height: 3px;
+        left: 31px;
+       }
+       .category-tabs .category-tab-pane{
+           max-height: 300px;
+           overflow-y: auto;
+       }
+       .category-tabs .category-tab-pane::-webkit-scrollbar {
+        width: 7px;
+        border-radius: 10px;
+    }
+    
+    .category-tabs .category-tab-pane::-webkit-scrollbar-thumb {
+        background-color: var(--theme-orange-color);
+        border-radius: 10px;
+    }
+    
+    .category-tabs .category-tab-pane::-webkit-scrollbar-track {
+        background-color: #E6E6E6;
+        border-radius: 10px;
+    }
