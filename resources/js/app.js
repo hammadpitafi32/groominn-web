@@ -5,6 +5,7 @@ import { MDBContainer, MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardImg, MDBCardBody,
 import './assets/css/style.css';
 import App from './App.vue';
 import router from './router/router';
+import store from './store';
 
 const app = createApp({});
 
@@ -21,4 +22,5 @@ app.component('MDBIcon', MDBIcon);
 
 
 app.use(router);
+app.use(store);
 app.component('my-app', App).mount('#app');
