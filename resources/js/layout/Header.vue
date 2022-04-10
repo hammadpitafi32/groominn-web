@@ -57,7 +57,7 @@ const route = useRoute();
 
 onMounted(() => {
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 99) {
+    if (window.scrollY > 10) {
       navbar.value.navbar.classList.add("bg-color-show");
     } else {
       navbar.value.navbar.classList.remove("bg-color-show");

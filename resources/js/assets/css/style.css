@@ -2,6 +2,8 @@
            --theme-orange-color: #F05922;
            --text-color-1: #7C7C7C;
            --text-color-2: #3D3C3C;
+           --dull-color: #8C96A2;
+
        }
        
        body {
@@ -66,6 +68,10 @@
        
        .text-color-2 {
            color: var(--text-color-2);
+       }
+
+       .text-dull{
+           color: var(--dull-color);
        }
        
        .bg-orange {
@@ -348,18 +354,19 @@
            overflow-x: auto;
        }
        
-       .category-boxes::-webkit-scrollbar {
+       ::-webkit-scrollbar {
            height: 8px;
+           width: 7px;
            border-radius: 10px;
        }
        
-       .category-boxes::-webkit-scrollbar-thumb {
+       ::-webkit-scrollbar-thumb {
            background-color: var(--theme-orange-color);
            border-radius: 10px;
        }
        
-       .category-boxes::-webkit-scrollbar-track {
-           background-color: #fff;
+       ::-webkit-scrollbar-track {
+           background-color: #E6E6E6;
            border-radius: 10px;
        }
        
@@ -372,8 +379,9 @@
            background-color: #527BCB;
        }
        
-       input:focus {
+       input:focus, .form-select:focus, .form-control:focus {
            border-color: var(--theme-orange-color);
+           box-shadow: inset 0px 0px 0px 1px var(--theme-orange-color);
        }
        
        .form-outline .form-control:focus~.form-notch .form-notch-leading,
@@ -386,7 +394,7 @@
            visibility: hidden;
        }
        
-       .shop-form {
+       .bg-light-grey {
            background: #F8F8F8;
        }
        
@@ -434,17 +442,55 @@
            max-height: 300px;
            overflow-y: auto;
        }
-       .category-tabs .category-tab-pane::-webkit-scrollbar {
-        width: 7px;
-        border-radius: 10px;
+
+    .form-outline .form-control.category-input, .category-input.form-select{
+        background-color: #F9F9FA;
+        outline: none;
+        padding-block: .8rem;
+    }
+    .modal-content{
+        border-radius: 1rem;
+    }
+    #add-new-category-modal .custom-height{
+        min-height: 300px;
+    }
+    .form-outline .form-control.category-input:focus{
+        background-color: #fff;
+    }
+    .form-outline .form-control.category-input::placeholder{
+        color: #8C96A2;
     }
     
-    .category-tabs .category-tab-pane::-webkit-scrollbar-thumb {
+    .modal-width .modal-dialog{
+        max-width: 700px;
+    }
+    .service-table th, .booking-table th{
+        font-size: .85rem;
+        color: var(--theme-orange-color);
+    }
+    .booking-table th{
+        font-weight: bold;
+    }
+    .service-table th:last-child, .service-table td:last-child, .booking-table th:last-child, .booking-table td:last-child{
+        text-align: center;
+    }
+    .service-table td, .booking-table td{
+        font-size: .8rem;
+        font-weight: bold;
+    }
+    .booking-table td{
+        font-weight: 500;
+    }
+    .form-check-input.type-radio[type=radio]:checked::after{
         background-color: var(--theme-orange-color);
-        border-radius: 10px;
+        border-color: var(--theme-orange-color);
     }
-    
-    .category-tabs .category-tab-pane::-webkit-scrollbar-track {
-        background-color: #E6E6E6;
-        border-radius: 10px;
+    .form-check-input.type-radio, .form-check-input.type-radio[type=radio]:checked{
+        border: 0.125rem solid var(--theme-orange-color);
+    }
+    .form-check-input:active {
+        filter: brightness(100%);
+    }
+    .form-check-input.type-radio[type=radio]:checked::before, .form-check-input.type-radio::before{
+        box-shadow: 0px 0px 0px 13px var(--theme-orange-color);
     }

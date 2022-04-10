@@ -3,7 +3,7 @@
     <MDBRow>
       <MDBCol col="12">
         <div class="p-5 pt-4">
-          <div class="py-5 px-4 rounded-5 shop-form">
+          <div class="py-5 px-4 rounded-5 bg-light-grey shop-form">
             <form action="">
               <div class="form-group mb-3">
                 <label for="name" class="mb-2 fw-bold small"

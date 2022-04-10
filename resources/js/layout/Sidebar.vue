@@ -5,13 +5,13 @@
                 <router-link to="/add-shop">My shop</router-link>
             </li>
             <li class="side-menu-item">
-                <a href="#">my Categories</a>
+                <router-link to="/my-categories">My Categories</router-link>
             </li>
             <li class="side-menu-item">
-                <a href="#">My services</a>
+                <router-link to="/my-services">My Services</router-link>
             </li>
             <li class="side-menu-item">
-                <a href="#">Bookings</a>
+                <router-link to="/bookings">Bookings</router-link>
             </li>
             <li class="side-menu-item">
                 <a href="#">Logout</a>
