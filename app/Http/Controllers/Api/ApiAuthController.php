@@ -21,11 +21,12 @@ class ApiAuthController extends Controller
     {
         // dd('dfg');
         //Validate data
-        $data = $request->only('name', 'email', 'password','role');
-        $validator = Validator::make($data, [
+        $data = $request->only('name', 'email', 'password','role','phone');
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|max:50',
+            'password' => 'required|string|min:6|max:50|confirmed',
+            'phone' => 'required',
             'role' => 'required'
         ]);
         //Send failed response if request is not valid
