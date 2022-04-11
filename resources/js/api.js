@@ -8,12 +8,17 @@ const token = cookies.get('token');
 
 if (token) {
     axios.interceptors.request.use(function (config) {
-        config.headers.Authorization = token;
+        config.headers.Authorization = `Bearer ${token}`;
         return config;
     });
 }
 
 export const login = async (data) => {
-    const response = await axios.post(`${baseURL}/api/login`, data);
+    const response = await axios.post(`${baseURL}/login`, data);
+    return response;
+}
+
+export const register = async (data) => {
+    const response = await axios.post(`${baseURL}/register`, data);
     return response;
 }
