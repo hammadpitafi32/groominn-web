@@ -13,10 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*laravel router*/
+Route::get('admin-login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('admin-login', 'Auth\LoginController@login')->name('admin-login');
+Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
+    Route::get('/', 'AdminController@index')->name('admin-dashboard');
+    // Route::get('users', 'AdminController@providerList');
+    Route::get('users/{type}', 'UserController@list');
+    Route::post('create-user', 'UserController@createOrUpdate')->name('create-user');
+});
 
+/*for vue router*/
 Route::any('/{any}', function () {
     return view('welcome');
 })->where(['any' => '.*']);
+
+
 
 // Auth::routes();
 

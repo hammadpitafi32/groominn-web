@@ -14,14 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::group(['namespace' => 'Api'],function()
 {
     Route::post('login', 'ApiAuthController@login');
-    Route::post('/demo','BusinessController@demo'); 
+    Route::post('register', 'ApiAuthController@register');
+    // Route::post('logout', 'ApiAuthController@logout');
+    // Route::post('/demo','BusinessController@demo'); 
     Route::group(['middleware' => 'auth.jwt'], function () {
         Route::get('logout', 'ApiAuthController@logout');
     });

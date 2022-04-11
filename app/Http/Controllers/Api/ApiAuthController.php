@@ -4,22 +4,47 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\RegisterAuthRequest;
-use App\User;
+use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
- 
+use Illuminate\Support\Facades\Validator;
+use App\Traits\UserTrait;
 class ApiAuthController extends Controller
 {
+
+    use UserTrait;
     public $loginAfterSignUp = true;
  
-    public function register(RegisterAuthRequest $request)
+    public function register(Request $request)
     {
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
+        // dd('dfg');
+        //Validate data
+        $data = $request->only('name', 'email', 'password','role_id');
+        $validator = Validator::make($data, [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6|max:50',
+            'role_id' => 'required'
+        ]);
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 200);
+        }
+
+        $role =Role::find($request->role_id);
+       
+        if ($role && $role->name == 'Admin') {
+            return response()->json(['error' => ['role' => 'Cannot add user against this role!']], 200);
+        }
+        else
+        {
+            return response()->json(['error' => ['role' => 'Role Not found!']], 200);
+        }
+        
+
+        $user = $this->createOrUpdateUser($request);
  
         if ($this->loginAfterSignUp) {
             return $this->login($request);
@@ -51,9 +76,16 @@ class ApiAuthController extends Controller
  
     public function logout(Request $request)
     {
-        $this->validate($request, [
+        $token['token'] = $request->bearerToken();
+        //valid credential
+        $validator = Validator::make($token, [
             'token' => 'required'
         ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 200);
+        }
  
         try {
             JWTAuth::invalidate($request->token);

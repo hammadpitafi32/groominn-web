@@ -15,7 +15,6 @@ class UserController extends Controller
 
     public function createOrUpdate(Request $request)
     {
-        // dd($this->user->createOrUpdate());
          $this->user->createOrUpdate();
          return back();
     }

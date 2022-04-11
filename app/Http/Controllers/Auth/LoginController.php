@@ -38,6 +38,30 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    // Custom Login form
+    // public function showLoginForm()
+    // {
+    //     // dd('sdf');
+    //     return view("login");
+    // }
+
+    // Add mobile number to login
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required',
+    //         'password' => 'required',
+    //     ]);
+
+    //     $credentials = $request->only('email', 'password');
+    //     if (Auth::attempt($credentials)) {
+
+    //         return redirect()->route('admin-dashboard');
+    //     }
+
+    //     return redirect("login")->withSuccess('Oppes! You have entered invalid credentials');
+    // }
+
     protected function redirectTo()
     {
         if (Auth::user()->role_id == 1) {
