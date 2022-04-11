@@ -21,29 +21,29 @@ class ApiAuthController extends Controller
     {
         // dd('dfg');
         //Validate data
-        $data = $request->only('name', 'email', 'password','role_id');
+        $data = $request->only('name', 'email', 'password','role');
         $validator = Validator::make($data, [
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6|max:50',
-            'role_id' => 'required'
+            'role' => 'required'
         ]);
         //Send failed response if request is not valid
         if ($validator->fails()) {
             return response()->json(['error' => $validator->messages()], 200);
         }
 
-        $role =Role::find($request->role_id);
-       
+        $role =Role::where('name',$request->role)->first();
+        // dd($role);
         if ($role && $role->name == 'Admin') {
             return response()->json(['error' => ['role' => 'Cannot add user against this role!']], 200);
         }
-        else
+        elseif(!$role)
         {
             return response()->json(['error' => ['role' => 'Role Not found!']], 200);
         }
-        
-
+        $request['role_id'] = $role->id;
+        // dd($request->all());
         $user = $this->createOrUpdateUser($request);
  
         if ($this->loginAfterSignUp) {

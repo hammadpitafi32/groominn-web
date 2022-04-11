@@ -3,9 +3,10 @@
 namespace App\Traits;
   
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
-use App\Models\Service;
-  
+use App\Models\User;
+
 trait UserTrait {
   
     /**
@@ -15,10 +16,10 @@ trait UserTrait {
 
     public function createOrUpdateUser(Request $request)
     {
-        $request = $this->request;
-        $user = $request->id ?  $this->user->find($request->id) : $this->user;
+        // $request = $this->request;
+        // $user = $request->id ?  $this->user->find($request->id) : $this->user;
 
-        $user = $this->user->updateOrCreate(
+        $user = User::updateOrCreate(
             [
                 'email' => $request->email,
             ],
