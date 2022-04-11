@@ -21,9 +21,10 @@ class ApiAuthController extends Controller
     {
         // dd('dfg');
         //Validate data
-        $data = $request->only('name', 'email', 'password','role','phone');
+        // $data = $request->only('name', 'email', 'password','role','phone');
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6|max:50|confirmed',
             'phone' => 'required',
@@ -44,6 +45,7 @@ class ApiAuthController extends Controller
             return response()->json(['error' => ['role' => 'Role Not found!']], 200);
         }
         $request['role_id'] = $role->id;
+        $request['name'] = $request->first_name.' '.$request->last_name;
         // dd($request->all());
         $user = $this->createOrUpdateUser($request);
  
