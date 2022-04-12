@@ -9,7 +9,7 @@ import store from './store';
 import { globalCookiesConfig } from "vue3-cookies";
 
 globalCookiesConfig({
-  expireTimes: "30d",
+  expireTimes: "1d",
   path: "/",
   domain: "",
   secure: true,

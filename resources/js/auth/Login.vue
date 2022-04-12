@@ -8,7 +8,9 @@
           class="alert"
           :class="apiResponse.success ? 'alert-success' : 'alert-danger'"
         >
-          {{ apiResponse.message ? apiResponse.message : 'Login Successfully!' }}
+          {{
+            apiResponse.message ? apiResponse.message : "Login Successfully!"
+          }}
         </div>
         <h2 class="fw-bold mb-1">Get Started</h2>
         <p class="small text-color-1">
@@ -80,10 +82,13 @@
               rounded-5
               fw-bold
             "
+            :disabled="loading"
             size="lg"
             @click="handleLogin()"
-            >Login</MDBBtn
           >
+            <span v-if="!loading"> Login </span>
+            <BtnLoader v-else />
+          </MDBBtn>
         </form>
       </MDBCol>
     </MDBRow>
@@ -96,9 +101,11 @@ import { watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { useCookies } from "vue3-cookies";
 import { login } from "../api";
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import BtnLoader from "../components/custom-components/BtnLoader.vue";
 
+const loading = ref(false);
 const credentials = reactive({
   email: "",
   password: "",
@@ -110,7 +117,7 @@ const store = useStore();
 const router = useRouter();
 
 const handleLogin = () => {
-
+  loading.value = true;
   const formData = new FormData();
   formData.append("email", credentials.email);
   formData.append("password", credentials.password);
@@ -118,14 +125,14 @@ const handleLogin = () => {
   login(formData)
     .then((res) => {
       apiResponse.value = res.data;
-      cookies.set('token', res.data.token);
-      store.dispatch('setAuth');
-      
+      store.dispatch('setAuthToken', res.data.token);
+      loading.value = false;
       setTimeout(() => {
-        router.push('/add-shop');
-      }, 1000);
+        router.push("/add-shop");
+      }, 600);
     })
     .catch((error) => {
+      loading.value = false;
       apiResponse.value = error.response.data;
     });
 };
