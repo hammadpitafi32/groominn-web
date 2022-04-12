@@ -6,6 +6,15 @@ import './assets/css/style.css';
 import App from './App.vue';
 import router from './router/router';
 import store from './store';
+import { globalCookiesConfig } from "vue3-cookies";
+
+globalCookiesConfig({
+  expireTimes: "30d",
+  path: "/",
+  domain: "",
+  secure: true,
+  sameSite: "None",
+});
 
 const app = createApp({});
 

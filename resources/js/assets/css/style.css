@@ -383,6 +383,11 @@
            border-color: var(--theme-orange-color);
            box-shadow: inset 0px 0px 0px 1px var(--theme-orange-color);
        }
+
+       input.border-danger, .form-select.border-danger, .form-control.border-danger {
+        border: 1px solid #f93154;
+        box-shadow: inset 0px 0px 0px 1px #f93154 ;
+    }
        
        .form-outline .form-control:focus~.form-notch .form-notch-leading,
        .form-outline .form-control:focus~.form-notch .form-notch-middle,
