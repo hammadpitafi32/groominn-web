@@ -77,7 +77,7 @@
         <form class="mt-3">
           <div class="d-flex mb-4">
             <div class="form-group me-2 flex-grow-1">
-              <label for="email" class="mb-1">First Name</label>
+              <label for="firstName" class="mb-1">First Name</label>
               <MDBInput
                 size="lg"
                 type="text"
@@ -92,7 +92,7 @@
               >
             </div>
             <div class="form-group ms-2 flex-grow-1">
-              <label for="email" class="mb-1">Last Name</label>
+              <label for="lastName" class="mb-1">Last Name</label>
               <MDBInput
                 size="lg"
                 type="text"
@@ -121,7 +121,7 @@
             }}</span>
           </div>
           <div class="form-group mb-4">
-            <label for="email" class="mb-1">Phone Number</label>
+            <label for="phoneNumber" class="mb-1">Phone Number</label>
             <MDBInput
               size="lg"
               type="tel"
@@ -150,7 +150,7 @@
               >
             </div>
             <div class="form-group ms-3 flex-grow-1">
-              <label for="password" class="mb-1">Confirm Password</label>
+              <label for="confirmPassword" class="mb-1">Confirm Password</label>
               <MDBInput
                 size="lg"
                 type="password"
@@ -252,6 +252,7 @@ const registerHandler = () => {
         errors.value = null;
         success.value = data.success;
         store.dispatch("setAuthToken", data.token);
+        window.scrollTo({ top: 0 });
         setTimeout(() => {
           router.push("/add-shop");
         }, 600);

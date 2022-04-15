@@ -7,6 +7,9 @@ import MyCategories from '../components/categories/MyCategories.vue';
 import myServices from '../components/services/MyServices.vue';
 import Bookings from '../components/bookings/Bookings.vue';
 import Home from '../components/Index.vue';
+import store from "../store";
+
+const authentication = store.state.auth;
 
 const routes = [{
         path: '/',
@@ -38,7 +41,7 @@ const routes = [{
         component: AddShop,
         meta: {
             sidebar: true
-        }
+        },
     },
     {
         path: '/shop-detail',

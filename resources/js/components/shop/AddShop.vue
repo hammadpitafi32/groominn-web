@@ -4,8 +4,12 @@
       <MDBCol col="12">
         <div class="p-5 pt-4">
           <div class="py-5 px-4 rounded-5 bg-light-grey shop-form">
-            <div v-if="apiResponse" class="alert" :class="apiResponse.status ? 'alert-success' : 'alert-danger'">
-              {{apiResponse.message}}
+            <div
+              v-if="apiResponse"
+              class="alert"
+              :class="apiResponse.status ? 'alert-success' : 'alert-danger'"
+            >
+              {{ apiResponse.message }}
             </div>
             <form action="">
               <div class="form-group mb-3">
@@ -42,7 +46,15 @@
                   <div class="mb-2 fw-bold small">
                     Upload shop Photos (Optional)
                   </div>
-                  <label for="shop-pics" class="custom-drag-label">
+                  <label
+                    for="shop-pics"
+                    class="custom-drag-label"
+                    :class="drag.shop && 'drag-entered'"
+                    @dragover="drag.shop = true"
+                    @dragleave="drag.shop = false"
+                    @dragend="drag.shop = false"
+                    @drop="drag.shop = false"
+                  >
                     <svg
                       width="26"
                       height="17"
@@ -73,7 +85,10 @@
                         <img :src="image" alt="" class="img-fluid rounded-5" />
                         <span
                           class="remove-img"
-                          @click="shopPics.splice(index, 1), shopPicsForApi.splice(index, 1)"
+                          @click="
+                            shopPics.splice(index, 1),
+                              shopPicsForApi.splice(index, 1)
+                          "
                         >
                           <svg
                             width="24"
@@ -144,7 +159,15 @@
                 </MDBCol>
                 <MDBCol col="3">
                   <div class="mb-2 fw-bold small">Upload CNIC Front</div>
-                  <label for="cnic-front" class="custom-drag-label">
+                  <label
+                    for="cnic-front"
+                    class="custom-drag-label"
+                    :class="drag.front && 'drag-entered'"
+                    @dragover="drag.front = true"
+                    @dragleave="drag.front = false"
+                    @dragend="drag.front = false"
+                    @drop="drag.front = false"
+                  >
                     <svg
                       width="26"
                       height="17"
@@ -161,19 +184,18 @@
                     <MDBFile
                       id="cnic-front"
                       @change="uploadPics($event, 'cnic-front')"
-                      class="mb-2 custom-file-type"
+                      class="custom-file-type"
                     />
                   </label>
                   <div class="row mt-3" v-if="cnicFront">
-                    <div
-                      class="col-4 pb-3"
-                    >
+                    <div class="col-4 pb-3">
                       <div class="image-wrap">
-                        <img :src="cnicFront" alt="" class="img-fluid rounded-5" />
-                        <span
-                          class="remove-img"
-                          @click="cnicFront = ''"
-                        >
+                        <img
+                          :src="cnicFront"
+                          alt=""
+                          class="img-fluid rounded-5"
+                        />
+                        <span class="remove-img" @click="cnicFront = ''">
                           <svg
                             width="24"
                             height="24"
@@ -243,7 +265,15 @@
                 </MDBCol>
                 <MDBCol col="3">
                   <div class="mb-2 fw-bold small">Upload CNIC Back</div>
-                  <label for="cnic-back" class="custom-drag-label">
+                  <label
+                    for="cnic-back"
+                    class="custom-drag-label"
+                    :class="drag.back && 'drag-entered'"
+                    @dragover="drag.back = true"
+                    @dragleave="drag.back = false"
+                    @dragend="drag.back = false"
+                    @drop="drag.back = false"
+                  >
                     <svg
                       width="26"
                       height="17"
@@ -264,15 +294,14 @@
                     />
                   </label>
                   <div class="row mt-3" v-if="cnicBack">
-                    <div
-                      class="col-4 pb-3"
-                    >
+                    <div class="col-4 pb-3">
                       <div class="image-wrap">
-                        <img :src="cnicBack" alt="" class="img-fluid rounded-5" />
-                        <span
-                          class="remove-img"
-                          @click="cnicBack = ''"
-                        >
+                        <img
+                          :src="cnicBack"
+                          alt=""
+                          class="img-fluid rounded-5"
+                        />
+                        <span class="remove-img" @click="cnicBack = ''">
                           <svg
                             width="24"
                             height="24"
@@ -342,7 +371,15 @@
                 </MDBCol>
                 <MDBCol col="3">
                   <div class="mb-2 fw-bold small">Shop Liscence</div>
-                  <label for="shop-liscence" class="custom-drag-label">
+                  <label
+                    for="shop-liscence"
+                    class="custom-drag-label"
+                    :class="drag.liscence && 'drag-entered'"
+                    @dragover="drag.liscence = true"
+                    @dragleave="drag.liscence = false"
+                    @dragend="drag.liscence = false"
+                    @drop="drag.liscence = false"
+                  >
                     <svg
                       width="26"
                       height="17"
@@ -363,15 +400,14 @@
                     />
                   </label>
                   <div class="row mt-3" v-if="Liscence">
-                    <div
-                      class="col-4 pb-3"
-                    >
+                    <div class="col-4 pb-3">
                       <div class="image-wrap">
-                        <img :src="Liscence" alt="" class="img-fluid rounded-5" />
-                        <span
-                          class="remove-img"
-                          @click="Liscence = ''"
-                        >
+                        <img
+                          :src="Liscence"
+                          alt=""
+                          class="img-fluid rounded-5"
+                        />
+                        <span class="remove-img" @click="Liscence = ''">
                           <svg
                             width="24"
                             height="24"
@@ -468,7 +504,7 @@
                     @click="addShopHandler()"
                   >
                     <span v-if="!loading">Add shop</span>
-                    <BtnLoader v-else /> 
+                    <BtnLoader v-else />
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>
@@ -481,11 +517,27 @@
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
 import { MDBInput, MDBTextarea, MDBFile } from "mdb-vue-ui-kit";
-import BtnLoader from '../custom-components/BtnLoader.vue';
-import { addShop } from '../../api';
-import { watch } from "@vue/runtime-core";
+import { useRouter } from "vue-router";
+import BtnLoader from "../custom-components/BtnLoader.vue";
+import { addShop } from "../../api";
+import { onMounted, watch, watchEffect } from "@vue/runtime-core";
+import { useStore } from "vuex";
+
+const router = useRouter();
+const store = useStore();
+
+const dragOnCardFront = ref(false);
+const dragOnCardBack = ref(false);
+const dragOnShopImg = ref(false);
+
+const drag = reactive({
+  shop: false,
+  front: false,
+  back: false,
+  liscence: false,
+});
 
 const imageUrl = ref("");
 const businessName = ref("");
@@ -494,16 +546,22 @@ const address = ref("");
 const loading = ref(false);
 
 const shopPics = ref([]);
-const cnicFront = ref('');
-const cnicBack = ref('');
-const Liscence = ref('');
+const cnicFront = ref("");
+const cnicBack = ref("");
+const Liscence = ref("");
 
 const shopPicsForApi = ref([]);
-const cnicFrontForApi = ref('');
-const cnicBackForApi = ref('');
-const LiscenceForApi = ref('');
+const cnicFrontForApi = ref("");
+const cnicBackForApi = ref("");
+const LiscenceForApi = ref("");
 
 const apiResponse = ref(null);
+
+watchEffect(() => {
+  if (!store.state.auth) {
+    router.push("/login");
+  }
+});
 
 const uploadPics = (event, val) => {
   const files = event.target.files;
@@ -526,39 +584,51 @@ const uploadPics = (event, val) => {
   fileReader.readAsDataURL(files[0]);
 };
 
+const dragHandlner = (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  console.log(event);
+};
+
 watch(cnicFront, () => {
-  cnicFrontForApi.value = cnicFront.value;
-})
+  if (!cnicFront.value) {
+    cnicFrontForApi.value = cnicFront.value;
+  }
+});
 watch(cnicBack, () => {
-  cnicBackForApi.value = cnicBack.value;
-})
+  if (!cnicBack.value) {
+    cnicBackForApi.value = cnicBack.value;
+  }
+});
 watch(Liscence, () => {
-  LiscenceForApi.value = Liscence.value;
-})
+  if (!Liscence.value) {
+    LiscenceForApi.value = Liscence.value;
+  }
+});
 
 const addShopHandler = () => {
   loading.value = true;
-  const formData = new FormData;
-  formData.append('name', businessName.value);
-  formData.append('address', address.value);
-  formData.append('description', description.value);
-  formData.append('cnic_front', cnicFrontForApi.value);
-  formData.append('cnic_back', cnicBackForApi.value);
-  formData.append('license', LiscenceForApi.value);
-  formData.append('shop_images', shopPicsForApi.value);
+  const formData = new FormData();
+  formData.append("name", businessName.value);
+  formData.append("address", address.value);
+  formData.append("description", description.value);
+  formData.append("cnic_front", cnicFrontForApi.value);
+  formData.append("cnic_back", cnicBackForApi.value);
+  formData.append("license", LiscenceForApi.value);
+  formData.append("shop_images", shopPicsForApi.value);
 
-  addShop(formData).then((res) => {
-    loading.value = false;
-    apiResponse.value = res.data;
-    window.scrollTo({ top: 0 });
-  })
-  .catch((err) => {
-    loading.value = false;
-    apiResponse.value = err.response.data;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  })
-  
-}
+  addShop(formData)
+    .then((res) => {
+      loading.value = false;
+      apiResponse.value = res.data;
+      window.scrollTo({ top: 0 });
+    })
+    .catch((err) => {
+      loading.value = false;
+      apiResponse.value = err.response.data;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+};
 </script>
 
 <style scoped>
