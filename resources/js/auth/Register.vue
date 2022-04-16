@@ -37,6 +37,9 @@
         </div>
       </MDBCol>
       <MDBCol col="5" class="pt-5" v-else>
+        <div v-if="success" class="alert alert-success">
+          Registered Successfully!
+        </div>
         <h2 class="fw-bold mb-1">Get Started</h2>
         <p class="small text-color-1">
           Already have an accoun?
@@ -74,37 +77,33 @@
         <form class="mt-3">
           <div class="d-flex mb-4">
             <div class="form-group me-2 flex-grow-1">
-              <label for="email" class="mb-1">First Name</label>
+              <label for="firstName" class="mb-1">First Name</label>
               <MDBInput
                 size="lg"
                 type="text"
                 placeholder="Arif"
-                :class="
-                  apiResponse && apiResponse.error.name && 'border-danger'
-                "
+                :class="errors && errors.first_name && 'border-danger'"
                 v-model="firstName"
               />
               <span
-                v-if="apiResponse && apiResponse.error.name"
+                v-if="errors && errors.first_name"
                 class="text-danger small"
-                >{{ apiResponse.error.name[0] }}</span
+                >{{ errors.first_name[0] }}</span
               >
             </div>
             <div class="form-group ms-2 flex-grow-1">
-              <label for="email" class="mb-1">Last Name</label>
+              <label for="lastName" class="mb-1">Last Name</label>
               <MDBInput
                 size="lg"
                 type="text"
                 placeholder="Sattar"
-                :class="
-                  apiResponse && apiResponse.error.name && 'border-danger'
-                "
+                :class="errors && errors.last_name && 'border-danger'"
                 v-model="lastName"
               />
               <span
-                v-if="apiResponse && apiResponse.error.name"
+                v-if="errors && errors.last_name"
                 class="text-danger small"
-                >{{ apiResponse.error.name[0] }}</span
+                >{{ errors.last_name[0] }}</span
               >
             </div>
           </div>
@@ -114,29 +113,25 @@
               size="lg"
               type="email"
               placeholder="Abc@abc.com"
-              :class="apiResponse && apiResponse.error.email && 'border-danger'"
+              :class="errors && errors.email && 'border-danger'"
               v-model="email"
             />
-            <span
-              v-if="apiResponse && apiResponse.error.email"
-              class="text-danger small"
-              >{{ apiResponse.error.email[0] }}</span
-            >
+            <span v-if="errors && errors.email" class="text-danger small">{{
+              errors.email[0]
+            }}</span>
           </div>
           <div class="form-group mb-4">
-            <label for="email" class="mb-1">Phone Number</label>
+            <label for="phoneNumber" class="mb-1">Phone Number</label>
             <MDBInput
               size="lg"
               type="tel"
-              :class="apiResponse && apiResponse.error.phone && 'border-danger'"
+              :class="errors && errors.phone && 'border-danger'"
               placeholder="0300 78678745"
               v-model="phoneNumber"
             />
-            <span
-              v-if="apiResponse && apiResponse.error.phone"
-              class="text-danger small"
-              >{{ apiResponse.error.phone[0] }}</span
-            >
+            <span v-if="errors && errors.phone" class="text-danger small">{{
+              errors.phone[0]
+            }}</span>
           </div>
           <div class="d-flex mb-2">
             <div class="form-group me-3 flex-grow-1">
@@ -145,27 +140,29 @@
                 size="lg"
                 type="password"
                 placeholder="**********"
-                :class="apiResponse && apiResponse.error.password && 'border-danger'"
+                :class="errors && errors.password && 'border-danger'"
                 v-model="password"
               />
               <span
-              v-if="apiResponse && apiResponse.error.password"
-              class="text-danger small"
-              >{{ apiResponse.error.password[0] }}</span
-            >
+                v-if="errors && errors.password"
+                class="text-danger small"
+                >{{ errors.password[0] }}</span
+              >
             </div>
             <div class="form-group ms-3 flex-grow-1">
-              <label for="password" class="mb-1">Confirm Password</label>
+              <label for="confirmPassword" class="mb-1">Confirm Password</label>
               <MDBInput
                 size="lg"
                 type="password"
                 placeholder="**********"
-                :class="apiResponse && apiResponse.error.password && 'border-danger'"
+                :class="errors && errors.password && 'border-danger'"
                 v-model="confirmPassword"
               />
             </div>
           </div>
-          <span v-if="confirmPasswordError" class="text-danger">{{confirmPasswordError}}</span>
+          <span v-if="confirmPasswordError" class="text-danger">{{
+            confirmPasswordError
+          }}</span>
 
           <div class="mt-5 mb-3">
             <label for="terms" class="d-flex align-items-end text-color-1">
@@ -197,10 +194,12 @@
               fw-bold
             "
             @click="registerHandler()"
-            :disabled="!terms"
+            :disabled="!terms || loading"
             size="lg"
-            >Register</MDBBtn
           >
+            <span v-if="!loading"> Register </span>
+            <BtnLoader v-else />
+          </MDBBtn>
         </form>
       </MDBCol>
     </MDBRow>
@@ -209,12 +208,17 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { watchEffect } from "@vue/runtime-core";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { register } from "../api";
+import BtnLoader from "../components/custom-components/BtnLoader.vue";
+
+const store = useStore();
+const router = useRouter();
 
 const serviceChoose = ref("");
-const apiResponse = ref(null);
+const loading = ref(false);
 const terms = ref(false);
 const firstName = ref("");
 const lastName = ref("");
@@ -222,9 +226,13 @@ const email = ref("");
 const phoneNumber = ref("");
 const password = ref("");
 const confirmPassword = ref("");
-const confirmPasswordError = ref('');
+const confirmPasswordError = ref("");
+
+const errors = ref(null);
+const success = ref(null);
 
 const registerHandler = () => {
+  loading.value = true;
   const formData = new FormData();
   formData.append("first_name", firstName.value);
   formData.append("last_name", lastName.value);
@@ -235,13 +243,25 @@ const registerHandler = () => {
   formData.append("phone", phoneNumber.value);
 
   if (password.value == confirmPassword.value) {
-    register(formData).then((response) => {
-      apiResponse.value = response.data;
+    register(formData).then(({ data }) => {
+      loading.value = false;
+      if (data.error) {
+        errors.value = data.error;
+        success.value = null;
+      } else if (data.success) {
+        errors.value = null;
+        success.value = data.success;
+        store.dispatch("setAuthToken", data.token);
+        window.scrollTo({ top: 0 });
+        setTimeout(() => {
+          router.push("/add-shop");
+        }, 600);
+      }
     });
-    confirmPasswordError.value = '';
+    confirmPasswordError.value = "";
   } else {
-    apiResponse.value = null;
-    confirmPasswordError.value = 'Password does not match'
+    loading.value = false;
+    confirmPasswordError.value = "Password does not match";
   }
 };
 </script>

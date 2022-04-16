@@ -22,3 +22,8 @@ export const register = async (data) => {
     const response = await axios.post(`${baseURL}/register`, data);
     return response;
 }
+
+export const addShop = async (data) => {
+    const response = await axios.post(`${baseURL}/create-user-business`, data);
+    return response;
+}

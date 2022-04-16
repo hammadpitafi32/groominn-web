@@ -38,45 +38,46 @@
 
     <div class="categories mt-4 mb-5">
       <h6 class="fw-bold heading-color mb-0">Categories</h6>
-
-      <MDBTabs class="category-tabs" v-model="activeTabId4" vertical>
-        <MDBTabNav tabsClasses="my-3">
-          <MDBTabItem
-            class="fw-bold mb-3 py-2 px-0 text-capitalize"
-            v-for="(category, index) in shopCategories"
-            :key="index"
-            :wrap="false"
-            :tabId="`category-${category.id}`"
-            :href="`category-${category.id}`"
-            >{{ category.title }}</MDBTabItem
-          >
-        </MDBTabNav>
-        <MDBTabContent>
-          <MDBTabPane
-            class="category-tab-pane"
-            :tabId="`category-${category.id}`"
-            v-for="(category, index) in shopCategories"
-            :key="index"
-          >
-            <div
-              class="
-                d-flex
-                align-items-center
-                justify-content-between
-                border-bottom
-                py-3
-              "
-              v-for="(subcategory, index) in category.sub_categories"
+      <div class="category-tabs">
+        <MDBTabs v-model="activeTabId4" vertical>
+          <MDBTabNav tabsClasses="my-3">
+            <MDBTabItem
+              class="fw-bold mb-3 py-2 px-0 text-capitalize"
+              v-for="(category, index) in shopCategories"
+              :key="index"
+              :wrap="false"
+              :tabId="`category-${category.id}`"
+              :href="`category-${category.id}`"
+              >{{ category.title }}</MDBTabItem
+            >
+          </MDBTabNav>
+          <MDBTabContent>
+            <MDBTabPane
+              class="category-tab-pane"
+              :tabId="`category-${category.id}`"
+              v-for="(category, index) in shopCategories"
               :key="index"
             >
-              <small>{{ subcategory.title }}</small>
-              <small class="text-orange fw-bold price">{{
-                subcategory.price
-              }}</small>
-            </div>
-          </MDBTabPane>
-        </MDBTabContent>
-      </MDBTabs>
+              <div
+                class="
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                  border-bottom
+                  py-3
+                "
+                v-for="(subcategory, index) in category.sub_categories"
+                :key="index"
+              >
+                <small>{{ subcategory.title }}</small>
+                <small class="text-orange fw-bold price">{{
+                  subcategory.price
+                }}</small>
+              </div>
+            </MDBTabPane>
+          </MDBTabContent>
+        </MDBTabs>
+      </div>
     </div>
   </div>
 </template>

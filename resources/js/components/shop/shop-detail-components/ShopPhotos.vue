@@ -37,6 +37,9 @@ const images = ref([img, img, img, img, img, img, img]);
     background: none;
     margin-inline: .5rem;
 }
+#shop-images-sliders button:not(.active){
+  opacity: .5;
+}
 #shop-images-sliders button img{
 border-radius: 10px;
 

@@ -158,7 +158,7 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import items from "../../categories.json";
+import items from "../../../categories.json";
 import {
   MDBModal,
   MDBModalHeader,

@@ -15,6 +15,14 @@ const store = createStore({
             } else {
                 context.state.auth = false;
             }
+        },
+        setAuthToken(context, token){
+            cookies.set('token', token, "1d");
+            context.dispatch('setAuth');
+        },
+        setLogout(context){
+            cookies.remove('token');
+            context.dispatch('setAuth');
         }
     }
 })

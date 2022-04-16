@@ -14,8 +14,15 @@
                 <router-link to="/bookings">Bookings</router-link>
             </li>
             <li class="side-menu-item">
-                <a href="#">Logout</a>
+                <a href="javascript:void(0)" @click="store.dispatch('setLogout')">Logout</a>
             </li>
         </ul>
     </aside>
 </template>
+
+<script setup>
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+</script>

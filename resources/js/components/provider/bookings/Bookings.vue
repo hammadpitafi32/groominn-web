@@ -111,7 +111,7 @@
 <script setup>
 import { ref } from "@vue/reactivity";
 import { MDBTable } from 'mdb-vue-ui-kit';
-import MainModal from '../custom-components/MainModal.vue';
+import MainModal from '../../custom-components/MainModal.vue';
 
 const ShowModal = ref(false);
 
