@@ -400,7 +400,8 @@
 
   <!-- Page level custom scripts -->
   <script src="{{asset('admin/js/demo/datatables-demo.js')}}"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  @stack('javascripts');
 </body>
 
 </html>

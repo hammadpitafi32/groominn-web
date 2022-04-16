@@ -11,6 +11,7 @@ use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\UserTrait;
+use Auth;
 class ApiAuthController extends Controller
 {
 
@@ -19,9 +20,6 @@ class ApiAuthController extends Controller
  
     public function register(Request $request)
     {
-        // dd('dfg');
-        //Validate data
-        // $data = $request->only('name', 'email', 'password','role','phone');
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -70,15 +68,17 @@ class ApiAuthController extends Controller
                 'message' => 'Invalid Email or Password',
             ], 401);
         }
- 
+
         return response()->json([
             'success' => true,
             'token' => $jwt_token,
+            'data' => Auth::user()->only('name','email'),
         ]);
     }
  
     public function logout(Request $request)
     {
+
         $token['token'] = $request->bearerToken();
         //valid credential
         $validator = Validator::make($token, [

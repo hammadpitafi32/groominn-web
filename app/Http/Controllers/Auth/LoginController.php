@@ -65,7 +65,7 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         if (Auth::user()->role_id == 1) {
-            session(['url.intended' => '/admin']);
+            session(['url.intended' => '/admin/dashboard']);
         }
         // else 
         // {
