@@ -3,6 +3,7 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\UserBusinessInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 use Auth;
 use File;
@@ -29,6 +30,7 @@ class UserBusinessRepository implements UserBusinessInterface
 		$this->user_business = $user_business;
 		$this->request = $request;
 	}
+
 	public function find($id)
     {
         return $this->user_business->with('user_business_schedules')->findOrfail($id);
@@ -37,7 +39,22 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function createOrUpdate()
 	{
 		$request = $this->request;
-		// dd($request->shop_images);
+		 $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'description' => 'required',
+            'address' => 'required',
+            'cnic_front' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            'cnic_back' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            'license' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+                'success' => false
+            ], 400);
+        }
+		
 		$user_business = $request->id ? $this->find($request->id) : $this->user_business;
 		// if ($request->id && !$user_business) 
 		// {
@@ -104,10 +121,11 @@ class UserBusinessRepository implements UserBusinessInterface
 	            ]);
 	        }
         }
-        return [
-        	'success' => 200,
-        	'data' => $user_business
-        ];
+
+        return response()->json([
+            'success' => true,
+            'data' => $user_business
+        ], 200);
 	}
 
 	public function createOrUpdateSchedule()

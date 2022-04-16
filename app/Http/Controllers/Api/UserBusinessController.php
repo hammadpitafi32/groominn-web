@@ -16,12 +16,12 @@ class UserBusinessController extends Controller
 
     public function createOrUpdate(Request $request)
     {
-        $response = $this->user_business->createOrUpdate();
+        return $this->user_business->createOrUpdate();
         
-        return response()->json([
-            'success' => $response['success'],
-            'data' => $response['data']
-        ]);
+        // return response()->json([
+        //     'success' => $response['success'],
+        //     'data' => $response['data']
+        // ]);
     }
 
     public function createOrUpdateSchedule(Request $request)
