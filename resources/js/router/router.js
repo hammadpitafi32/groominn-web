@@ -3,9 +3,10 @@ import Login from '../auth/Login.vue';
 import Register from '../auth/Register.vue';
 import AddShop from '../components/shop/AddShop.vue';
 import MyShop from '../components/shop/MyShop.vue';
-import MyCategories from '../components/categories/MyCategories.vue';
-import myServices from '../components/services/MyServices.vue';
-import Bookings from '../components/bookings/Bookings.vue';
+import MyCategories from '../components/provider/categories/MyCategories.vue';
+import myServices from '../components/provider/services/MyServices.vue';
+import Bookings from '../components/provider/bookings/Bookings.vue';
+import BookingsList from '../components/client/booking/BookingsList.vue';
 import Home from '../components/Index.vue';
 import store from "../store";
 
@@ -73,6 +74,14 @@ const routes = [{
         component: Bookings,
         meta: {
             sidebar: true
+        }
+    },
+    {
+        path: '/bookings-list',
+        name: 'bookingsList',
+        component: BookingsList,
+        meta: {
+            sidebar: false
         }
     }
 ]

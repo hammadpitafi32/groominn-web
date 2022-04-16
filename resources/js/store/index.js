@@ -17,7 +17,7 @@ const store = createStore({
             }
         },
         setAuthToken(context, token){
-            cookies.set('token', token);
+            cookies.set('token', token, "1d");
             context.dispatch('setAuth');
         },
         setLogout(context){

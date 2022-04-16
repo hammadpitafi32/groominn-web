@@ -111,8 +111,11 @@ label[for="terms"] input:checked~.geekmark::after {
     font-size: .9rem;
     color: #8C96A2;
     font-weight: bold;
+    transition: all .3s ease;
 }
-
+.side-menu .side-menu-item a:hover{
+    color: var(--theme-orange-color);
+}
 .heading-color {
     color: #343434;
 }
@@ -554,4 +557,8 @@ input.border-danger,
 
 .profile-dropdown .dropdown-toggle::after {
     display: none;
+}
+.booking-list-filters select{
+    font-size: .9rem;
+    padding-block: .6rem;
 }

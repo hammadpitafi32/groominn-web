@@ -185,6 +185,7 @@
                       id="cnic-front"
                       @change="uploadPics($event, 'cnic-front')"
                       class="custom-file-type"
+                      accept="image/*"
                     />
                   </label>
                   <div class="row mt-3" v-if="cnicFront">
