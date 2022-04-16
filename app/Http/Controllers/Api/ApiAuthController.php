@@ -20,41 +20,15 @@ class ApiAuthController extends Controller
  
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|max:50|confirmed',
-            'phone' => 'required',
-            'role' => 'required'
-        ]);
-        //Send failed response if request is not valid
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+        $response = $this->createOrUpdateUser($request);
+        if ($response && $response->getStatusCode() == 400) {
+            return $response;
         }
-
-        $role =Role::where('name',$request->role)->first();
-        // dd($role);
-        if ($role && $role->name == 'Admin') {
-            return response()->json(['error' => ['role' => 'Cannot add user against this role!']], 200);
-        }
-        elseif(!$role)
-        {
-            return response()->json(['error' => ['role' => 'Role Not found!']], 200);
-        }
-        $request['role_id'] = $role->id;
-        $request['name'] = $request->first_name.' '.$request->last_name;
-        // dd($request->all());
-        $user = $this->createOrUpdateUser($request);
- 
+        // dd(json_decode($response->getContent(), true));
         if ($this->loginAfterSignUp) {
             return $this->login($request);
         }
- 
-        return response()->json([
-            'success' => true,
-            'data' => $user
-        ], 200);
+        return $response;
     }
  
     public function login(Request $request)
@@ -87,7 +61,10 @@ class ApiAuthController extends Controller
 
         //Send failed response if request is not valid
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()
+            ], 400);
         }
  
         try {

@@ -4,8 +4,12 @@ namespace App\Traits;
   
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
+use App\Models\Role;
+
+use Auth;
 
 trait UserTrait {
   
@@ -13,13 +17,59 @@ trait UserTrait {
      * @param Request $request
      * @return $this|false|string
      */
+    public function validation($request)
+    {
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6|max:50|confirmed',
+            'phone' => 'required',
+            'role' => 'required'
+        ]);
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+                'success' => false
+            ], 400);
+        }
 
+        $role =Role::where('name',$request->role)->first();
+
+        if ($role && $role->name == 'Admin' && Auth::user()->role->name != 'Admin') {
+            return response()->json([
+                'errors' => ['role' => ['Cannot add user against this role!']],
+                'success' => false
+            ], 400);
+        }
+        elseif(!$role)
+        {
+            return response()->json([
+                'errors' => ['role' => ['Role Not found!']],
+                'success' => false
+            ], 400);
+        }
+        /*validation end*/
+        
+    }
     public function createOrUpdateUser(Request $request)
     {
-        // $request = $this->request;
-        // $user = $request->id ?  $this->user->find($request->id) : $this->user;
+        $response = $this->validation($request);
+        // dd($response);
+        if ($response && $response->getStatusCode() == 400) {
+            return $response;
+        }
 
-        $user = User::updateOrCreate(
+        $role =Role::where('name',$request->role)->first();
+
+        $request['role_id'] = $role->id;
+        $request['name'] = $request->first_name.' '.$request->last_name;
+
+        // dd($request->all());
+        $user = $request->id ?  User::find($request->id) : new User;
+
+        $user = $user->updateOrCreate(
             [
                 'email' => $request->email,
             ],
@@ -48,7 +98,11 @@ trait UserTrait {
                 'tax_id'=>$request->tax_id
             ]
         );
-        return $user;
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
     }
   
 }

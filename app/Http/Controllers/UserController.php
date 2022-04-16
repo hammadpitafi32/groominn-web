@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\UserInterface;
 use App\Models\Role;
+use App\Traits\UserTrait;
+
 class UserController extends Controller
 {
+    use UserTrait;
     protected $user;
     public function __construct(UserInterface $user)
     {
@@ -15,8 +18,8 @@ class UserController extends Controller
 
     public function createOrUpdate(Request $request)
     {
-         $this->user->createOrUpdate();
-         return back();
+        // dd($request->all());
+        return $this->createOrUpdateUser($request);
     }
 
     public function list($role)

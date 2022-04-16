@@ -68,10 +68,13 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" placeholder="Enter Full Name" id="name" name="name" required="">
+                            <label for="name">First Name</label>
+                            <input type="text" class="form-control" placeholder="Enter First Name" id="first_name" name="first_name" required="">
                         </div>
-
+                        <div class="form-group col">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Last Name" id="last_name" name="last_name" required="">
+                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col">
@@ -81,20 +84,26 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col">
+                            <label for="phone">Phone</label>
+                            <input type="text" class="form-control" placeholder="Enter phone" id="phone" name="phone" required="">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
                             <label for="password">Password</label>
                             <input type="text" class="form-control" placeholder="Enter Password" id="password" name="password" required="">
                         </div>
                         <div class="form-group col">
-                            <label for="confirm_password">Confirm Password</label>
-                            <input type="text" class="form-control" placeholder="Enter Confirm Password" id="confirm_password" name="confirm_password" required="">
+                            <label for="password_confirmation">Confirm Password</label>
+                            <input type="text" class="form-control" placeholder="Enter Confirm Password" id="password_confirmation" name="password_confirmation" required="">
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
+                        <div class="form-group col">
                             <label>Role</label>
-                            <select class="form-control selectpicker" id="role_id" title="Choose Following..." required="" name="role_id" data-actions-box="true" data-live-search="true" required="">
+                            <select class="form-control selectpicker" id="role" title="Choose Following..." required="" name="role" data-actions-box="true" data-live-search="true" required="">
                                 @foreach($roles as $role)
-                                <option value="{{$role->id}}">{{$role->name}}</option>
+                                <option value="{{$role->name}}">{{$role->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -103,10 +112,39 @@
                 <div class="modal-footer">
                     <p style="color: green;" id="Message"></p>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary modifyUrl">Submit</button>
+                    <button type="button" class="btn btn-primary modifyUser">Submit</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 @endsection
+@push('javascripts')
+
+<script type="text/javascript">
+    $(document).on('click', '.modifyUser', function() {
+        // alert('s');
+        $('.form-control').removeClass('border border-danger');
+        $('.form-control').next("span").remove();
+
+        axios.post("{{route('create-user')}}",
+            $('#userSubmit').serialize()
+        ).then(function(response) {
+
+            $('#modifyUserModel').modal('hide');
+            toastr.success('Success!', "updated Successfully!", {"positionClass": "toast-bottom-right"});
+            
+        }).catch(function(error) {
+            // console.log(error.response.data);
+            $.each(error.response.data.errors, function(key, value){
+                // console.log(key,value);
+                $('#'+key).focus().addClass('border border-danger');
+                $.each(value, function(key1, msg){
+                    $('#'+key).after('<span><small class="text-danger">'+msg+'</small><br></span>');
+                });
+            });
+
+        });
+    });
+</script>
+@endpush

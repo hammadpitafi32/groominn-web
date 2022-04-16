@@ -3,13 +3,20 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\UserInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
+use App\Models\Role;
+use App\Traits\UserTrait;
 
+use Auth;
 class UserRepository implements UserInterface
 {
+
+	use UserTrait;
 	protected $user;
 	protected $request;
+
 	public function __construct(User $user,Request $request)
 	{
 		$this->user = $user;
@@ -19,10 +26,11 @@ class UserRepository implements UserInterface
     {
         return $this->user->findOrfail($id);
     }
-
+    /*not used*/
 	public function createOrUpdate()
 	{
-		$request = $this->request;
+        $request = $this->request;
+
         $user = $request->id ?  $this->user->find($request->id) : $this->user;
 
 		$user = $this->user->updateOrCreate(
