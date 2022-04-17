@@ -5,7 +5,8 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 
 use App\Models\Service;
-  
+use App\Models\UserBusinessCategoryService;
+use Auth;
 trait ServiceTrait {
   
     /**
@@ -19,6 +20,11 @@ trait ServiceTrait {
             'name' => $request->service,
         ]);
         return $service;
+    }
+
+    public function UserServices()
+    {
+        return UserBusinessCategoryService::with('category','service')->where('user_business_id',Auth::user()->user_business->id)->get();
     }
   
 }
