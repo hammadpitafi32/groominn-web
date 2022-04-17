@@ -34,6 +34,7 @@ Route::group(['namespace' => 'Api'],function()
         Route::post('create-or-update-category-service', 'BusinessController@createOrUpdateCaetgoryService');
         /*user*/
         Route::post('create-user-business', 'UserBusinessController@createOrUpdate');
+        Route::get('get-user-business', 'UserBusinessController@getUserBusiness');
         Route::post('create-business-schedule', 'UserBusinessController@createOrUpdateSchedule');
 
         Route::post('create-user-category-service', 'UserBusinessController@createUserBusinessService');

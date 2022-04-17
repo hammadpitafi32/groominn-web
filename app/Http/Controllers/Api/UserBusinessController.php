@@ -24,6 +24,12 @@ class UserBusinessController extends Controller
         // ]);
     }
 
+    public function getUserBusiness($id=null)
+    {
+        return $this->user_business->getUserBusiness($id);
+
+    }
+
     public function createOrUpdateSchedule(Request $request)
     {
         
@@ -37,11 +43,6 @@ class UserBusinessController extends Controller
     public function createUserBusinessService(Request $request)
     {
 
-        $response = $this->user_business->createUserBusinessService();
-
-        return response()->json([
-            'success' => $response['success'],
-            'data' => $response['data']
-        ]);
+        return $this->user_business->createUserBusinessService();
     }
 }

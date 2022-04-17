@@ -11,9 +11,11 @@ use App\Models\Service;
 use App\Models\CategoryService;
 use File;
 use App\Helpers\UploadImageHelper;
+use App\Traits\CategoryTrait;
 
 class BusinessController extends Controller
 {
+    use CategoryTrait;
     public function __construct()
     {
         // $this->middleware('provider.jwt');
@@ -39,28 +41,22 @@ class BusinessController extends Controller
     }
     public function CreateOrUpdateBusinessCategory(Request $request)
     {
-        // dd($request->all());
-        $category = Category::updateOrCreate([
-                'name' => $request->name
-            ],
-            [
-                'name' => $request->name
-            ]
-        );
-        $data = BusinessCategory::updateOrCreate([
-                'business_id' => $request->business_id,
-                'category_id' => $category->id
-            ],
-            [
-                'business_id' => $request->business_id,
-                'category_id' => $category->id
-            ]
-        );
-
-        return response()->json([
-         'success' => 200,
-         'category' => $category
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
         ]);
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+                'success' => false
+            ], 400);
+        }
+
+        $category = $this->createOrUpdateCategory($request);
+        return response()->json([
+            'success' => true,
+            'category' => $category
+        ],200);
     }
 
 
@@ -91,62 +87,4 @@ class BusinessController extends Controller
          'service' => $service
         ]);
     }
-
-
-    public function CreateOrUpdateUserBusiness(Request $request)
-    {
-        // dd($request->all());
-        $folder = public_path('uploads/user/business');
-
-        if (!File::isDirectory($folder)) {
-            File::makeDirectory($folder, 0777, true, true);
-        }
-
-        $path = public_path('uploads/user/business');
-        if (isset($request->cnic_front))
-        {
-            $file =$request->cnic_front;
-            $cnic_front = UploadImageHelper::upload($file,$path,@$user_business);
-            $user_business->cnic_front = $cnic_front;
-        }
-
-        if (isset($request->cnic_back))
-        {
-            $file =$request->cnic_back;
-            $cnic_back = UploadImageHelper::upload($file,$path,@$user_business);
-            $user_business->cnic_back = $cnic_back;
-        }
-
-        if (isset($request->license))
-        {
-            $file =$request->license;
-            $license = UploadImageHelper::upload($file,$path,@$user_business);
-            $user_business->license = $license;
-        }
-        dd('dsf');
-
-
-        $user_business = UserBusiness::updateOrCreate([
-                'name' => $request->name
-            ],
-            [
-                'name' => $request->name,
-                'description' => $request->description,
-                'address' => $request->address,
-                'city' => $request->city,
-                'state_id' => $request->state_id,
-                'country_id' => $request->country_id,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
-                'cnic_front' => $request->cnic_front,
-                'cnic_back' => $request->cnic_back,
-                'license' => $request->license,
-            ]
-        );
-
-
-    }
-
-
-
 }

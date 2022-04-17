@@ -33,13 +33,13 @@ class UserBusinessRepository implements UserBusinessInterface
 
 	public function find($id)
     {
-        return $this->user_business->with('user_business_schedules')->findOrfail($id);
+        return $this->user_business->with('user_business_images','user_business_schedules')->findOrfail($id);
     }
 
 	public function createOrUpdate()
 	{
 		$request = $this->request;
-		 $validator = Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'description' => 'required',
             'address' => 'required',
@@ -74,7 +74,8 @@ class UserBusinessRepository implements UserBusinessInterface
         $user_business->longitude = $request->longitude;
         $user_business->save();
         /*images*/
-        $path = public_path('uploads/user/'.Auth::id().'/business/'.$user_business->id);
+        $file_path = 'uploads/user/'.Auth::id().'/business/'.$user_business->id.'/';
+        $path = public_path($file_path);
 
         if (!File::isDirectory($path)) {
             File::makeDirectory($path, 0777, true, true);
@@ -84,21 +85,21 @@ class UserBusinessRepository implements UserBusinessInterface
         {
             $file =$request->cnic_front;
             $cnic_front = UploadImageHelper::upload($file,$path,@$user_business);
-            $user_business->cnic_front = $cnic_front;
+            $user_business->cnic_front = $file_path.$cnic_front;
         }
 
         if (isset($request->cnic_back))
         {
             $file =$request->cnic_back;
             $cnic_back = UploadImageHelper::upload($file,$path,@$user_business);
-            $user_business->cnic_back = $cnic_back;
+            $user_business->cnic_back = $file_path.$cnic_back;
         }
 
         if (isset($request->license))
         {
             $file =$request->license;
             $license = UploadImageHelper::upload($file,$path,@$user_business);
-            $user_business->license = $license;
+            $user_business->license = $file_path.$license;
         }
         /*required images*/
         $user_business->save();
@@ -107,7 +108,8 @@ class UserBusinessRepository implements UserBusinessInterface
         /*shop images*/
         if (isset($request->shop_images))
         {
-        	$path = public_path('uploads/user/'.Auth::id().'/business/'.$user_business->id.'/catalog');
+        	$file_path = 'uploads/user/'.Auth::id().'/business/'.$user_business->id.'/catalog/';
+        	$path = public_path($file_path);
 
 	        if (!File::isDirectory($path)) {
 	            File::makeDirectory($path, 0777, true, true);
@@ -117,7 +119,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	            $file_name = UploadImageHelper::upload($file,$path,@$user_business);
 	            UserBusinessImage::create([
 	            	'user_business_id' => $user_business->id,
-	            	'name' => $file_name
+	            	'name' => $file_path.$file_name
 	            ]);
 	        }
         }
@@ -166,6 +168,20 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function createUserBusinessService()
 	{
 		$request = $this->request;
+		$validator = Validator::make($request->all(), [
+            'category_id' => 'required',
+            'service' => 'required',
+            'duration' => 'required',
+            'charges' => 'required',
+            'type' => 'required',
+        ]);
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+                'success' => false
+            ], 400);
+        }
 		// dd(Auth::user()->user_business);
 		// dd($request->all());
 		$user_business_id = $request->user_business_id?:Auth::user()->user_business->id;
@@ -180,12 +196,30 @@ class UserBusinessRepository implements UserBusinessInterface
 		$user_business_cat_service->category_id = $request->category_id;
 		$user_business_cat_service->duration = $request->duration;
 		$user_business_cat_service->charges = $request->charges;
+		$user_business_cat_service->type = $request->type;
 		$user_business_cat_service->save();
 
-		return [
-			'success' => 200,
-			'data' => $user_business_cat_service
-		];
+
+		return response()->json([
+            'success' => true,
+            'data' => $user_business_cat_service
+        ], 200);
+
+	}
+
+	public function getUserBusiness($id)
+	{
+		$id =  $id?:Auth::user()->user_business->id;
+		$business = $this->find($id);
+		// $business['cnic_front'] = asset($business->cnic_front);
+		// $business['cnic_back'] = asset($business->cnic_back);
+		// $business['license'] = asset($business->license);
+
+		return response()->json([
+            'success' => true,
+            'data' => $business
+        ], 200);
+		dd($business);
 
 	}
 
