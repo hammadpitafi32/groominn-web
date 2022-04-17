@@ -24,22 +24,42 @@
                                     <option value="loc-2">Category 2</option>
                                     <option value="loc-3">Category 3</option>
                                 </select>
-                                <MDBBtn class="bg-orange text-white rounded-5 shadow-4-strong fw-bold flex-shrink-0">
-                                    Search
+                                <MDBBtn class="bg-orange text-white rounded-5 shadow-4-strong fw-bold flex-shrink-0 text-capitalize">
+                                    <span class="mx-3">Search</span>
                                 </MDBBtn>
                             </div>
                         </form>
                     </div>
                     <div class="booking-profiles">
-                        <div class="mb-3 rounded-5 border p-3">
-                            <div class="d-flex align-items-start">
-                                <img src="" alt="">
+                        <div v-for="(booking , index) in bookingList" :key="index" :class="booking.id === activeId && 'active shadow-4-strong'" class="booking-pro mb-3 rounded-5 border p-3" @click="activeBooking(booking)">
+                            <div class="row">
+                                <div class="col-5">
+                                    <img :src="booking.img" class="img-fluid rounded-5 booking-img" alt="">
+                                </div>
+                                <div class="col-7">
+                                    <h5 class="fw-bold mb-0">{{booking.title}}</h5>
+                                    <small v-if="booking.id === activeId" class="text-light-color ms-3">{{booking.address}}</small>
+                                    <p class="mt-2 text-color-1 small">{{booking.descrip}}</p>
+                                    <div class="mt-3">
+                                        <span class="d-block fw-500 categories">Categories</span>
+                                        <div class="d-flex flex-wrap mt-3">
+                                            <div class="booking-category me-2"></div>
+                                            <div class="booking-category me-2"></div>
+                                            <div class="booking-category me-2"></div>
+                                            <div class="booking-category me-2"></div>
+                                            <div class="booking-category me-2"></div>
+                                        </div>
+                                        <div class="text-end mt-2">
+                                            <MDBBtn class="btn bg-orange text-white shadow-0 rounded-5 text-capitalize booking-btn" :disabled="booking.id !== activeId">Book Now</MDBBtn>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-7">
-
+                    <Map />
                 </div>
             </div>
         </div>
@@ -47,5 +67,58 @@
 </template>
 
 <script setup>
+import { ref } from "@vue/reactivity";
+import Map from "./Map.vue";
+
+const activeId = ref(1);
+
+const bookingList = ref([
+    {
+        id: 1,
+        title: 'Grooming life style',
+        img: '../images/shop-img.png',
+        address: 'Albert street, New York , usa',
+        descrip: 'and training programs. We pride ourselves on being your one stop shop',
+    },
+    {
+        id: 2,
+        title: 'Grooming life style',
+        img: '../images/shop-img.png',
+        address: 'Albert street, New York , usa',
+        descrip: 'and training programs. We pride ourselves on being your one stop shop',
+    },
+    {
+        id: 3,
+        title: 'Grooming life style',
+        img: '../images/shop-img.png',
+        address: 'Albert street, New York , usa',
+        descrip: 'and training programs. We pride ourselves on being your one stop shop',
+    },
+    {
+        id: 4,
+        title: 'Grooming life style',
+        img: '../images/shop-img.png',
+        address: 'Albert street, New York , usa',
+        descrip: 'and training programs. We pride ourselves on being your one stop shop',
+    },
+]);
+
+const activeBooking = (booking) => {
+    activeId.value = booking.id;
+}
 
 </script>
+
+<style scoped>
+.text-light-color{
+    color: #B4B4B4;
+    font-size: .8rem;
+}
+.categories{
+    color: #676767;
+}
+.booking-img{
+    height: 100%;
+    object-fit: cover;
+}
+</style>

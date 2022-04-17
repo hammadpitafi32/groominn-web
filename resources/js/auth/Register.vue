@@ -133,8 +133,8 @@
               errors.phone[0]
             }}</span>
           </div>
-          <div class="d-flex mb-2">
-            <div class="form-group me-3 flex-grow-1">
+          <div class="row mb-2">
+            <div class="form-group col-6">
               <label for="password" class="mb-1">Password</label>
               <MDBInput
                 size="lg"
@@ -143,13 +143,13 @@
                 :class="errors && errors.password && 'border-danger'"
                 v-model="password"
               />
-              <span
-                v-if="errors && errors.password"
-                class="text-danger small"
-                >{{ errors.password[0] }}</span
-              >
+              <span v-if="errors && errors.password" class="text-danger small mt-1">
+                <span class="mb-1 d-block" v-for="(passErr, index) in errors.password" :key="index">
+                  {{ passErr }}
+                </span
+              ></span>
             </div>
-            <div class="form-group ms-3 flex-grow-1">
+            <div class="form-group col-6">
               <label for="confirmPassword" class="mb-1">Confirm Password</label>
               <MDBInput
                 size="lg"
@@ -242,27 +242,22 @@ const registerHandler = () => {
   formData.append("role", serviceChoose.value);
   formData.append("phone", phoneNumber.value);
 
-  if (password.value == confirmPassword.value) {
-    register(formData).then(({ data }) => {
+  register(formData)
+    .then(({ data }) => {
+      errors.value = null;
+      success.value = data.success;
+      store.dispatch("setAuthToken", data.token);
+      window.scrollTo({ top: 0 });
+      setTimeout(() => {
+        router.push("/add-shop");
+      }, 600);
+    })
+    .catch(({ response }) => {
       loading.value = false;
-      if (data.error) {
-        errors.value = data.error;
-        success.value = null;
-      } else if (data.success) {
-        errors.value = null;
-        success.value = data.success;
-        store.dispatch("setAuthToken", data.token);
-        window.scrollTo({ top: 0 });
-        setTimeout(() => {
-          router.push("/add-shop");
-        }, 600);
-      }
+      errors.value = response.data.errors;
+      success.value = null;
     });
-    confirmPasswordError.value = "";
-  } else {
-    loading.value = false;
-    confirmPasswordError.value = "Password does not match";
-  }
+  confirmPasswordError.value = "";
 };
 </script>
 
