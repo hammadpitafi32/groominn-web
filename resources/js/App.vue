@@ -13,7 +13,6 @@ import Footer from "./layout/Footer.vue";
 
 import { useRoute } from "vue-router";
 import Sidebar from "./layout/Sidebar.vue";
-import { onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 
 const route = useRoute();

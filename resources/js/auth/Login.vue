@@ -125,11 +125,14 @@ const handleLogin = () => {
   login(formData)
     .then((res) => {
       apiResponse.value = res.data;
-      store.dispatch('setAuthToken', res.data.token);
+      store.dispatch("setLogin", res.data);
+      console.log(res.data);
+        if (res.data.data.is_shop) {
+            router.push("/my-shop");
+        } else {
+            router.push("/add-shop");
+        }
       loading.value = false;
-      setTimeout(() => {
-        router.push("/add-shop");
-      }, 600);
     })
     .catch((error) => {
       loading.value = false;

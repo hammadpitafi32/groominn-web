@@ -2,7 +2,7 @@
     <aside class="sidebar">
         <ul class="list-unstyled side-menu">
             <li class="side-menu-item">
-                <router-link to="/add-shop">My shop</router-link>
+                <router-link :to="shop ? '/my-shop' : '/add-shop'">{{shop ? 'My Shop' : 'Add Shop'}}</router-link>
             </li>
             <li class="side-menu-item">
                 <router-link to="/my-categories">My Categories</router-link>
@@ -21,8 +21,14 @@
 </template>
 
 <script setup>
+import { ref, watchEffect } from '@vue/runtime-core';
 import { useStore } from 'vuex';
 
 const store = useStore();
+const shop = ref(false);
+
+watchEffect(() => {
+    shop.value = store.state.shop;
+})
 
 </script>

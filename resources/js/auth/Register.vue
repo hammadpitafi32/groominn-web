@@ -143,11 +143,18 @@
                 :class="errors && errors.password && 'border-danger'"
                 v-model="password"
               />
-              <span v-if="errors && errors.password" class="text-danger small mt-1">
-                <span class="mb-1 d-block" v-for="(passErr, index) in errors.password" :key="index">
+              <span
+                v-if="errors && errors.password"
+                class="text-danger small mt-1"
+              >
+                <span
+                  class="mb-1 d-block"
+                  v-for="(passErr, index) in errors.password"
+                  :key="index"
+                >
                   {{ passErr }}
-                </span
-              ></span>
+                </span></span
+              >
             </div>
             <div class="form-group col-6">
               <label for="confirmPassword" class="mb-1">Confirm Password</label>
@@ -246,7 +253,13 @@ const registerHandler = () => {
     .then(({ data }) => {
       errors.value = null;
       success.value = data.success;
-      store.dispatch("setAuthToken", data.token);
+      store.dispatch("setLogin", data).then(() => {
+        if (res.data.isShop) {
+          router.push("/my-shop");
+        } else {
+          router.push("/add-shop");
+        }
+      });
       window.scrollTo({ top: 0 });
       setTimeout(() => {
         router.push("/add-shop");

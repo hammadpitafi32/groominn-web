@@ -6,22 +6,32 @@ const { cookies } = useCookies();
 const store = createStore({
     state: {
         auth: false,
+        name: '',
+        role: '',
+        shop: '',
     },
-    actions:{
-        setAuth(context){
+    actions: {
+        setAuth(context) {
             let token = cookies.get('token');
-            if(token){
+            let user = cookies.get('user');
+
+            if (token && user) {
                 context.state.auth = true;
+                context.state.name = user.name;
+                context.state.role = user.role;
+                context.state.shop = user.is_shop;
             } else {
                 context.state.auth = false;
             }
         },
-        setAuthToken(context, token){
-            cookies.set('token', token, "1d");
+        setLogin(context, data) {
+            cookies.set('token', data.token, "1d");
+            cookies.set('user', data.data, "1d");
             context.dispatch('setAuth');
         },
-        setLogout(context){
+        setLogout(context) {
             cookies.remove('token');
+            cookies.remove('user');
             context.dispatch('setAuth');
         }
     }

@@ -14,4 +14,18 @@
 <script setup>
 import ShopPhotos from "./shop-detail-components/ShopPhotos.vue";
 import ShopDetails from "./shop-detail-components/ShopDetails.vue";
+import { watchEffect } from "@vue/runtime-core";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+const store = useStore();
+const router = useRouter();
+
+watchEffect(() => {
+  if (!store.state.auth) {
+    router.push("/login");
+  } else if(!store.state.shop){
+    router.push("/add-shop")
+  }
+});
 </script>
