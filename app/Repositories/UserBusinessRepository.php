@@ -33,7 +33,7 @@ class UserBusinessRepository implements UserBusinessInterface
 
 	public function find($id)
     {
-        return $this->user_business->with('user_business_images','user_business_schedules')->findOrfail($id);
+        return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.category','user_business_category_services.service')->findOrfail($id);
     }
 
 	public function createOrUpdate()
@@ -219,8 +219,6 @@ class UserBusinessRepository implements UserBusinessInterface
             'success' => true,
             'data' => $business
         ], 200);
-		dd($business);
-
 	}
 
 }
