@@ -40,5 +40,12 @@ trait CategoryTrait {
 
         return $category;
     }
+
+    public function userCategories()
+    {
+        return Category::select('id','name')->get();
+        // dd($categories);
+        // retrun $categories;
+    }
   
 }

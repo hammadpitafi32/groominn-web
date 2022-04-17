@@ -6,8 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\UserBusinessInterface;
 use App\Models\UserBusiness;
+use App\Traits\CategoryTrait;
+use App\Traits\ServiceTrait;
+
 class UserBusinessController extends Controller
 {
+    use CategoryTrait;
+    use ServiceTrait;
     protected $user_business;
     public function __construct(UserBusinessInterface $user_business)
     {
@@ -44,5 +49,27 @@ class UserBusinessController extends Controller
     {
 
         return $this->user_business->createUserBusinessService();
+    }
+
+    public function getUserCategories()
+    {
+        // dd($this->userCategories());
+        $categories = $this->userCategories();
+
+        return response()->json([
+            'success' => true,
+            'data' => $categories
+        ], 200);
+    }
+
+    public function getUserServices()
+    {
+        // dd($this->userServices());
+        $services = $this->userServices();
+
+        return response()->json([
+            'success' => true,
+            'data' => $services
+        ], 200);
     }
 }

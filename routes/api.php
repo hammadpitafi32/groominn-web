@@ -31,7 +31,12 @@ Route::group(['namespace' => 'Api'],function()
     Route::group(['middleware' => 'provider.jwt'], function () {
         Route::post('create-or-update-business', 'BusinessController@createOrUpdate');
         Route::post('create-or-update-business-category', 'BusinessController@CreateOrUpdateBusinessCategory');
+        Route::get('get-user-categories', 'UserBusinessController@getUserCategories');
+
         Route::post('create-or-update-category-service', 'BusinessController@createOrUpdateCaetgoryService');
+        Route::get('get-user-services', 'UserBusinessController@getUserServices');
+
+
         /*user*/
         Route::post('create-user-business', 'UserBusinessController@createOrUpdate');
         Route::get('get-user-business', 'UserBusinessController@getUserBusiness');
