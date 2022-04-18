@@ -57,7 +57,7 @@ trait CategoryTrait {
 
     public function userCategories()
     {
-        return Category::select('id','name')->paginate(1);
+        return Category::select('id','name')->paginate(10);
         // dd($categories);
         // retrun $categories;
     }
