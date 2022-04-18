@@ -28,8 +28,18 @@ export const addShop = async (data) => {
     return response;
 }
 
+export const createCategory = async (data) => {
+    const response = await axios.post(`${baseURL}/create-user-category`, data);
+    return response;
+}
+
 export const getUserBusiness = async () => {
     const response = await axios.get(`${baseURL}/get-user-business`);
+    return response;
+}
+
+export const getUserCategories = async (page) => {
+    const response = await axios.get(`${baseURL}/get-user-categories?page=${page}`);
     return response;
 }
 
