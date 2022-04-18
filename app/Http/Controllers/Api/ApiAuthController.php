@@ -48,8 +48,6 @@ class ApiAuthController extends Controller
         $data['email'] = $user->email;
         $data['role'] = $user->role->name;
         $data['is_shop'] = ($user->user_business && $user->user_business->id?true:false);
-        // $user = Auth::user();
-        // dd($data);
         return response()->json([
             'success' => true,
             'token' => $jwt_token,

@@ -114,14 +114,18 @@ class UserBusinessRepository implements UserBusinessInterface
 	        if (!File::isDirectory($path)) {
 	            File::makeDirectory($path, 0777, true, true);
 	        }
-        	foreach ($request->shop_images as $file) 
-        	{
-	            $file_name = UploadImageHelper::upload($file,$path,@$user_business);
-	            UserBusinessImage::create([
-	            	'user_business_id' => $user_business->id,
-	            	'name' => $file_path.$file_name
-	            ]);
+	        if (count($request->shop_images) > 0) 
+	        {
+	        	foreach ($request->shop_images as $file) 
+	        	{
+		            $file_name = UploadImageHelper::upload($file,$path,@$user_business);
+		            UserBusinessImage::create([
+		            	'user_business_id' => $user_business->id,
+		            	'name' => $file_path.$file_name
+		            ]);
+		        }
 	        }
+        	
         }
 
         return response()->json([

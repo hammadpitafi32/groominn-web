@@ -84,6 +84,20 @@ class BookingRepository implements BookingInterface
 
 		$current_time = date('H:i:s');
 		$estimated_time = 0;
+		$no_of_employees = 5;
+
+		$user_business = UserBusiness::with('user_business_schedules')->find($request->user_business_id);
+		$bookings = $this->booking->where('user_business_id',$user_business->id)->whereDate('date',$date)->get();
+		dd($bookings);
+	}
+	public function getEstimatedTimeold()
+	{
+		$request = $this->request;
+		$date = date('Y-m-d H:i:s',strtotime($request->date));
+		$day = date('l',strtotime($date));
+
+		$current_time = date('H:i:s');
+		$estimated_time = 0;
 
 		$user_business = UserBusiness::with('user_business_schedules')->find($request->user_business_id);
 		$bookings = $this->booking->where('user_business_id',$user_business->id)->whereDate('date',$date)->get();
