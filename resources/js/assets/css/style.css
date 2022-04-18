@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 :root {
     --theme-orange-color: #F05922;
     --text-color-1: #7C7C7C;
@@ -13,6 +14,10 @@ body {
 
 .f-w-400 {
     font-weight: 400;
+}
+
+.cursor-pointer{
+    cursor: pointer;
 }
 
 .geekmark {
@@ -82,6 +87,23 @@ label[for="terms"] input:checked~.geekmark::after {
     background-color: #BEC5C9;
 }
 
+.fw-500{
+    font-weight: 500;
+}
+
+.skelton{
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+    to {
+      background-position-x: -200%;
+    }
+  }
+
 .sidebar {
     position: fixed;
     top: 68px;
@@ -134,6 +156,9 @@ label[for="terms"] input:checked~.geekmark::after {
     padding-inline: 2rem;
 }
 
+.btn{
+    font-size: .8rem;
+}
 .text-on-slider {
     position: absolute;
     left: 19%;
@@ -561,4 +586,43 @@ input.border-danger,
 .booking-list-filters select{
     font-size: .9rem;
     padding-block: .6rem;
+}
+
+.booking-category{
+    height: 30px;
+    width: 30px;
+    background-color: #EBEBEB;
+    border-radius: 50%;
+}
+.booking-profiles{
+    height: calc(100vh - 180px);
+    overflow: auto;
+    padding-left: .5rem;
+    direction: rtl;
+}
+.booking-profiles::-webkit-scrollbar-thumb{
+    background-color: #C4C4C4;
+}
+
+.booking-profiles .booking-pro{
+    cursor: pointer;
+    direction: ltr;
+}
+.booking-profiles .booking-pro.active{
+    border: 1px solid var(--theme-orange-color) !important;
+}
+.booking-profiles .booking-pro .booking-btn:disabled{
+    opacity: 1;
+    background-color: #E4E4E4;
+    color: #000 !important;
+}
+.notifiction-panel{
+    max-height: 400px;
+    width: 700px;
+    z-index: 2;
+    top: 150%;
+    right: 0;
+    background-color: #fff;
+    border-radius: 40px 0px 8px 4px;
+    overflow: auto;
 }

@@ -45,11 +45,19 @@ const routes = [{
         },
     },
     {
-        path: '/shop-detail',
+        path: '/my-shop',
         name: 'myShop',
         component: MyShop,
         meta: {
             sidebar: true
+        }
+    },
+    {
+        path: '/shop-detail',
+        name: 'shopDetail',
+        component: MyShop,
+        meta: {
+            sidebar: false
         }
     },
     {

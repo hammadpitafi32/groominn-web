@@ -125,11 +125,17 @@ const handleLogin = () => {
   login(formData)
     .then((res) => {
       apiResponse.value = res.data;
-      store.dispatch('setAuthToken', res.data.token);
+      store.dispatch("setLogin", res.data);
+      if (res.data.data.role === "Provider" && res.data.data.is_shop) {
+        setTimeout(() => {
+          router.push("/my-shop");
+        }, 600);
+      } else if (res.data.data.role === "Provider" && !res.data.data.is_shop) {
+        setTimeout(() => {
+          router.push("/add-shop");
+        }, 600);
+      }
       loading.value = false;
-      setTimeout(() => {
-        router.push("/add-shop");
-      }, 600);
     })
     .catch((error) => {
       loading.value = false;

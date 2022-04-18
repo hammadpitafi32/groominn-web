@@ -4,12 +4,8 @@
       <MDBCol col="12">
         <div class="p-5 pt-4">
           <div class="py-5 px-4 rounded-5 bg-light-grey shop-form">
-            <div
-              v-if="apiResponse"
-              class="alert"
-              :class="apiResponse.status ? 'alert-success' : 'alert-danger'"
-            >
-              {{ apiResponse.message }}
+            <div v-if="success" class="alert alert-success">
+              Shop added successfully!
             </div>
             <form action="">
               <div class="form-group mb-3">
@@ -21,6 +17,9 @@
                   v-model="businessName"
                   class="bg-white py-2"
                 />
+                <span v-if="errors && errors.name" class="text-danger small">{{
+                  errors.name[0]
+                }}</span>
               </div>
               <div class="form-group mb-3">
                 <label for="address" class="mb-2 fw-bold small">Address</label>
@@ -29,6 +28,11 @@
                   v-model="address"
                   class="bg-white py-2"
                 />
+                <span
+                  v-if="errors && errors.address"
+                  class="text-danger small"
+                  >{{ errors.address[0] }}</span
+                >
               </div>
               <div class="form-group mb-3">
                 <label for="description" class="mb-2 fw-bold small"
@@ -40,6 +44,11 @@
                   id="description"
                   class="bg-white py-2 no-resize"
                 />
+                <span
+                  v-if="errors && errors.description"
+                  class="text-danger small"
+                  >{{ errors.description[0] }}</span
+                >
               </div>
               <MDBRow>
                 <MDBCol col="3">
@@ -188,6 +197,11 @@
                       accept="image/*"
                     />
                   </label>
+                  <span
+                    v-if="errors && errors.cnic_front"
+                    class="text-danger small"
+                    >{{ errors.cnic_front[0] }}</span
+                  >
                   <div class="row mt-3" v-if="cnicFront">
                     <div class="col-4 pb-3">
                       <div class="image-wrap">
@@ -294,6 +308,11 @@
                       class="mb-2 custom-file-type"
                     />
                   </label>
+                  <span
+                    v-if="errors && errors.cnic_back"
+                    class="text-danger small"
+                    >{{ errors.cnic_back[0] }}</span
+                  >
                   <div class="row mt-3" v-if="cnicBack">
                     <div class="col-4 pb-3">
                       <div class="image-wrap">
@@ -400,6 +419,11 @@
                       class="mb-2 custom-file-type"
                     />
                   </label>
+                  <span
+                    v-if="errors && errors.license"
+                    class="text-danger small"
+                    >{{ errors.license[0] }}</span
+                  >
                   <div class="row mt-3" v-if="Liscence">
                     <div class="col-4 pb-3">
                       <div class="image-wrap">
@@ -525,9 +549,11 @@ import BtnLoader from "../custom-components/BtnLoader.vue";
 import { addShop } from "../../api";
 import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
+import { useCookies } from "vue3-cookies";
 
 const router = useRouter();
 const store = useStore();
+const { cookies } = useCookies();
 
 const dragOnCardFront = ref(false);
 const dragOnCardBack = ref(false);
@@ -556,13 +582,18 @@ const cnicFrontForApi = ref("");
 const cnicBackForApi = ref("");
 const LiscenceForApi = ref("");
 
-const apiResponse = ref(null);
+const success = ref(null);
+const errors = ref(null);
 
 watchEffect(() => {
   if (!store.state.auth) {
     router.push("/login");
   }
 });
+
+if(store.state.shop){
+  router.push("/my-shop");
+}
 
 const uploadPics = (event, val) => {
   const files = event.target.files;
@@ -621,13 +652,24 @@ const addShopHandler = () => {
   addShop(formData)
     .then((res) => {
       loading.value = false;
-      apiResponse.value = res.data;
+      errors.value = null;
+      success.value = res.data;
       window.scrollTo({ top: 0 });
+
+      let user = cookies.get("user");
+      user.is_shop = true;
+      cookies.set("user", user);
+      store.dispatch("setAuth");
+
+      setTimeout(() => {
+        router.push("/my-shop");
+      }, 900);
     })
     .catch((err) => {
       loading.value = false;
-      apiResponse.value = err.response.data;
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      success.value = null;
+      errors.value = err.response.data.errors;
+      window.scrollTo({ top: 0 });
     });
 };
 </script>
