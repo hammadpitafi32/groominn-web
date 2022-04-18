@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Models\Category;
 use App\Models\BusinessCategory;
-  
+use App\Models\UserCategory;
+use Auth;
 trait CategoryTrait {
   
     /**
@@ -37,6 +38,19 @@ trait CategoryTrait {
                 'category_id' => $category->id
             ]
         );
+        // if (Auth::user()->role->name == 'Provider') 
+        // {
+        //     UserCategory::updateOrCreate([
+        //             'user_id' => Auth::id(),
+        //             'category_id' => $category->id
+        //         ],
+        //         [
+        //             'user_id' => Auth::id(),
+        //             'category_id' => $category->id
+        //         ]
+        //     );
+        // }
+        
 
         return $category;
     }
