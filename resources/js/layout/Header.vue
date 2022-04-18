@@ -27,8 +27,8 @@
         <MDBNavbarItem to="#" class="me-3" v-if="!store.state.auth">
           Support
         </MDBNavbarItem>
-        <MDBNavbarItem to="#" class="me-3" v-if="store.state.auth">
-          <span class="position-relative">
+        <MDBNavbarItem class="me-3 position-relative" v-if="store.state.auth">
+          <span  @click="notification = true" class="position-relative cursor-pointer">
             <svg
               width="17"
               height="26"
@@ -47,6 +47,7 @@
               >5</MDBBadge
             >
           </span>
+          <Notifications @close="closeNotification" v-if="notification" />
         </MDBNavbarItem>
         <MDBNavbarItem class="me-3" v-if="store.state.auth">
           <MDBDropdown v-model="profileDropdown" class="profile-dropdown">
@@ -60,7 +61,7 @@
                 alt=""
               />
               <span class="fw-bold mx-2 auth-name text-capitalize"
-                >Danny Joe
+                >{{store.state.name}}
                 <em
                   class="fa-solid fa-angle-down text-orange ms-1"
                   :class="profileDropdown && 'rotate'"
@@ -118,6 +119,7 @@ import {
   MDBDropdownItem,
 } from "mdb-vue-ui-kit";
 import { useRoute } from "vue-router";
+import Notifications from "./Notifications.vue";
 import { useCookies } from "vue3-cookies";
 
 const navbar = ref(null);
@@ -126,6 +128,7 @@ const route = useRoute();
 const authentication = ref(false);
 const { cookies } = useCookies();
 const profileDropdown = ref(false);
+const notification = ref(false);
 
 onMounted(() => {
   window.addEventListener("scroll", () => {
@@ -136,6 +139,10 @@ onMounted(() => {
     }
   });
 });
+
+const closeNotification = () => {
+  notification.value = false;
+}
 
 const logout = () => {
   profileDropdown.value = false;

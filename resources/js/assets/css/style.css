@@ -16,6 +16,10 @@ body {
     font-weight: 400;
 }
 
+.cursor-pointer{
+    cursor: pointer;
+}
+
 .geekmark {
     border: 2px solid #9D9B9B;
     position: relative;
@@ -86,6 +90,19 @@ label[for="terms"] input:checked~.geekmark::after {
 .fw-500{
     font-weight: 500;
 }
+
+.skelton{
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+    to {
+      background-position-x: -200%;
+    }
+  }
 
 .sidebar {
     position: fixed;
@@ -598,4 +615,14 @@ input.border-danger,
     opacity: 1;
     background-color: #E4E4E4;
     color: #000 !important;
+}
+.notifiction-panel{
+    max-height: 400px;
+    width: 700px;
+    z-index: 2;
+    top: 150%;
+    right: 0;
+    background-color: #fff;
+    border-radius: 40px 0px 8px 4px;
+    overflow: auto;
 }

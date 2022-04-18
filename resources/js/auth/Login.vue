@@ -126,12 +126,15 @@ const handleLogin = () => {
     .then((res) => {
       apiResponse.value = res.data;
       store.dispatch("setLogin", res.data);
-      console.log(res.data);
-        if (res.data.data.is_shop) {
-            router.push("/my-shop");
-        } else {
-            router.push("/add-shop");
-        }
+      if (res.data.data.role === "Provider" && res.data.data.is_shop) {
+        setTimeout(() => {
+          router.push("/my-shop");
+        }, 600);
+      } else if (res.data.data.role === "Provider" && !res.data.data.is_shop) {
+        setTimeout(() => {
+          router.push("/add-shop");
+        }, 600);
+      }
       loading.value = false;
     })
     .catch((error) => {

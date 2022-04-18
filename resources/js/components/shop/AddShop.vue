@@ -549,9 +549,11 @@ import BtnLoader from "../custom-components/BtnLoader.vue";
 import { addShop } from "../../api";
 import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
+import { useCookies } from "vue3-cookies";
 
 const router = useRouter();
 const store = useStore();
+const { cookies } = useCookies();
 
 const dragOnCardFront = ref(false);
 const dragOnCardBack = ref(false);
@@ -588,6 +590,10 @@ watchEffect(() => {
     router.push("/login");
   }
 });
+
+if(store.state.shop){
+  router.push("/my-shop");
+}
 
 const uploadPics = (event, val) => {
   const files = event.target.files;
@@ -649,6 +655,15 @@ const addShopHandler = () => {
       errors.value = null;
       success.value = res.data;
       window.scrollTo({ top: 0 });
+
+      let user = cookies.get("user");
+      user.is_shop = true;
+      cookies.set("user", user);
+      store.dispatch("setAuth");
+
+      setTimeout(() => {
+        router.push("/my-shop");
+      }, 900);
     })
     .catch((err) => {
       loading.value = false;

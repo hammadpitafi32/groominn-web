@@ -1,6 +1,6 @@
 <template>
   <div class="shop-detials pe-5">
-    <h3 class="heading-color fw-bold">Harry Saloon</h3>
+    <h3 class="heading-color fw-bold">{{props.data.name}}</h3>
     <div class="d-flex align-items-center stars">
       <em class="fa fa-star me-2"></em>
       <em class="fa fa-star me-2"></em>
@@ -24,16 +24,11 @@
         />
       </svg>
       <small class="ms-2 location"
-        >G9RF+2C2, Sarwar Colony, Lahore, Pakistan</small
+        >{{props.data.address}}</small
       >
     </div>
     <p class="desc mt-3 small">
-      and training programs. We pride ourselves on being your one stop shop for
-      all of your internet marketing tools and needs.and training programs. We
-      pride ourselves on being your one stop shop for all of your internet
-      marketing tools and needs.and training programs. We pride ourselves on
-      being your one stop shop for all of your internet marketing tools and
-      needs.
+      {{props.data.description}}
     </p>
 
     <div class="categories mt-4 mb-5">
@@ -92,6 +87,10 @@ import {
   MDBTabItem,
   MDBTabPane,
 } from "mdb-vue-ui-kit";
+
+const props = defineProps({
+  data: Object
+})
 
 const shopCategories = ref(categories.categories);
 

@@ -27,3 +27,8 @@ export const addShop = async (data) => {
     const response = await axios.post(`${baseURL}/create-user-business`, data);
     return response;
 }
+
+export const getUserBusiness = async () => {
+    const response = await axios.get(`${baseURL}/get-user-business`);
+    return response;
+}

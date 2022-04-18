@@ -3,6 +3,7 @@
     id="shop-images-sliders"
     class="carousel slide"
     data-bs-ride="carousel"
+    v-if="images.length"
   >
     <div class="carousel-indicators">
       <button v-for="(shop_img, index) in images"
@@ -21,13 +22,21 @@
       </div>
     </div>
   </div>
+
+  <div v-else class="no-image">
+    <img src="../../../assets/img/no-img.webp" class="img-fluid" alt="">
+  </div>
 </template>
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import img from "../../../assets/img/shop-img.jpg";
 
-const images = ref([img, img, img, img, img, img, img]);
+const props = defineProps({
+  photos: Array
+})
+
+const images = ref(props.photos);
+
 </script>
 
 <style scoped>

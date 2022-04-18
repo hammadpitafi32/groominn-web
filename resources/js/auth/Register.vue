@@ -253,13 +253,17 @@ const registerHandler = () => {
     .then(({ data }) => {
       errors.value = null;
       success.value = data.success;
-      store.dispatch("setLogin", data).then(() => {
-        if (res.data.isShop) {
+      store.dispatch("setLogin", data)
+       if (data.data.role === "Provider" && data.data.is_shop) {
+        setTimeout(() => {
           router.push("/my-shop");
-        } else {
+        }, 600);
+      } else if (data.data.role === "Provider" && !data.data.is_shop) {
+        setTimeout(() => {
           router.push("/add-shop");
-        }
-      });
+        }, 600);
+      }
+        
       window.scrollTo({ top: 0 });
       setTimeout(() => {
         router.push("/add-shop");
