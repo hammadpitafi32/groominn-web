@@ -114,8 +114,8 @@ class UserBusinessRepository implements UserBusinessInterface
 	        if (!File::isDirectory($path)) {
 	            File::makeDirectory($path, 0777, true, true);
 	        }
-	        if (count($request->shop_images) > 0) 
-	        {
+	        // if (count($request->shop_images) > 0) 
+	        // {
 	        	foreach ($request->shop_images as $file) 
 	        	{
 		            $file_name = UploadImageHelper::upload($file,$path,@$user_business);
@@ -124,7 +124,7 @@ class UserBusinessRepository implements UserBusinessInterface
 		            	'name' => $file_path.$file_name
 		            ]);
 		        }
-	        }
+	        // }
         	
         }
 
