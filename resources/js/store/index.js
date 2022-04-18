@@ -1,5 +1,6 @@
 import { useCookies } from "vue3-cookies";
 import { createStore } from "vuex";
+import { logout } from "../api";
 
 const { cookies } = useCookies();
 
@@ -9,6 +10,7 @@ const store = createStore({
         name: '',
         role: '',
         shop: '',
+        myShop: null,
     },
     actions: {
         setAuth(context) {
@@ -22,6 +24,7 @@ const store = createStore({
                 context.state.shop = user.is_shop;
             } else {
                 context.state.auth = false;
+                context.state.myShop = null;
             }
         },
         setLogin(context, data) {
@@ -30,9 +33,11 @@ const store = createStore({
             context.dispatch('setAuth');
         },
         setLogout(context) {
-            cookies.remove('token');
-            cookies.remove('user');
-            context.dispatch('setAuth');
+            logout().then(() => {
+                cookies.remove('token');
+                cookies.remove('user');
+                context.dispatch('setAuth');
+            });
         }
     }
 })

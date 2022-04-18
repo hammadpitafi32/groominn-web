@@ -9,7 +9,7 @@
       </MDBCol>
     </MDBRow>
 
-   <Loader class="mt-5 pt-4" v-else />
+    <Loader class="mt-5 pt-4" v-else />
   </MDBContainer>
 </template>
 
@@ -30,15 +30,20 @@ const apiResponse = ref(null);
 watchEffect(() => {
   if (!store.state.auth) {
     router.push("/login");
-  } else if(!store.state.shop){
-    router.push("/add-shop")
+  } else if (!store.state.shop) {
+    router.push("/add-shop");
   }
 });
 
-
-getUserBusiness().then((res) => {
-  apiResponse.value = res.data
+if (store.state.myShop) {
+  apiResponse.value = store.state.myShop;
   loading.value = false;
-})
+} else {
+  getUserBusiness().then((res) => {
+    apiResponse.value = res.data;
+    store.state.myShop = res.data;
+    loading.value = false;
+  });
+}
 </script>
 
