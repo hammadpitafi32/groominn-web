@@ -45,11 +45,11 @@ class BusinessController extends Controller
     }
     public function CreateOrUpdateBusinessCategory(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
-            // 'name' => 'required|string',
             'name' => ['required','string',
                 Rule::unique('user_categories')->where(function ($query) use ($request) {
-                    return $query->where('user_id', Auth::id())->where('name',$request->name);
+                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name);
                 })
             ],
         ]);
