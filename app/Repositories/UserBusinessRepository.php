@@ -34,7 +34,7 @@ class UserBusinessRepository implements UserBusinessInterface
 
 	public function find($id)
     {
-        return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.category','user_business_category_services.service')->findOrfail($id);
+        return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service')->findOrfail($id);
     }
 
 	public function createOrUpdate()
@@ -179,7 +179,7 @@ class UserBusinessRepository implements UserBusinessInterface
             'category_id' => 'required',
             'name' => ['required',
                 Rule::unique('user_services')->where(function ($query) use ($request) {
-                    return $query->where('user_id', Auth::id())->where('name',$request->name);
+                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name);
                 })
             ],
             'duration' => 'required',
@@ -196,8 +196,9 @@ class UserBusinessRepository implements UserBusinessInterface
 		// dd(Auth::user()->user_business);
 		// dd($request->all());
 		$user_business_id = $request->user_business_id?:Auth::user()->user_business->id;
-		// $user_business = $this->user_business->find($request->user_business_id);
-		$user_business_cat_service = new UserBusinessCategoryService;
+
+		$user_business_cat_service = $request->id ?  UserBusinessCategoryService::find($request->id) : new UserBusinessCategoryService;
+
 		$user_business_cat_service->user_business_id = $user_business_id;
 		$user_business_cat_service->user_category_id = $request->category_id;
 		/*creating service if not exist*/
@@ -220,6 +221,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function getUserBusiness($id)
 	{
 		$id =  $id?:Auth::user()->user_business->id;
+		// dd($id);
 		$business = $this->find($id);
 		// $business['cnic_front'] = asset($business->cnic_front);
 		// $business['cnic_back'] = asset($business->cnic_back);
