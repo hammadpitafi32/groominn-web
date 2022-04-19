@@ -64,7 +64,6 @@ trait CategoryTrait {
     public function userCategories($request)
     {
         $user_categories = UserCategory::select('id','name')->where('user_id',Auth::id());
-        // dd($request->all());
         if ($request->pagination == 'false') 
         {
             $user_categories= $user_categories->get();
@@ -73,8 +72,6 @@ trait CategoryTrait {
         {
             $user_categories =$user_categories->paginate(10);
         }
-        // dd($user_categories);
-
         return $user_categories;
         
     }

@@ -29,10 +29,19 @@ trait ServiceTrait {
         return $user_service;
     }
 
-    public function UserServices()
+    public function userServices($request)
     {
         // dd(Auth::user());
-        return UserBusinessCategoryService::with('user_category','user_service')->where('user_business_id',Auth::user()->user_business->id)->get();
+        $user_services = UserBusinessCategoryService::with('user_category','user_service')->where('user_business_id',Auth::user()->user_business->id);
+        if ($request->pagination == 'false') 
+        {
+            $user_services= $user_services->get();
+        }
+        else
+        {
+            $user_services =$user_services->paginate(10);
+        }
+        return $user_services;
     }
   
 }

@@ -62,10 +62,10 @@ class UserBusinessController extends Controller
         ], 200);
     }
 
-    public function getUserServices()
+    public function getUserServices(Request $request)
     {
         // dd($this->userServices());
-        $services = $this->userServices();
+        $services = $this->userServices($request);
 
         return response()->json([
             'success' => true,

@@ -179,7 +179,7 @@ class UserBusinessRepository implements UserBusinessInterface
             'category_id' => 'required',
             'name' => ['required',
                 Rule::unique('user_services')->where(function ($query) use ($request) {
-                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name);
+                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name)->whereNull('deleted_at');
                 })
             ],
             'duration' => 'required',
@@ -198,7 +198,13 @@ class UserBusinessRepository implements UserBusinessInterface
 		$user_business_id = $request->user_business_id?:Auth::user()->user_business->id;
 
 		$user_business_cat_service = $request->id ?  UserBusinessCategoryService::find($request->id) : new UserBusinessCategoryService;
-
+		if (!$user_business_cat_service) {
+			 return response()->json([
+                'success' => false,
+                'message' => 'Service not found!',
+            ], 400);
+		}
+		// dd($user_business_cat_service);
 		$user_business_cat_service->user_business_id = $user_business_id;
 		$user_business_cat_service->user_category_id = $request->category_id;
 		/*creating service if not exist*/
