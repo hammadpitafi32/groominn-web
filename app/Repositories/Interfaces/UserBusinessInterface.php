@@ -5,6 +5,7 @@ interface UserBusinessInterface
 {
     public function createOrUpdate();
     public function getUserBusiness($id);
+    public function deleteUserBusiness($id);
     public function createOrUpdateSchedule();
     public function createUserBusinessService();
 }

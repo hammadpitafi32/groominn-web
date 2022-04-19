@@ -72,4 +72,10 @@ class UserBusinessController extends Controller
             'data' => $services
         ], 200);
     }
+
+    public function deleteUserBusiness($id=null)
+    {
+        return $this->user_business->deleteUserBusiness($id);
+
+    }
 }

@@ -233,4 +233,30 @@ class UserBusinessRepository implements UserBusinessInterface
         ], 200);
 	}
 
+	public function deleteUserBusiness($id)
+	{
+		$id = $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
+
+		$business = $this->find($id);
+		if ($business) 
+		{
+			$business->delete();
+		}
+		else
+		{
+			// $business = UserBusiness::withTrashed()->find(7);
+			// // dd($business,$id);
+			// $business->restore();
+			return response()->json([
+	            'success' => false,
+	            'message' => 'User business not found!'
+	        ], 400);
+		}
+		return response()->json([
+            'success' => true,
+            'message' => 'User business deleted successfully!'
+        ], 200);
+
+	}
+
 }

@@ -40,6 +40,7 @@ Route::group(['namespace' => 'Api'],function()
         /*user*/
         Route::post('create-user-business', 'UserBusinessController@createOrUpdate');
         Route::get('get-user-business', 'UserBusinessController@getUserBusiness');
+        Route::delete('delete-user-business', 'UserBusinessController@deleteUserBusiness');
         Route::post('create-business-schedule', 'UserBusinessController@createOrUpdateSchedule');
 
         Route::post('create-user-category-service', 'UserBusinessController@createUserBusinessService');
