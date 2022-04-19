@@ -51,10 +51,10 @@ class UserBusinessController extends Controller
         return $this->user_business->createUserBusinessService();
     }
 
-    public function getUserCategories()
+    public function getUserCategories(Request $request)
     {
-        // dd($this->userCategories());
-        $categories = $this->userCategories();
+        // dd($request->all());
+        $categories = $this->userCategories($request);
 
         return response()->json([
             'success' => true,
@@ -62,14 +62,26 @@ class UserBusinessController extends Controller
         ], 200);
     }
 
-    public function getUserServices()
+    public function getUserServices(Request $request)
     {
         // dd($this->userServices());
-        $services = $this->userServices();
+        $services = $this->userServices($request);
 
         return response()->json([
             'success' => true,
             'data' => $services
         ], 200);
+    }
+
+    public function deleteUserBusiness($id=null)
+    {
+        return $this->user_business->deleteUserBusiness($id);
+
+    }
+
+    public function deleteUserCategory($id)
+    {
+        dd('dsf');
+        return $this->deleteCategory($id);
     }
 }

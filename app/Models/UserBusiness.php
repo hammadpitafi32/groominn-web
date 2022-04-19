@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -11,6 +13,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class UserBusiness extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
 
     /*accessors*/
     public function getCnicFrontPathAttribute()       
@@ -34,5 +38,36 @@ class UserBusiness extends Model
     public function user_business_category_services()
     {
         return $this->hasMany(UserBusinessCategoryService::class);  
+    }
+
+    /**
+   * Override parent boot and Call deleting event
+   *
+   * @return void
+   */
+   protected static function boot() 
+    {
+      parent::boot();
+
+      static::deleting(function($user_business) {
+         foreach ($user_business->user_business_images()->get() as $post) {
+            $post->delete();
+         }
+
+         foreach ($user_business->user_business_category_services()->get() as $post) {
+            $post->delete();
+         }
+      });
+
+      /*restoring*/
+      static::restoring(function($user_business) {
+        foreach ($user_business->user_business_images()->withTrashed()->get() as $post) {
+            $post->restore();
+        }
+
+        foreach ($user_business->user_business_category_services()->withTrashed()->get() as $post) {
+            $post->restore();
+        }
+      });
     }
 }

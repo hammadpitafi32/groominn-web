@@ -16,6 +16,11 @@ trait CategoryTrait {
      * @return $this|false|string
      */
 
+    public function findCategory($id)
+    {
+        return UserCategory::find($request->id);
+    }
+
     public function createOrUpdateCategory(Request $request)
     {
         
@@ -56,9 +61,25 @@ trait CategoryTrait {
         return $user_category->only('id','name');
     }
 
-    public function userCategories()
+    public function userCategories($request)
     {
-        return UserCategory::select('id','name')->where('user_id',Auth::id())->paginate(10);
+        $user_categories = UserCategory::select('id','name')->where('user_id',Auth::id());
+        if ($request->pagination == 'false') 
+        {
+            $user_categories= $user_categories->get();
+        }
+        else
+        {
+            $user_categories =$user_categories->paginate(10);
+        }
+        return $user_categories;
+        
+    }
+
+    public function deleteCategory($id)
+    {
+        $category = $this->findCategory($id);
+        dd($category);
     }
   
 }

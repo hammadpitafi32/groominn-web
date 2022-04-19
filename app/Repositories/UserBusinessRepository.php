@@ -179,7 +179,7 @@ class UserBusinessRepository implements UserBusinessInterface
             'category_id' => 'required',
             'name' => ['required',
                 Rule::unique('user_services')->where(function ($query) use ($request) {
-                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name);
+                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name)->whereNull('deleted_at');
                 })
             ],
             'duration' => 'required',
@@ -198,7 +198,13 @@ class UserBusinessRepository implements UserBusinessInterface
 		$user_business_id = $request->user_business_id?:Auth::user()->user_business->id;
 
 		$user_business_cat_service = $request->id ?  UserBusinessCategoryService::find($request->id) : new UserBusinessCategoryService;
-
+		if (!$user_business_cat_service) {
+			 return response()->json([
+                'success' => false,
+                'message' => 'Service not found!',
+            ], 400);
+		}
+		// dd($user_business_cat_service);
 		$user_business_cat_service->user_business_id = $user_business_id;
 		$user_business_cat_service->user_category_id = $request->category_id;
 		/*creating service if not exist*/
@@ -231,6 +237,32 @@ class UserBusinessRepository implements UserBusinessInterface
             'success' => true,
             'data' => $business
         ], 200);
+	}
+
+	public function deleteUserBusiness($id)
+	{
+		$id = $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
+
+		$business = $this->find($id);
+		if ($business) 
+		{
+			$business->delete();
+		}
+		else
+		{
+			// $business = UserBusiness::withTrashed()->find(7);
+			// // dd($business,$id);
+			// $business->restore();
+			return response()->json([
+	            'success' => false,
+	            'message' => 'User business not found!'
+	        ], 400);
+		}
+		return response()->json([
+            'success' => true,
+            'message' => 'User business deleted successfully!'
+        ], 200);
+
 	}
 
 }
