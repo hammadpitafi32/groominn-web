@@ -6,6 +6,7 @@
     centered
     scrollable
     class="modal-width"
+    staticBackdrop
   >
     <MDBModalHeader
       class="justify-content-center border-0 p-4 pb-3"
