@@ -145,10 +145,11 @@
         <form>
           <div class="mb-3">
             <label for="add-cat" class="small mb-2">Category</label>
-            <select id="add-cat" class="small category-input form-select">
-              <option value="cat-1">Category 1</option>
-              <option value="cat-2">Category 2</option>
-              <option value="cat-3">Category 3</option>
+            <select id="add-cat" :disabled="!categoryOptions" v-model="category" class="small category-input form-select">
+              <option value="">Select Category</option>
+              <option v-for="option in categoryOptions" :key="option.id" :value="option.id">
+                {{option.name}}
+              </option>
             </select>
           </div>
           <div class="mb-3">
@@ -158,17 +159,13 @@
               type="text"
               class="small category-input"
               placeholder="Service"
+              v-model="serviceInput"
             />
           </div>
           <div class="row">
             <div class="col-6">
               <label for="add-duration" class="small mb-2">Duration </label>
-              <MDBInput
-                id="add-duration"
-                type="text"
-                class="small category-input"
-                placeholder="Duration"
-              />
+              <vue-timepicker class="time-picker" input-width="100%" v-model="duration"></vue-timepicker>
             </div>
             <div class="col-6">
               <label for="add-charges" class="small mb-2">Charges </label>
@@ -177,6 +174,7 @@
                 type="text"
                 class="small category-input"
                 placeholder="Charges"
+                v-model="charges"
               />
             </div>
           </div>
@@ -225,28 +223,46 @@ import {
   MDBRadio,
 } from "mdb-vue-ui-kit";
 import { getUserCategories, getUserServices } from "../../../api";
+import VueTimepicker from 'vue3-timepicker/src/VueTimepicker.vue'
 import ServicesLoader from "../../loaders/ServicesLoader.vue";
+import { watchEffect } from "@vue/runtime-core";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
-const type = ref("home-type");
+const store = useStore();
+const router = useRouter();
 
 const services = ref([]);
 const loading = ref(true);
 const AddNewServiceModal = ref(false);
+const categoryOptions = ref(null);
 const pagination = reactive({
   value: false
 });
+
+const category = ref('');
+const serviceInput = ref('');
+const duration = ref('');
+const charges = ref('');
+const type = ref("home-type");
 
 getUserServices().then((res) => {
   services.value = res.data.data;
   loading.value = false;
 });
 
+watchEffect(() => {
+  if(!store.state.auth){
+    router.push('/login')
+  }
+})
+
 
 const addNewServiceHandler = () => {
   AddNewServiceModal.value = true;
 
   getUserCategories(pagination).then((res) => {
-    console.log(res.data)
+    categoryOptions.value = res.data.data;
   })
 }
 
