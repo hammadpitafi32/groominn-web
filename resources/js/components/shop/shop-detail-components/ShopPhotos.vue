@@ -13,12 +13,12 @@
         :data-bs-slide-to="index"
         :class="index == 0 && 'active'"
       >
-        <img :src="shop_img" class="img-fluid d-block" alt="">
+        <img :src="url + shop_img.name" class="img-fluid d-block" alt="">
       </button>
     </div>
     <div class="carousel-inner">
       <div class="carousel-item" v-for="(shop_img, index) in images" :key="index" :class="index == 0 && 'active'">
-        <img :src="shop_img" class="d-block w-100" alt="..." />
+        <img :src="url + shop_img.name" class="d-block w-100" alt="..." />
       </div>
     </div>
   </div>
@@ -30,12 +30,17 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import { asset } from '../../../baseURL';
 
 const props = defineProps({
   photos: Array
 })
 
 const images = ref(props.photos);
+
+const url = ref(asset.baseUrl);
+
+console.log(url.value );
 
 </script>
 

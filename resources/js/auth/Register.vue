@@ -238,6 +238,10 @@ const confirmPasswordError = ref("");
 const errors = ref(null);
 const success = ref(null);
 
+if(store.state.auth){
+  router.push('/add-shop')
+}
+
 const registerHandler = () => {
   loading.value = true;
   const formData = new FormData();

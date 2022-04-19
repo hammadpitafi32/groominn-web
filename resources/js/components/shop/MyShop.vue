@@ -21,9 +21,11 @@ import { ref, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { getUserBusiness } from "../../api";
+import { useCookies } from "vue3-cookies";
 
 const store = useStore();
 const router = useRouter();
+const { cookies } = useCookies();
 const loading = ref(true);
 const apiResponse = ref(null);
 
@@ -39,7 +41,10 @@ getUserBusiness().then((res) => {
   apiResponse.value = res.data;
   loading.value = false;
   if(!res.data.data){
-    store.state.shop = false;
+    let user = cookies.get('user');
+    user.is_shop = false;
+    cookies.set('user', user);
+    store.dispatch('setAuth');
   }
 });
 </script>

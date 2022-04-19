@@ -22,9 +22,6 @@
         </div>
         <div class="p-5 pt-3">
           <div class="p-5 rounded-5 bg-light-grey">
-            <div class="alert alert-success mb-4 rounded-0 small p-3" v-if="addedCategory">
-              <b>{{ addedCategory }}</b> has been {{editMode ? 'Updated' : 'Added'}} successfully!
-            </div>
             <h6 class="f-w-400 mb-4 px-3">
               <span class="p-2 shadow-1-strong me-2 rounded-2">
                 <svg
@@ -197,9 +194,9 @@ import { createCategory, getUserCategories } from "../../../api";
 import CategoriesLoader from "../../loaders/CategoriesLoader.vue";
 import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"
+  import { POSITION, useToast } from "vue-toastification";
 
-const page = ref(1);
 const categories = ref([]);
 const loading = ref(true);
 const AddNewCategoryModal = ref(false);
@@ -213,9 +210,10 @@ const editMode = ref(false);
 
 const store = useStore();
 const router = useRouter();
+const toast = useToast();
 
 const getCategories = () => {
-  getUserCategories(page.value).then(({ data }) => {
+  getUserCategories().then(({ data }) => {
     categories.value = data.data.data;
     loading.value = false;
   });
@@ -252,6 +250,8 @@ const submitCategory = () => {
       category.name = '';
       category.id = ''
       getCategories();
+
+      toast.success(`${addedCategory.value} has been ${editMode.value ? 'updated' : 'added'} successfully`);
 
       setTimeout(() => {
         addedCategory.value = "";
