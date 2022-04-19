@@ -6,7 +6,7 @@
           <h6 class="text-orange fw-bold mb-0 fs-custom">My Categories</h6>
           <MDBBtn
             @click="
-              (AddNewCategoryModal = true), (editMode = false), (category = '')
+              (AddNewCategoryModal = true), (editMode = false), (category.name = '', category.id = '')
             "
             class="
               bg-orange
@@ -23,7 +23,7 @@
         <div class="p-5 pt-3">
           <div class="p-5 rounded-5 bg-light-grey">
             <div class="alert alert-success mb-4 rounded-0 small p-3" v-if="addedCategory">
-              <b>{{ addedCategory }}</b> has been added successfully!
+              <b>{{ addedCategory }}</b> has been {{editMode ? 'Updated' : 'Added'}} successfully!
             </div>
             <h6 class="f-w-400 mb-4 px-3">
               <span class="p-2 shadow-1-strong me-2 rounded-2">
@@ -166,7 +166,7 @@
           class="small category-input"
           placeholder="Category"
           :class="errors && errors.name && 'border-danger'"
-          v-model="category"
+          v-model="category.name"
         />
         <span v-if="errors && errors.name" class="text-danger small">{{
           errors.name[0]
@@ -185,8 +185,7 @@
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
-import items from "../../../categories.json";
+import { reactive, ref } from "@vue/reactivity";
 import {
   MDBModal,
   MDBModalHeader,
@@ -204,7 +203,10 @@ const page = ref(1);
 const categories = ref([]);
 const loading = ref(true);
 const AddNewCategoryModal = ref(false);
-const category = ref("");
+const category = reactive({
+  name: '',
+  id: '',
+});
 const addedCategory = ref("");
 const errors = ref(null);
 const editMode = ref(false);
@@ -222,7 +224,8 @@ const getCategories = () => {
 const editCategory = (item) => {
   editMode.value = true;
   AddNewCategoryModal.value = true;
-  category.value = item.name;
+  category.name = item.name;
+  category.id = item.id;
 };
 
 watchEffect(() => {
@@ -236,14 +239,18 @@ getCategories();
 const submitCategory = () => {
   const formData = new FormData();
   formData.append("business_id", "");
-  formData.append("name", category.value);
+  formData.append("name", category.name);
 
+  if(category.id){
+    formData.append('id', category.id);
+  }
   createCategory(formData)
     .then(({ data }) => {
       addedCategory.value = data.category.name;
       AddNewCategoryModal.value = false;
       errors.value = null;
-      category.value = "";
+      category.name = '';
+      category.id = ''
       getCategories();
 
       setTimeout(() => {

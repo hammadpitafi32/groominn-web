@@ -1,5 +1,5 @@
 <template>
-  <MDBContainer>
+  <MDBContainer v-if="apiResponse && apiResponse.data">
     <MDBRow class="mt-5 pt-4" v-if="!loading">
       <MDBCol col="5">
         <ShopPhotos :photos="apiResponse.data.user_business_images" />
@@ -38,6 +38,9 @@ watchEffect(() => {
 getUserBusiness().then((res) => {
   apiResponse.value = res.data;
   loading.value = false;
+  if(!res.data.data){
+    store.state.shop = false;
+  }
 });
 </script>
 
