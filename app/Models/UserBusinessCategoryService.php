@@ -9,14 +9,14 @@ class UserBusinessCategoryService extends Model
 {
     use HasFactory;
 
-    public function category()
+    public function user_category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(UserCategory::class);
     }
 
-    public function service()
+    public function user_service()
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(UserService::class);
     }
 
 }
