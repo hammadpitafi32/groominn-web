@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 use App\Models\Business;
-use App\Models\Category;
+// use App\Models\Category;
 use App\Models\BusinessCategory;
-use App\Models\Service;
+// use App\Models\Service;
 use App\Models\CategoryService;
 use File;
+use Auth;
 use App\Helpers\UploadImageHelper;
 use App\Traits\CategoryTrait;
 
@@ -44,7 +46,12 @@ class BusinessController extends Controller
     public function CreateOrUpdateBusinessCategory(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            // 'name' => 'required|string',
+            'name' => ['required','string',
+                Rule::unique('user_categories')->where(function ($query) use ($request) {
+                    return $query->where('user_id', Auth::id())->where('name',$request->name);
+                })
+            ],
         ]);
         //Send failed response if request is not valid
         if ($validator->fails()) {

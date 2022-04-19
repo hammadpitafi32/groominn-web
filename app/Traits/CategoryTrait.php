@@ -19,25 +19,26 @@ trait CategoryTrait {
     public function createOrUpdateCategory(Request $request)
     {
         
-        $category = $request->id ?  Category::find($request->id) : new Category;
+        $user_category = $request->id ?  UserCategory::find($request->id) : new UserCategory;
 
-        $category = $category->updateOrCreate([
-                'name' => $request->name
-            ],
-            [
-                'name' => $request->name
-            ]
-        );
+        if ($request->id && $user_category == null) 
+        {
+            return;
+        }
+        $user_category->user_id = Auth::id();
+        $user_category->name = $request->name;
+        $user_category->save();
+        
         /*bind with business*/
-        BusinessCategory::updateOrCreate([
-                'business_id' => $request->business_id?:1,
-                'category_id' => $category->id
-            ],
-            [
-                'business_id' => $request->business_id?:1,
-                'category_id' => $category->id
-            ]
-        );
+        // BusinessCategory::updateOrCreate([
+        //         'business_id' => $request->business_id?:1,
+        //         'category_id' => $category->id
+        //     ],
+        //     [
+        //         'business_id' => $request->business_id?:1,
+        //         'category_id' => $category->id
+        //     ]
+        // );
         // if (Auth::user()->role->name == 'Provider') 
         // {
         //     UserCategory::updateOrCreate([
@@ -52,14 +53,12 @@ trait CategoryTrait {
         // }
         
 
-        return $category;
+        return $user_category->only('id','name');
     }
 
     public function userCategories()
     {
-        return Category::select('id','name')->paginate(10);
-        // dd($categories);
-        // retrun $categories;
+        return UserCategory::select('id','name')->where('user_id',Auth::id())->paginate(10);
     }
   
 }

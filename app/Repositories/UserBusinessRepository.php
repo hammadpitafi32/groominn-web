@@ -4,6 +4,7 @@ use App\Repositories\Interfaces\UserBusinessInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 use Auth;
 use File;
@@ -172,9 +173,15 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function createUserBusinessService()
 	{
 		$request = $this->request;
+		// dd($request->all());
+		$request['name'] = $request->service;
 		$validator = Validator::make($request->all(), [
             'category_id' => 'required',
-            'service' => 'required',
+            'name' => ['required',
+                Rule::unique('user_services')->where(function ($query) use ($request) {
+                    return $query->where('user_id', Auth::id())->where('name',$request->name);
+                })
+            ],
             'duration' => 'required',
             'charges' => 'required',
             'type' => 'required',
@@ -192,12 +199,11 @@ class UserBusinessRepository implements UserBusinessInterface
 		// $user_business = $this->user_business->find($request->user_business_id);
 		$user_business_cat_service = new UserBusinessCategoryService;
 		$user_business_cat_service->user_business_id = $user_business_id;
-		$user_business_cat_service->category_id = $request->category_id;
+		$user_business_cat_service->user_category_id = $request->category_id;
 		/*creating service if not exist*/
 		$service = $this->createOrUpdateService($request);
 		/*end*/
-		$user_business_cat_service->service_id = $service->id;
-		$user_business_cat_service->category_id = $request->category_id;
+		$user_business_cat_service->user_service_id = $service->id;
 		$user_business_cat_service->duration = $request->duration;
 		$user_business_cat_service->charges = $request->charges;
 		$user_business_cat_service->type = $request->type;
