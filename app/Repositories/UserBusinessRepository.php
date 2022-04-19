@@ -34,7 +34,7 @@ class UserBusinessRepository implements UserBusinessInterface
 
 	public function find($id)
     {
-        return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service')->findOrfail($id);
+        return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service')->find($id);
     }
 
 	public function createOrUpdate()
@@ -220,7 +220,7 @@ class UserBusinessRepository implements UserBusinessInterface
 
 	public function getUserBusiness($id)
 	{
-		$id =  $id?:Auth::user()->user_business->id;
+		$id =  $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
 		// dd($id);
 		$business = $this->find($id);
 		// $business['cnic_front'] = asset($business->cnic_front);
