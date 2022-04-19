@@ -35,15 +35,9 @@ watchEffect(() => {
   }
 });
 
-if (store.state.myShop) {
-  apiResponse.value = store.state.myShop;
+getUserBusiness().then((res) => {
+  apiResponse.value = res.data;
   loading.value = false;
-} else {
-  getUserBusiness().then((res) => {
-    apiResponse.value = res.data;
-    store.state.myShop = res.data;
-    loading.value = false;
-  });
-}
+});
 </script>
 

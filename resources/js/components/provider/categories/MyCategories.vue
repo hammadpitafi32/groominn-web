@@ -5,7 +5,9 @@
         <div class="d-flex align-items-center justify-content-between px-5">
           <h6 class="text-orange fw-bold mb-0 fs-custom">My Categories</h6>
           <MDBBtn
-            @click="AddNewCategoryModal = true"
+            @click="
+              (AddNewCategoryModal = true), (editMode = false), (category = '')
+            "
             class="
               bg-orange
               text-white
@@ -20,7 +22,9 @@
         </div>
         <div class="p-5 pt-3">
           <div class="p-5 rounded-5 bg-light-grey">
-            <div class="alert alert-success" v-if="addedCategory">{{addedCategory}} has been added successfully!</div>
+            <div class="alert alert-success mb-4 rounded-0 small p-3" v-if="addedCategory">
+              <b>{{ addedCategory }}</b> has been added successfully!
+            </div>
             <h6 class="f-w-400 mb-4 px-3">
               <span class="p-2 shadow-1-strong me-2 rounded-2">
                 <svg
@@ -90,7 +94,11 @@
                     category.name
                   }}</span>
                   <div class="actions">
-                    <a href="javascript:void(0)" class="text-orange me-3">
+                    <a
+                      href="javascript:void(0)"
+                      class="text-orange me-3 edit"
+                      @click="editCategory(category)"
+                    >
                       <svg
                         width="20"
                         height="20"
@@ -121,7 +129,9 @@
                   </div>
                 </div>
               </div>
-              <div class="text-center fs-5 fw-500 mt-4 text-orange" v-else>No Categories Found</div>
+              <div class="text-center fs-5 fw-500 mt-4 text-orange" v-else>
+                No Categories Found
+              </div>
             </div>
             <CategoriesLoader v-else />
           </div>
@@ -143,7 +153,9 @@
       class="justify-content-center border-0 p-4 pb-3"
       :close="false"
     >
-      <MDBModalTitle class="fw-bold fs-4"> Add Category </MDBModalTitle>
+      <MDBModalTitle class="fw-bold fs-4">
+        {{ editMode ? "Update Category" : "Add Category" }}
+      </MDBModalTitle>
     </MDBModalHeader>
     <MDBModalBody class="p-5 pt-3">
       <div class="custom-height">
@@ -156,16 +168,17 @@
           :class="errors && errors.name && 'border-danger'"
           v-model="category"
         />
-        <span v-if="errors && errors.name" class="text-danger small">{{errors.name[0]}}</span>
+        <span v-if="errors && errors.name" class="text-danger small">{{
+          errors.name[0]
+        }}</span>
       </div>
       <div class="text-end mt-3">
         <MDBBtn
           @click="submitCategory()"
           class="bg-orange text-white rounded-4 fw-bold ok-btn shadow-0"
-          >
-          Ok
-          </MDBBtn
         >
+          Ok
+        </MDBBtn>
       </div>
     </MDBModalBody>
   </MDBModal>
@@ -183,14 +196,21 @@ import {
 } from "mdb-vue-ui-kit";
 import { createCategory, getUserCategories } from "../../../api";
 import CategoriesLoader from "../../loaders/CategoriesLoader.vue";
+import { watchEffect } from "@vue/runtime-core";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 const page = ref(1);
 const categories = ref([]);
 const loading = ref(true);
 const AddNewCategoryModal = ref(false);
 const category = ref("");
-const addedCategory = ref('');
+const addedCategory = ref("");
 const errors = ref(null);
+const editMode = ref(false);
+
+const store = useStore();
+const router = useRouter();
 
 const getCategories = () => {
   getUserCategories(page.value).then(({ data }) => {
@@ -198,6 +218,18 @@ const getCategories = () => {
     loading.value = false;
   });
 };
+
+const editCategory = (item) => {
+  editMode.value = true;
+  AddNewCategoryModal.value = true;
+  category.value = item.name;
+};
+
+watchEffect(() => {
+  if (!store.state.auth) {
+    router.push("/login");
+  }
+});
 
 getCategories();
 
@@ -208,11 +240,15 @@ const submitCategory = () => {
 
   createCategory(formData)
     .then(({ data }) => {
-      addedCategory.value = data.name;
+      addedCategory.value = data.category.name;
       AddNewCategoryModal.value = false;
       errors.value = null;
-      category.value = '';
+      category.value = "";
       getCategories();
+
+      setTimeout(() => {
+        addedCategory.value = "";
+      }, 2000);
     })
     .catch((err) => {
       errors.value = err.response.data.errors;

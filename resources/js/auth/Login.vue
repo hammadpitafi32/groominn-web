@@ -5,7 +5,7 @@
       <MDBCol col="5" class="py-5">
         <div
           v-if="apiResponse"
-          class="alert"
+          class="alert rounded-0 small p-3"
           :class="apiResponse.success ? 'alert-success' : 'alert-danger'"
         >
           {{

@@ -10,7 +10,6 @@ const store = createStore({
         name: '',
         role: '',
         shop: '',
-        myShop: null,
     },
     actions: {
         setAuth(context) {
