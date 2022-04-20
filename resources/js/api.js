@@ -58,6 +58,11 @@ export const getUserServices = async () => {
     return response;
 }
 
+export const deleteUserCategory = async (id) => {
+    const response = axios.delete(`${baseURL}/delete-user-category/${id}`);
+    return response;
+}
+
 export const logout = async () => {
     const response = await axios.get(`${baseURL}/logout`);
     return response;

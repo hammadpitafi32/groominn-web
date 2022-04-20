@@ -109,7 +109,7 @@
                         />
                       </svg>
                     </a>
-                    <a href="javascript:void(0)" class="text-orange">
+                    <a href="javascript:void(0)" class="text-orange" @click="deleteCategory(category.id)">
                       <svg
                         width="15"
                         height="18"
@@ -179,6 +179,11 @@
       </div>
     </MDBModalBody>
   </MDBModal>
+
+
+  <!-- Confirmation Modal -->
+  <ConfirmationModal @getData="getCategories()" :data="deletedItem" />
+
 </template>
 
 <script setup>
@@ -192,6 +197,7 @@ import {
 } from "mdb-vue-ui-kit";
 import { createCategory, getUserCategories } from "../../../api";
 import CategoriesLoader from "../../loaders/CategoriesLoader.vue";
+import ConfirmationModal from '../../modals/ConfirmationModal.vue';
 import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router"
@@ -204,6 +210,12 @@ const category = reactive({
   name: '',
   id: '',
 });
+
+const deletedItem = reactive({
+  label: '',
+  id: ''
+})
+
 const addedCategory = ref("");
 const errors = ref(null);
 const editMode = ref(false);
@@ -265,6 +277,13 @@ const submitCategory = () => {
       errors.value = err.response.data.errors;
     });
 };
+
+
+const deleteCategory = (id) => {
+  deletedItem.id = id;
+  deletedItem.label = 'category'
+}
+
 </script>
 
 <style scoped>
