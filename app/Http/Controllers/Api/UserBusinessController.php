@@ -81,7 +81,6 @@ class UserBusinessController extends Controller
 
     public function deleteUserCategory($id)
     {
-        dd('dsf');
         return $this->deleteCategory($id);
     }
 }

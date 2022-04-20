@@ -32,10 +32,11 @@ Route::group(['namespace' => 'Api'],function()
         Route::post('create-or-update-business', 'BusinessController@createOrUpdate');
         Route::post('create-user-category', 'BusinessController@CreateOrUpdateBusinessCategory');
         Route::get('get-user-categories', 'UserBusinessController@getUserCategories');
-        Route::delete('delete-user-category/{$id}', 'UserBusinessController@deleteUserCategory');
+        Route::delete('delete-user-category/{id}', 'UserBusinessController@deleteUserCategory');
 
         Route::post('create-or-update-category-service', 'BusinessController@createOrUpdateCaetgoryService');
         Route::get('get-user-services', 'UserBusinessController@getUserServices');
+        Route::delete('delete-user-service/{$id}', 'UserBusinessController@deleteUserService');
 
 
         /*user*/

@@ -18,7 +18,7 @@ trait CategoryTrait {
 
     public function findCategory($id)
     {
-        return UserCategory::find($request->id);
+        return UserCategory::with('user_business_category_services')->find($id);
     }
 
     public function createOrUpdateCategory(Request $request)
@@ -79,7 +79,25 @@ trait CategoryTrait {
     public function deleteCategory($id)
     {
         $category = $this->findCategory($id);
-        dd($category);
+        // dd($category->user_business_category_services);
+        if ($category) 
+        {
+            $category->delete();
+        }
+        else
+        {
+            // $business = UserBusiness::withTrashed()->find(7);
+            // // dd($business,$id);
+            // $business->restore();
+            return response()->json([
+                'success' => false,
+                'message' => 'User category not found!'
+            ], 400);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'User category deleted successfully!'
+        ], 200);
     }
   
 }
