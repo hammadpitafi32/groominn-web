@@ -4,9 +4,6 @@
       <MDBCol col="12">
         <div class="p-5 pt-4">
           <div class="py-5 px-4 rounded-5 bg-light-grey shop-form">
-            <div v-if="success" class="alert alert-success">
-              Shop added successfully!
-            </div>
             <form action="">
               <div class="form-group mb-3">
                 <label for="name" class="mb-2 fw-bold small"
@@ -550,9 +547,11 @@ import { addShop } from "../../api";
 import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useCookies } from "vue3-cookies";
+import { useToast } from "vue-toastification";
 
 const router = useRouter();
 const store = useStore();
+const toast = useToast();
 const { cookies } = useCookies();
 
 const dragOnCardFront = ref(false);
@@ -591,7 +590,7 @@ watchEffect(() => {
   }
 });
 
-if(store.state.shop){
+if (store.state.shop) {
   router.push("/my-shop");
 }
 
@@ -639,6 +638,10 @@ watch(Liscence, () => {
 });
 
 const addShopHandler = () => {
+  // console.log(shopPicsForApi.value, cnicBackForApi.value);
+
+  // return
+
   loading.value = true;
   const formData = new FormData();
   formData.append("name", businessName.value);
@@ -647,15 +650,18 @@ const addShopHandler = () => {
   formData.append("cnic_front", cnicFrontForApi.value);
   formData.append("cnic_back", cnicBackForApi.value);
   formData.append("license", LiscenceForApi.value);
-  formData.append("shop_images", shopPicsForApi.value);
+
+  for (let i = 0; i < shopPicsForApi.value.length; i++) {
+    formData.append("shop_images[]", shopPicsForApi.value[i]);
+  }
 
   addShop(formData)
     .then((res) => {
       loading.value = false;
       errors.value = null;
       success.value = res.data;
-      window.scrollTo({ top: 0 });
 
+      toast.success("Shop has been added successfully");
       let user = cookies.get("user");
       user.is_shop = true;
       cookies.set("user", user);
@@ -669,7 +675,6 @@ const addShopHandler = () => {
       loading.value = false;
       success.value = null;
       errors.value = err.response.data.errors;
-      window.scrollTo({ top: 0 });
     });
 };
 </script>

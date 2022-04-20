@@ -38,8 +38,23 @@ export const getUserBusiness = async () => {
     return response;
 }
 
-export const getUserCategories = async (page) => {
-    const response = await axios.get(`${baseURL}/get-user-categories?page=${page}`);
+export const getUserCategories = async (pagination) => {
+    if (pagination) {
+        const response = await axios.get(`${baseURL}/get-user-categories?pagination=${pagination.value}`);
+        return response;
+    } else {
+        const response = await axios.get(`${baseURL}/get-user-categories`);
+        return response
+    }
+}
+
+export const createUserService = async (data) => {
+    const response = axios.post(`${baseURL}/create-user-category-service`, data);
+    return response;
+}
+
+export const getUserServices = async () => {
+    const response = axios.get(`${baseURL}/get-user-services`);
     return response;
 }
 

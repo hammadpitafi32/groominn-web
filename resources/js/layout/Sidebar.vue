@@ -5,7 +5,7 @@
                 <router-link :to="shop ? '/my-shop' : '/add-shop'">{{shop ? 'My Shop' : 'Add Shop'}}</router-link>
             </li>
             <li class="side-menu-item">
-                <router-link to="/my-categories">My Categories</router-link>
+                <router-link to="/my-categories" :class="!shop">My Categories</router-link>
             </li>
             <li class="side-menu-item">
                 <router-link to="/my-services">My Services</router-link>

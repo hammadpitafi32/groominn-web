@@ -3,15 +3,6 @@
     <MDBRow>
       <MDBCol col="7"> </MDBCol>
       <MDBCol col="5" class="py-5">
-        <div
-          v-if="apiResponse"
-          class="alert rounded-0 small p-3"
-          :class="apiResponse.success ? 'alert-success' : 'alert-danger'"
-        >
-          {{
-            apiResponse.message ? apiResponse.message : "Login Successfully!"
-          }}
-        </div>
         <h2 class="fw-bold mb-1">Get Started</h2>
         <p class="small text-color-1">
           Dont have an account?
@@ -104,6 +95,7 @@ import { login } from "../api";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import BtnLoader from "../components/custom-components/BtnLoader.vue";
+import { useToast } from "vue-toastification";
 
 const loading = ref(false);
 const credentials = reactive({
@@ -115,6 +107,12 @@ const apiResponse = ref(null);
 const { cookies } = useCookies();
 const store = useStore();
 const router = useRouter();
+const toast = useToast();
+
+
+if(store.state.auth){
+  router.push('/add-shop')
+}
 
 const handleLogin = () => {
   loading.value = true;
@@ -126,6 +124,9 @@ const handleLogin = () => {
     .then((res) => {
       apiResponse.value = res.data;
       store.dispatch("setLogin", res.data);
+      toast.success('Login Successfully!', {
+        timeout: 2000
+      })
       if (res.data.data.role === "Provider" && res.data.data.is_shop) {
         setTimeout(() => {
           router.push("/my-shop");
@@ -138,6 +139,9 @@ const handleLogin = () => {
       loading.value = false;
     })
     .catch((error) => {
+      toast.error(error.response.data.message, {
+        timeout: 2000
+      });
       loading.value = false;
       apiResponse.value = error.response.data;
     });
