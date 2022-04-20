@@ -124,9 +124,7 @@ const handleLogin = () => {
     .then((res) => {
       apiResponse.value = res.data;
       store.dispatch("setLogin", res.data);
-      toast.success('Login Successfully!', {
-        timeout: 2000
-      })
+      toast.success('Login Successfully!')
       if (res.data.data.role === "Provider" && res.data.data.is_shop) {
         setTimeout(() => {
           router.push("/my-shop");

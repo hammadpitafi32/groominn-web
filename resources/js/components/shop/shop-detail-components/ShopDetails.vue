@@ -92,6 +92,10 @@ const props = defineProps({
   data: Object
 })
 
+const allCategories = ref(props.data.user_business_category_services);
+
+// console.log(allCategories.value);
+
 const shopCategories = ref(categories.categories);
 
 const activeTabId4 = ref(`category-${shopCategories.value[0].id}`);

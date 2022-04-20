@@ -72,13 +72,17 @@
                 </thead>
                 <tbody>
                   <tr v-for="(service, index) in services" :key="index">
-                    <td>{{ service.category }}</td>
-                    <td>{{ service.service }}</td>
-                    <td>{{ service.price }}</td>
+                    <td>{{ service.user_category.name }}</td>
+                    <td>{{ service.user_service.name }}</td>
+                    <td>{{ service.charges + ' $' }}</td>
                     <td>{{ service.duration }}</td>
                     <td>{{ service.type }}</td>
                     <td>
-                      <a href="javascript:void(0)" class="text-orange me-3">
+                      <a
+                        href="javascript:void(0)"
+                        class="text-orange me-3"
+                        @click="editService(service)"
+                      >
                         <svg
                           width="20"
                           height="20"
@@ -138,7 +142,9 @@
       class="justify-content-center border-0 p-4 pb-3"
       :close="false"
     >
-      <MDBModalTitle class="fw-bold fs-4"> Add Service </MDBModalTitle>
+      <MDBModalTitle class="fw-bold fs-4">
+        {{ editMode ? "Update" : "Add" }} Service
+      </MDBModalTitle>
     </MDBModalHeader>
     <MDBModalBody class="p-5 pt-3">
       <div class="custom-height">
@@ -224,7 +230,7 @@
             <MDBRadio
               label="Saloon service"
               class="type-radio"
-              value="saloon"
+              value="shop"
               labelClass="text-dull"
               v-model="type"
               inline
@@ -273,6 +279,7 @@ const toast = useToast();
 
 const services = ref([]);
 const loading = ref(true);
+const editMode = ref(false);
 const AddNewServiceModal = ref(false);
 const categoryOptions = ref(null);
 const pagination = reactive({
@@ -284,12 +291,13 @@ const serviceInput = ref("");
 const duration = ref("");
 const charges = ref("");
 const type = ref("home");
+const serviceId = ref(null);
 
 const errors = ref(null);
 
 const getServices = () => {
   getUserServices().then((res) => {
-    services.value = res.data.data;
+    services.value = res.data.data.data;
     loading.value = false;
   });
 };
@@ -302,6 +310,20 @@ watchEffect(() => {
   }
 });
 
+const editService = (service) => {
+  editMode.value = true;
+  AddNewServiceModal.value = true;
+  getUserCategories(pagination).then((res) => {
+    categoryOptions.value = res.data.data;
+  });
+  category.value = service.user_category.id;
+  serviceInput.value = service.user_service.name
+  charges.value = service.charges
+  duration.value = service.duration
+  serviceId.value = service.id
+  type.value = service.type
+};
+
 const addNewServiceHandler = () => {
   const formData = new FormData();
 
@@ -311,10 +333,14 @@ const addNewServiceHandler = () => {
   formData.append("charges", charges.value);
   formData.append("type", type.value);
 
+  if(serviceId.value){
+    formData.append('id', serviceId.value);
+  }
+
   createUserService(formData)
     .then(() => {
       errors.value = null;
-      toast.success("Service has been added successfully");
+      toast.success(`Service has been ${editMode.value ? 'Updated' : 'Added'} successfully`);
       AddNewServiceModal.value = false;
       getServices();
     })
@@ -325,7 +351,12 @@ const addNewServiceHandler = () => {
 
 const addBtnHandler = () => {
   AddNewServiceModal.value = true;
-
+  editMode.value = false;
+  category.value = '';
+  serviceInput.value = ''
+  charges.value = ''
+  duration.value = ''
+  serviceId.value = null
   getUserCategories(pagination).then((res) => {
     categoryOptions.value = res.data.data;
   });
@@ -338,5 +369,8 @@ const addBtnHandler = () => {
 }
 .ok-btn {
   padding: 0.3rem 2rem;
+}
+td{
+  text-transform: capitalize;
 }
 </style>

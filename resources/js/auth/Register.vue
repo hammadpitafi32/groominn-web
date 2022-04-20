@@ -37,9 +37,6 @@
         </div>
       </MDBCol>
       <MDBCol col="5" class="pt-5" v-else>
-        <div v-if="success" class="alert alert-success">
-          Registered Successfully!
-        </div>
         <h2 class="fw-bold mb-1">Get Started</h2>
         <p class="small text-color-1">
           Already have an accoun?
@@ -220,9 +217,11 @@ import { useRouter } from "vue-router";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { register } from "../api";
 import BtnLoader from "../components/custom-components/BtnLoader.vue";
+import { useToast } from "vue-toastification";
 
 const store = useStore();
 const router = useRouter();
+const toast = useToast();
 
 const serviceChoose = ref("");
 const loading = ref(false);
@@ -236,7 +235,6 @@ const confirmPassword = ref("");
 const confirmPasswordError = ref("");
 
 const errors = ref(null);
-const success = ref(null);
 
 if(store.state.auth){
   router.push('/add-shop')
@@ -256,7 +254,7 @@ const registerHandler = () => {
   register(formData)
     .then(({ data }) => {
       errors.value = null;
-      success.value = data.success;
+      toast.success('Registered Successfully!')
       store.dispatch("setLogin", data)
        if (data.data.role === "Provider" && data.data.is_shop) {
         setTimeout(() => {
@@ -268,7 +266,6 @@ const registerHandler = () => {
         }, 600);
       }
         
-      window.scrollTo({ top: 0 });
       setTimeout(() => {
         router.push("/add-shop");
       }, 600);
@@ -276,7 +273,6 @@ const registerHandler = () => {
     .catch(({ response }) => {
       loading.value = false;
       errors.value = response.data.errors;
-      success.value = null;
     });
   confirmPasswordError.value = "";
 };

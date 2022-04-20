@@ -10,7 +10,7 @@
   >
     <MDBContainer>
       <MDBNavbarBrand>
-        <router-link to="/">
+        <router-link :to="role === 'Provider' && store.state.shop ? '/my-shop' : role === 'Provider' && !store.state.shop ? 'add-shop' : '/'">
           <img src="../assets/img/logo.svg" alt="logo" class="img-fluid" />
         </router-link>
       </MDBNavbarBrand>
@@ -24,6 +24,7 @@
         <MDBNavbarItem to="/" class="me-3"> Home </MDBNavbarItem>
         <MDBNavbarItem to="#" class="me-3"> About </MDBNavbarItem>
         <MDBNavbarItem to="#" class="me-3"> Contact Us </MDBNavbarItem>
+        <MDBNavbarItem to="#" class="me-3" v-if="role == 'Provider'"> Bookings </MDBNavbarItem>
         <MDBNavbarItem to="#" class="me-3" v-if="!store.state.auth">
           Support
         </MDBNavbarItem>
@@ -69,7 +70,7 @@
               ></span>
             </MDBDropdownToggle>
             <MDBDropdownMenu aria-labelledby="dropdownMenuButton" class="py-2">
-              <MDBDropdownItem href="javascript:void(0)" @click="profileDropdown = false"
+              <MDBDropdownItem v-if="role === 'Client'" href="javascript:void(0)" @click="profileDropdown = false"
                 >Profile</MDBDropdownItem
               >
               <MDBDropdownItem href="javascript:void(0)" @click="logout()"
@@ -104,7 +105,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "@vue/runtime-core";
+import { onMounted, ref, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import {
   MDBNavbar,
@@ -125,7 +126,7 @@ import { useCookies } from "vue3-cookies";
 const navbar = ref(null);
 const store = useStore();
 const route = useRoute();
-const authentication = ref(false);
+const role = ref('');
 const { cookies } = useCookies();
 const profileDropdown = ref(false);
 const notification = ref(false);
@@ -139,6 +140,10 @@ onMounted(() => {
     }
   });
 });
+
+watchEffect(() => {
+  role.value = store.state.role;
+})
 
 const closeNotification = () => {
   notification.value = false;

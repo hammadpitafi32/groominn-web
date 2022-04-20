@@ -1,15 +1,20 @@
 <template>
-  <MDBContainer v-if="apiResponse && apiResponse.data">
-    <MDBRow class="mt-5 pt-4" v-if="!loading">
-      <MDBCol col="5">
-        <ShopPhotos :photos="apiResponse.data.user_business_images" />
-      </MDBCol>
-      <MDBCol col="7">
-        <ShopDetails :data="apiResponse.data" />
-      </MDBCol>
+  <div v-if="!loading">
+    <MDBContainer v-if="apiResponse && apiResponse.data">
+      <MDBRow class="mt-5 pt-4">
+        <MDBCol col="5">
+          <ShopPhotos :photos="apiResponse.data.user_business_images" />
+        </MDBCol>
+        <MDBCol col="7">
+          <ShopDetails :data="apiResponse.data" />
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+  </div>
+  <MDBContainer v-else>
+    <MDBRow>
+      <Loader class="mt-5 pt-4" />
     </MDBRow>
-
-    <Loader class="mt-5 pt-4" v-else />
   </MDBContainer>
 </template>
 
@@ -40,11 +45,11 @@ watchEffect(() => {
 getUserBusiness().then((res) => {
   apiResponse.value = res.data;
   loading.value = false;
-  if(!res.data.data){
-    let user = cookies.get('user');
+  if (!res.data.data) {
+    let user = cookies.get("user");
     user.is_shop = false;
-    cookies.set('user', user);
-    store.dispatch('setAuth');
+    cookies.set("user", user);
+    store.dispatch("setAuth");
   }
 });
 </script>

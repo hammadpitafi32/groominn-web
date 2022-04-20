@@ -23,7 +23,9 @@ const store = createStore({
                 context.state.shop = user.is_shop;
             } else {
                 context.state.auth = false;
-                context.state.myShop = null;
+                context.state.name = '';
+                context.state.role = '';
+                context.state.shop = '';
             }
         },
         setLogin(context, data) {

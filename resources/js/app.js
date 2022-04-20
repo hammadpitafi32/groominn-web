@@ -31,6 +31,6 @@ app.use(store);
 app.use(VueTimepicker);
 app.use(Toast, {
     position: POSITION.TOP_RIGHT,
-    timeout: 3000
+    timeout: 2000
 });
 app.component('my-app', App).mount('#app');
