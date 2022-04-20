@@ -587,12 +587,12 @@ const errors = ref(null);
 watchEffect(() => {
   if (!store.state.auth) {
     router.push("/login");
+  } else if (store.state.role == "Provider" && store.state.shop) {
+    router.push("/my-shop");
+  } else if (store.state.role == "Client") {
+    router.push("/");
   }
 });
-
-if (store.state.shop) {
-  router.push("/my-shop");
-}
 
 const uploadPics = (event, val) => {
   const files = event.target.files;

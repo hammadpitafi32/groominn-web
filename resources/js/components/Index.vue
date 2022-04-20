@@ -387,18 +387,28 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { onMounted, onUpdated } from "@vue/runtime-core";
+import { onMounted, watchEffect } from "@vue/runtime-core";
 import { MDBCarousel, MDBIcon } from "mdb-vue-ui-kit";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import Filters from "./custom-components/Filters.vue";
 
 const carousel = ref(0);
 const showAll = ref(false);
 const rightSide = ref(null);
 const imageHeight = ref(null);
+const store = useStore();
+const router = useRouter();
 
 onMounted(() => {
   imageHeight.value = rightSide.value.clientHeight;
 });
+
+watchEffect(() => {
+  if(store.state.role == 'Provider'){
+    router.push('/my-shop');
+  } 
+})
 
 const items = [
   {

@@ -37,8 +37,10 @@ const apiResponse = ref(null);
 watchEffect(() => {
   if (!store.state.auth) {
     router.push("/login");
-  } else if (!store.state.shop) {
+  } else if (store.state.role == 'Provider' && !store.state.shop) {
     router.push("/add-shop");
+  } else if(store.state.role == 'Client'){
+    router.push('/');
   }
 });
 
