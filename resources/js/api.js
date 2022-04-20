@@ -48,6 +48,11 @@ export const getUserCategories = async (pagination) => {
     }
 }
 
+export const createUserService = async (data) => {
+    const response = axios.post(`${baseURL}/create-user-category-service`, data);
+    return response;
+}
+
 export const getUserServices = async () => {
     const response = axios.get(`${baseURL}/get-user-services`);
     return response;

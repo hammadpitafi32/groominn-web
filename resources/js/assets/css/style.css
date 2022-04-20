@@ -416,7 +416,8 @@ input:focus,
 
 input.border-danger,
 .form-select.border-danger,
-.form-control.border-danger {
+.form-control.border-danger,
+.vue__time-picker.border-danger input {
     border: 1px solid #f93154;
     box-shadow: inset 0px 0px 0px 1px #f93154;
 }

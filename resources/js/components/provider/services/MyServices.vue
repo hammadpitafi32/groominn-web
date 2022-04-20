@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center justify-content-between px-5">
           <h6 class="text-orange fw-bold mb-0 fs-custom">My Services</h6>
           <MDBBtn
-            @click="addNewServiceHandler()"
+            @click="addBtnHandler()"
             class="
               bg-orange
               text-white
@@ -145,12 +145,27 @@
         <form>
           <div class="mb-3">
             <label for="add-cat" class="small mb-2">Category</label>
-            <select id="add-cat" :disabled="!categoryOptions" v-model="category" class="small category-input form-select">
+            <select
+              id="add-cat"
+              :disabled="!categoryOptions"
+              v-model="category"
+              :class="errors && errors.category_id && 'border-danger'"
+              class="small category-input form-select"
+            >
               <option value="">Select Category</option>
-              <option v-for="option in categoryOptions" :key="option.id" :value="option.id">
-                {{option.name}}
+              <option
+                v-for="option in categoryOptions"
+                :key="option.id"
+                :value="option.id"
+              >
+                {{ option.name }}
               </option>
             </select>
+            <span
+              class="text-danger small"
+              v-if="errors && errors.category_id"
+              >{{ errors.category_id[0] }}</span
+            >
           </div>
           <div class="mb-3">
             <label for="add-service" class="small mb-2">Service </label>
@@ -159,13 +174,27 @@
               type="text"
               class="small category-input"
               placeholder="Service"
+              :class="errors && errors.name && 'border-danger'"
               v-model="serviceInput"
             />
+            <span class="text-danger small" v-if="errors && errors.name">{{
+              errors.name[0]
+            }}</span>
           </div>
           <div class="row">
             <div class="col-6">
               <label for="add-duration" class="small mb-2">Duration </label>
-              <vue-timepicker class="time-picker" input-width="100%" v-model="duration"></vue-timepicker>
+              <vue-timepicker
+                class="time-picker"
+                input-width="100%"
+                :class="errors && errors.duration && 'border-danger'"
+                v-model="duration"
+              ></vue-timepicker>
+              <span
+                class="text-danger small"
+                v-if="errors && errors.duration"
+                >{{ errors.duration[0] }}</span
+              >
             </div>
             <div class="col-6">
               <label for="add-charges" class="small mb-2">Charges </label>
@@ -174,8 +203,12 @@
                 type="text"
                 class="small category-input"
                 placeholder="Charges"
+                :class="errors && errors.charges && 'border-danger'"
                 v-model="charges"
               />
+              <span class="text-danger small" v-if="errors && errors.charges">{{
+                errors.charges[0]
+              }}</span>
             </div>
           </div>
           <div class="mt-4">
@@ -183,7 +216,7 @@
               label="Home service"
               labelClass="text-dull me-4"
               class="type-radio"
-              value="home-type"
+              value="home"
               v-model="type"
               inline
               name="inlineRadioOptions"
@@ -191,7 +224,7 @@
             <MDBRadio
               label="Saloon service"
               class="type-radio"
-              value="saloon-type"
+              value="saloon"
               labelClass="text-dull"
               v-model="type"
               inline
@@ -202,7 +235,7 @@
       </div>
       <div class="text-end mt-3">
         <MDBBtn
-          @click="AddNewServiceModal = false"
+          @click="addNewServiceHandler()"
           class="bg-orange text-white rounded-4 fw-bold ok-btn shadow-0"
           >Ok</MDBBtn
         >
@@ -222,50 +255,81 @@ import {
   MDBTable,
   MDBRadio,
 } from "mdb-vue-ui-kit";
-import { getUserCategories, getUserServices } from "../../../api";
-import VueTimepicker from 'vue3-timepicker/src/VueTimepicker.vue'
+import {
+  createUserService,
+  getUserCategories,
+  getUserServices,
+} from "../../../api";
+import VueTimepicker from "vue3-timepicker/src/VueTimepicker.vue";
 import ServicesLoader from "../../loaders/ServicesLoader.vue";
 import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
 const store = useStore();
 const router = useRouter();
+const toast = useToast();
 
 const services = ref([]);
 const loading = ref(true);
 const AddNewServiceModal = ref(false);
 const categoryOptions = ref(null);
 const pagination = reactive({
-  value: false
+  value: false,
 });
 
-const category = ref('');
-const serviceInput = ref('');
-const duration = ref('');
-const charges = ref('');
-const type = ref("home-type");
+const category = ref("");
+const serviceInput = ref("");
+const duration = ref("");
+const charges = ref("");
+const type = ref("home");
 
-getUserServices().then((res) => {
-  services.value = res.data.data;
-  loading.value = false;
-});
+const errors = ref(null);
+
+const getServices = () => {
+  getUserServices().then((res) => {
+    services.value = res.data.data;
+    loading.value = false;
+  });
+};
+
+getServices();
 
 watchEffect(() => {
-  if(!store.state.auth){
-    router.push('/login')
+  if (!store.state.auth) {
+    router.push("/login");
   }
-})
-
+});
 
 const addNewServiceHandler = () => {
+  const formData = new FormData();
+
+  formData.append("category_id", category.value);
+  formData.append("service", serviceInput.value);
+  formData.append("duration", duration.value);
+  formData.append("charges", charges.value);
+  formData.append("type", type.value);
+
+  createUserService(formData)
+    .then(() => {
+      errors.value = null;
+      toast.success("Service has been added successfully");
+      AddNewServiceModal.value = false;
+      getServices();
+    })
+    .catch((err) => {
+      errors.value = err.response.data.errors;
+    });
+};
+
+const addBtnHandler = () => {
   AddNewServiceModal.value = true;
 
   getUserCategories(pagination).then((res) => {
     categoryOptions.value = res.data.data;
-  })
-}
-
+  });
+};
 </script>
 
 <style scoped>
