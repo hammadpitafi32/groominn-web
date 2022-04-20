@@ -1,6 +1,6 @@
 <template>
   <div class="shop-detials pe-5">
-    <h3 class="heading-color fw-bold">{{props.data.name}}</h3>
+    <h3 class="heading-color fw-bold">{{ props.data.name }}</h3>
     <div class="d-flex align-items-center stars">
       <em class="fa fa-star me-2"></em>
       <em class="fa fa-star me-2"></em>
@@ -23,51 +23,56 @@
           fill="#B7B7B7"
         />
       </svg>
-      <small class="ms-2 location"
-        >{{props.data.address}}</small
-      >
+      <small class="ms-2 location">{{ props.data.address }}</small>
     </div>
     <p class="desc mt-3 small">
-      {{props.data.description}}
+      {{ props.data.description }}
     </p>
 
-    <div class="categories mt-4 mb-5">
+    <div class="categories mt-4 mb-5" v-if="props.data.user_categories.length">
       <h6 class="fw-bold heading-color mb-0">Categories</h6>
       <div class="category-tabs">
         <MDBTabs v-model="activeTabId4" vertical>
           <MDBTabNav tabsClasses="my-3">
             <MDBTabItem
               class="fw-bold mb-3 py-2 px-0 text-capitalize"
-              v-for="(category, index) in shopCategories"
+              v-for="(category, index) in props.data.user_categories"
               :key="index"
               :wrap="false"
               :tabId="`category-${category.id}`"
               :href="`category-${category.id}`"
-              >{{ category.title }}</MDBTabItem
+              >{{ category.name }}</MDBTabItem
             >
           </MDBTabNav>
           <MDBTabContent>
             <MDBTabPane
               class="category-tab-pane"
               :tabId="`category-${category.id}`"
-              v-for="(category, index) in shopCategories"
+              v-for="(category, index) in props.data.user_categories"
               :key="index"
             >
-              <div
-                class="
-                  d-flex
-                  align-items-center
-                  justify-content-between
-                  border-bottom
-                  py-3
-                "
-                v-for="(subcategory, index) in category.sub_categories"
-                :key="index"
-              >
-                <small>{{ subcategory.title }}</small>
-                <small class="text-orange fw-bold price">{{
-                  subcategory.price
-                }}</small>
+              <div v-if="category.user_business_category_services.length">
+                <div
+                  class="
+                    d-flex
+                    align-items-center
+                    justify-content-between
+                    border-bottom
+                    py-3
+                  "
+                  v-for="(
+                    subcategory, index
+                  ) in category.user_business_category_services"
+                  :key="index"
+                >
+                  <small>{{ subcategory.user_service.name }}</small>
+                  <small class="text-orange fw-bold price">{{
+                    subcategory.charges + " $"
+                  }}</small>
+                </div>
+              </div>
+              <div class="py-5 text-center text-orange" v-else>
+                No services for this category
               </div>
             </MDBTabPane>
           </MDBTabContent>
@@ -79,7 +84,6 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import categories from "../../../categories.json";
 import {
   MDBTabs,
   MDBTabNav,
@@ -89,16 +93,10 @@ import {
 } from "mdb-vue-ui-kit";
 
 const props = defineProps({
-  data: Object
-})
+  data: Object,
+});
 
-const allCategories = ref(props.data.user_business_category_services);
-
-// console.log(allCategories.value);
-
-const shopCategories = ref(categories.categories);
-
-const activeTabId4 = ref(`category-${shopCategories.value[0].id}`);
+const activeTabId4 = ref(`category-${props.data.user_categories.length && props.data.user_categories[0].id}`);
 </script>
 
 <style scoped>
