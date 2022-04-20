@@ -49,7 +49,7 @@ class BusinessController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required','string',
                 Rule::unique('user_categories')->where(function ($query) use ($request) {
-                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name);
+                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name)->whereNull('deleted_at');
                 })
             ],
         ]);
