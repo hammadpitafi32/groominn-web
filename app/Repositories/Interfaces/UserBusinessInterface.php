@@ -8,4 +8,6 @@ interface UserBusinessInterface
     public function deleteUserBusiness($id);
     public function createOrUpdateSchedule();
     public function createUserBusinessService();
+    public function deleteUserCategoryService($id);
+
 }

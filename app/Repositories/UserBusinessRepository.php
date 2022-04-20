@@ -286,4 +286,24 @@ class UserBusinessRepository implements UserBusinessInterface
 
 	}
 
+	public function deleteUserCategoryService($id)
+	{
+		$user_category_service = UserBusinessCategoryService::find($id);
+		if ($user_category_service) 
+        {
+            $user_category_service->delete();
+            return response()->json([
+            'success' => true,
+            'message' => 'Service deleted successfully!'
+        ], 200);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Service not found!'
+        ], 400);
+        
+        
+	}
+
 }

@@ -36,7 +36,7 @@ Route::group(['namespace' => 'Api'],function()
 
         Route::post('create-or-update-category-service', 'BusinessController@createOrUpdateCaetgoryService');
         Route::get('get-user-services', 'UserBusinessController@getUserServices');
-        Route::delete('delete-user-service/{$id}', 'UserBusinessController@deleteUserService');
+        Route::delete('delete-user-service/{id}', 'UserBusinessController@deleteUserService');
 
 
         /*user*/

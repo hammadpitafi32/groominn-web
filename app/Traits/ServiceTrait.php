@@ -46,5 +46,29 @@ trait ServiceTrait {
         }
         return $user_services;
     }
+
+    public function deleteService($id)
+    {
+        $service = $this->findService($id);
+        // dd($category->user_business_category_services);
+        if ($service) 
+        {
+            $service->delete();
+        }
+        else
+        {
+            // $business = UserBusiness::withTrashed()->find(7);
+            // // dd($business,$id);
+            // $business->restore();
+            return response()->json([
+                'success' => false,
+                'message' => 'User Service not found!'
+            ], 400);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'User Service deleted successfully!'
+        ], 200);
+    }
   
 }
