@@ -21,4 +21,25 @@ class UserBusinessCategoryService extends Model
         return $this->belongsTo(UserService::class);
     }
 
+
+    /**
+    * Override parent boot and Call deleting event
+    *
+    * @return void
+    */
+    protected static function boot() 
+    {
+
+        parent::boot();
+
+        static::deleting(function($model) {
+            $model->user_service()->delete();
+        });
+
+        /*restoring*/
+        static::restoring(function($model) {
+            $model->user_service()->withTrashed()->delete();
+        });
+    }
+
 }

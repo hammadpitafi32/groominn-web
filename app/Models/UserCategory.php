@@ -14,4 +14,35 @@ class UserCategory extends Model
     protected $fillable = [
         'user_id','name',
     ];
+    
+
+    public function user_business_category_services()
+    {
+        return $this->hasMany(UserBusinessCategoryService::class);  
+    }
+
+
+    /**
+    * Override parent boot and Call deleting event
+    *
+    * @return void
+    */
+    protected static function boot() 
+    {
+
+        parent::boot();
+
+        static::deleting(function($model) {
+           foreach ($model->user_business_category_services()->get() as $data) {
+                $data->delete();
+            }
+        });
+
+        /*restoring*/
+        static::restoring(function($model) {
+            foreach ($model->user_business_category_services()->withTrashed()->get() as $data) {
+                $data->restore();
+            }
+        });
+    }
 }
