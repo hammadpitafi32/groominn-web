@@ -34,7 +34,19 @@ class UserBusinessRepository implements UserBusinessInterface
 
 	public function find($id)
     {
-        return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service')->find($id);
+        return $this->user_business
+        ->with('user_business_images','user_business_schedules','user_categories','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
+  //       ->with(['user_categories' => function ($query) {
+		//         // $query->select('id','user_id', 'name');
+		//     }],'user_categories.user_business_category_services'
+		//    //  ['user_categories.user_business_category_services' => function ($query) {
+	 //    //     // $query->select('id','user_id', 'name');
+	 //    // }]
+		// )
+        ->find($id);
+
+
+        return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories')->find($id);
     }
 
 	public function createOrUpdate()
@@ -173,13 +185,25 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function createUserBusinessService()
 	{
 		$request = $this->request;
-		// dd($request->all());
+		$user_business_cat_service = $request->id ?  UserBusinessCategoryService::find($request->id) : new UserBusinessCategoryService;
+
+		if (!$user_business_cat_service) {
+			 return response()->json([
+                'success' => false,
+                'message' => 'Service not found!',
+            ], 400);
+		}
+
+		// dd($user_business_cat_service->user_service_id,$request->all());
 		$request['name'] = $request->service;
+		$request['service_id'] = $user_business_cat_service->user_service_id;
+
 		$validator = Validator::make($request->all(), [
             'category_id' => 'required',
             'name' => ['required',
                 Rule::unique('user_services')->where(function ($query) use ($request) {
-                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name)->whereNull('deleted_at');
+                	// dd(Auth::id(),$request->name,$service_id);
+                    return $query->where('id','!=',$request->service_id)->where('user_id', Auth::id())->where('name',$request->name)->whereNull('deleted_at');
                 })
             ],
             'duration' => 'required',
@@ -196,14 +220,6 @@ class UserBusinessRepository implements UserBusinessInterface
 		// dd(Auth::user()->user_business);
 		// dd($request->all());
 		$user_business_id = $request->user_business_id?:Auth::user()->user_business->id;
-
-		$user_business_cat_service = $request->id ?  UserBusinessCategoryService::find($request->id) : new UserBusinessCategoryService;
-		if (!$user_business_cat_service) {
-			 return response()->json([
-                'success' => false,
-                'message' => 'Service not found!',
-            ], 400);
-		}
 		// dd($user_business_cat_service);
 		$user_business_cat_service->user_business_id = $user_business_id;
 		$user_business_cat_service->user_category_id = $request->category_id;
@@ -229,6 +245,8 @@ class UserBusinessRepository implements UserBusinessInterface
 		$id =  $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
 		// dd($id);
 		$business = $this->find($id);
+
+		// dd($business->user_categories,Auth::id());
 		// $business['cnic_front'] = asset($business->cnic_front);
 		// $business['cnic_back'] = asset($business->cnic_back);
 		// $business['license'] = asset($business->license);
