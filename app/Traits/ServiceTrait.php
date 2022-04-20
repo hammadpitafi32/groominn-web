@@ -13,13 +13,16 @@ trait ServiceTrait {
      * @param Request $request
      * @return $this|false|string
      */
-
+    public function findService($id)
+    {
+        return UserService::find($id);
+    }
     public function createOrUpdateService(Request $request)
     {
+        // dd($request->all());
+        $user_service = $request->service_id ?  UserService::find($request->service_id) : new UserService;
 
-        $user_service = $request->id ?  UserService::find($request->id) : new UserService;
-
-        if ($request->id && $user_service == null) 
+        if ($request->service_id && $user_service == null) 
         {
             return;
         }

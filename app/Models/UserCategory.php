@@ -21,6 +21,8 @@ class UserCategory extends Model
         return $this->hasMany(UserBusinessCategoryService::class);  
     }
 
+    
+
 
     /**
     * Override parent boot and Call deleting event

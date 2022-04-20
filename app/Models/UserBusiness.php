@@ -40,6 +40,12 @@ class UserBusiness extends Model
         return $this->hasMany(UserBusinessCategoryService::class);  
     }
 
+
+    public function user_categories()
+    {
+        return $this->hasMany('App\Models\UserCategory','user_id', 'user_id'); 
+    }
+
     /**
    * Override parent boot and Call deleting event
    *
