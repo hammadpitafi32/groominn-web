@@ -194,19 +194,22 @@ class UserBusinessRepository implements UserBusinessInterface
             ], 400);
 		}
 
+		$user_business_id = $request->user_business_id?:Auth::user()->user_business->id;
+
+		// dd($user_business_id);
+
 		// dd($user_business_cat_service->user_service_id,$request->all());
 		$request['name'] = $request->service;
 		$request['service_id'] = $user_business_cat_service->user_service_id;
-
+		// dd(date('H:i'));
 		$validator = Validator::make($request->all(), [
             'category_id' => 'required',
             'name' => ['required',
                 Rule::unique('user_services')->where(function ($query) use ($request) {
-                	// dd(Auth::id(),$request->name,$service_id);
                     return $query->where('id','!=',$request->service_id)->where('user_id', Auth::id())->where('name',$request->name)->whereNull('deleted_at');
                 })
             ],
-            'duration' => 'required',
+            'duration' => ['required','date_format:H:i'],
             'charges' => 'required',
             'type' => 'required',
         ]);
@@ -219,7 +222,7 @@ class UserBusinessRepository implements UserBusinessInterface
         }
 		// dd(Auth::user()->user_business);
 		// dd($request->all());
-		$user_business_id = $request->user_business_id?:Auth::user()->user_business->id;
+		
 		// dd($user_business_cat_service);
 		$user_business_cat_service->user_business_id = $user_business_id;
 		$user_business_cat_service->user_category_id = $request->category_id;

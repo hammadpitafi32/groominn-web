@@ -10,4 +10,9 @@ class UserService extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public function user_business_category_services()
+    {
+        return $this->hasMany(UserBusinessCategoryService::class);  
+    }
 }
