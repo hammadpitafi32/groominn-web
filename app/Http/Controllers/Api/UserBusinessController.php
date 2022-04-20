@@ -83,4 +83,9 @@ class UserBusinessController extends Controller
     {
         return $this->deleteCategory($id);
     }
+
+    public function deleteUserService($id)
+    {
+        return $this->user_business->deleteUserCategoryService($id);
+    }
 }
