@@ -29,9 +29,9 @@
       {{ props.data.description }}
     </p>
 
-    <div class="categories mt-4 mb-5" v-if="props.data.user_categories.length">
+    <div class="categories mt-4 mb-5" >
       <h6 class="fw-bold heading-color mb-0">Categories</h6>
-      <div class="category-tabs">
+      <div class="category-tabs" v-if="props.data.user_categories.length">
         <MDBTabs v-model="activeTabId4" vertical>
           <MDBTabNav tabsClasses="my-3">
             <MDBTabItem
@@ -77,6 +77,9 @@
             </MDBTabPane>
           </MDBTabContent>
         </MDBTabs>
+      </div>
+      <div class="py-5" v-else>
+        <h4 class="text-orange fw-500">No categoies found</h4>
       </div>
     </div>
   </div>

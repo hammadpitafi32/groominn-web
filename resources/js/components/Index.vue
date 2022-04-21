@@ -406,8 +406,8 @@ onMounted(() => {
 
 watchEffect(() => {
   if(store.state.role == 'Provider'){
-    router.push('/my-shop');
-  } 
+    router.push('/my-shop')
+  }
 })
 
 const items = [

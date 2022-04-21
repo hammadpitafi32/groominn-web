@@ -121,13 +121,7 @@ const router = useRouter();
 const ShowModal = ref(false);
 
 watchEffect(() => {
-  if (!store.state.auth) {
-    router.push("/login");
-  } else if (store.state.role == "Provider" && !store.state.shop) {
-    router.push("/add-shop");
-  } else if (store.state.role == "Client") {
-    router.push("/");
-  }
+  store.dispatch('redirection');
 });
 
 const closeModal = () => {

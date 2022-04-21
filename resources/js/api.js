@@ -48,6 +48,11 @@ export const getUserCategories = async (pagination) => {
     }
 }
 
+export const deleteUserCategory = async (id) => {
+    const response = axios.delete(`${baseURL}/delete-user-category/${id}`);
+    return response;
+}
+
 export const createUserService = async (data) => {
     const response = axios.post(`${baseURL}/create-user-category-service`, data);
     return response;
@@ -58,8 +63,8 @@ export const getUserServices = async () => {
     return response;
 }
 
-export const deleteUserCategory = async (id) => {
-    const response = axios.delete(`${baseURL}/delete-user-category/${id}`);
+export const deleteUserService = async (id) => {
+    const response = axios.delete(`${baseURL}/delete-user-service/${id}`);
     return response;
 }
 

@@ -34,24 +34,30 @@ const { cookies } = useCookies();
 const loading = ref(true);
 const apiResponse = ref(null);
 
-watchEffect(() => {
-  if (!store.state.auth) {
-    router.push("/login");
-  } else if (store.state.role == 'Provider' && !store.state.shop) {
-    router.push("/add-shop");
-  } else if(store.state.role == 'Client'){
-    router.push('/');
-  }
-});
+const getBusiness = () => {
+  getUserBusiness().then((res) => {
+    apiResponse.value = res.data;
+    loading.value = false;
+    if (!res.data.data) {
+      let user = cookies.get("user");
+      user.is_shop = false;
+      cookies.set("user", user);
+      store.dispatch("setAuth");
+    }
+  });
+};
 
-getUserBusiness().then((res) => {
-  apiResponse.value = res.data;
-  loading.value = false;
-  if (!res.data.data) {
-    let user = cookies.get("user");
-    user.is_shop = false;
-    cookies.set("user", user);
-    store.dispatch("setAuth");
+watchEffect(() => {
+  if (store.state.auth) {
+    if (store.state.role === "Provider" && !store.state.shop) {
+      router.push("/add-shop");
+    } else if (store.state.role === "Provider" && store.state.shop) {
+      getBusiness();
+    } else if (store.state.role === "Client") {
+      router.push("/");
+    }
+  } else {
+    router.push("/login");
   }
 });
 </script>

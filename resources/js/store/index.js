@@ -1,6 +1,7 @@
 import { useCookies } from "vue3-cookies";
 import { createStore } from "vuex";
 import { logout } from "../api";
+import router from '../router/router';
 
 const { cookies } = useCookies();
 
@@ -39,6 +40,15 @@ const store = createStore({
                 cookies.remove('user');
                 context.dispatch('setAuth');
             });
+        },
+        redirection(context) {
+            if (context.state.role === 'Provider' && context.state.shop) {
+                router.push('/my-shop')
+            } else if (context.state.role === 'Provider' && !context.state.shop) {
+                router.push('/add-shop')
+            } else if (context.state.role === 'Client') {
+                router.push('/')
+            }
         }
     }
 })
