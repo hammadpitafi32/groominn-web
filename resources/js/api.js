@@ -68,6 +68,11 @@ export const deleteUserService = async (id) => {
     return response;
 }
 
+export const getAllShops = async () => {
+    const response = axios.post(`${baseURL}/get-businesses-list`);
+    return response;
+}
+
 export const logout = async () => {
     const response = await axios.get(`${baseURL}/logout`);
     return response;
