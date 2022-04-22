@@ -67,27 +67,25 @@
                 <div class="row">
                   <div class="col-5">
                     <img
-                      :src="booking.img"
+                      :src="imgUrl + booking.user_business_images[0].name"
                       class="img-fluid rounded-5 booking-img"
                       alt=""
                     />
                   </div>
                   <div class="col-7">
-                    <h5 class="fw-bold mb-0">{{ booking.title }}</h5>
+                    <h5 class="fw-bold mb-0">{{ booking.name }}</h5>
                     <small
                       v-if="booking.id === activeId"
-                      class="text-light-color ms-3"
+                      class="text-light-color address"
                       >{{ booking.address }}</small
                     >
-                    <p class="mt-2 text-color-1 small">{{ booking.descrip }}</p>
+                    <p class="mt-2 text-color-1 small description">{{ booking.description }}</p>
                     <div class="mt-3">
                       <span class="d-block fw-500 categories">Categories</span>
                       <div class="d-flex flex-wrap mt-3">
-                        <div class="booking-category me-2"></div>
-                        <div class="booking-category me-2"></div>
-                        <div class="booking-category me-2"></div>
-                        <div class="booking-category me-2"></div>
-                        <div class="booking-category me-2"></div>
+                        <div class="booking-category me-2 d-flex align-items-center justify-content-center fw-500" :title="category.name" v-for="category in booking.user_categories" :key="category.id">
+                          {{category.name.charAt(0)}}
+                        </div>
                       </div>
                       <div class="text-end mt-2">
                         <MDBBtn
@@ -128,8 +126,11 @@ import { getAllShops } from "../../../api";
 import store from "../../../store";
 import Map from "./Map.vue";
 import ShopsLoader from "../../loaders/ShopsLoader.vue";
+import { asset } from '../../../baseURL';
 
-const activeId = ref(1);
+const imgUrl = asset.baseUrl;
+
+const activeId = ref(null);
 const router = useRouter();
 const route = useRoute();
 const location = ref("");
@@ -145,6 +146,7 @@ const activeBooking = (booking) => {
 
 getAllShops().then(({ data }) => {
   bookingList.value = data.data.data;
+  activeId.value = bookingList.value[0].id;
   loading.value = false;
 });
 
@@ -170,5 +172,15 @@ watchEffect(() => {
 .booking-img {
   height: 100%;
   object-fit: cover;
+}
+.address, .description{
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;  
+  -webkit-line-clamp: 1;
+}
+.description{
+  -webkit-line-clamp: 2;
 }
 </style>

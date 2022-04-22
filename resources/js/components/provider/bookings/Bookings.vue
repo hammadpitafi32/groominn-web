@@ -121,7 +121,11 @@ const router = useRouter();
 const ShowModal = ref(false);
 
 watchEffect(() => {
-  store.dispatch('redirection');
+  if(!store.state.auth){
+    router.push('/login')
+  } else if (store.state.role === 'Client'){
+    router.push('/')
+  }
 });
 
 const closeModal = () => {

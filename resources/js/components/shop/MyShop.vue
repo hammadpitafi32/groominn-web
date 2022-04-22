@@ -24,15 +24,18 @@ import ShopDetails from "./shop-detail-components/ShopDetails.vue";
 import Loader from "../loaders/MyShopLoader.vue";
 import { ref, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { getUserBusiness } from "../../api";
 import { useCookies } from "vue3-cookies";
 
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 const { cookies } = useCookies();
 const loading = ref(true);
 const apiResponse = ref(null);
+
+
 
 const getBusiness = () => {
   getUserBusiness().then((res) => {
@@ -53,7 +56,7 @@ watchEffect(() => {
       router.push("/add-shop");
     } else if (store.state.role === "Provider" && store.state.shop) {
       getBusiness();
-    } else if (store.state.role === "Client") {
+    } else if (store.state.role === "Client" && route.name != 'shopDetail') {
       router.push("/");
     }
   } else {
