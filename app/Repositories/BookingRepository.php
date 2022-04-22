@@ -13,6 +13,9 @@ use DateInterval;
 use DatePeriod;
 
 use Label84\HoursHelper\Facades\HoursHelper;
+
+use Stripe;
+
 class BookingRepository implements BookingInterface
 {
 	protected $booking;
@@ -35,6 +38,13 @@ class BookingRepository implements BookingInterface
 	public function create()
 	{
 		$request = $this->request;
+		Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe\Charge::create ([
+                "amount" => 100*100,
+                "currency" => "INR",
+                "source" => $request->stripeToken,
+                "description" => "This is test payment",
+        ]);
 		dd($request->all());
 		$uniqid = Str::random(9);
         $user = $request->id ?  $this->user->find($request->id) : $this->user;
