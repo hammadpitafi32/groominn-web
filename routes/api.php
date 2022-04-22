@@ -26,36 +26,39 @@ Route::group(['namespace' => 'Api'],function()
     // Route::post('/demo','BusinessController@demo'); 
     Route::group(['middleware' => 'auth.jwt'], function () {
         Route::get('logout', 'ApiAuthController@logout');
-    });
-    /*service provider start*/
-    Route::group(['middleware' => 'provider.jwt'], function () {
-        Route::post('create-or-update-business', 'BusinessController@createOrUpdate');
-        Route::post('create-user-category', 'BusinessController@CreateOrUpdateBusinessCategory');
-        Route::get('get-user-categories', 'UserBusinessController@getUserCategories');
-        Route::delete('delete-user-category/{id}', 'UserBusinessController@deleteUserCategory');
 
-        Route::post('create-or-update-category-service', 'BusinessController@createOrUpdateCaetgoryService');
-        Route::get('get-user-services', 'UserBusinessController@getUserServices');
-        Route::delete('delete-user-service/{id}', 'UserBusinessController@deleteUserService');
+        Route::get('get-user-business/{id?}', 'UserBusinessController@getUserBusiness');
+        /*service provider start*/
+        Route::group(['middleware' => 'provider.jwt'], function () {
 
+            Route::post('create-or-update-business', 'BusinessController@createOrUpdate');
 
-        /*user*/
-        Route::post('create-user-business', 'UserBusinessController@createOrUpdate');
-        Route::get('get-user-business', 'UserBusinessController@getUserBusiness');
-        Route::delete('delete-user-business', 'UserBusinessController@deleteUserBusiness');
-        Route::post('create-business-schedule', 'UserBusinessController@createOrUpdateSchedule');
+            Route::post('create-user-category', 'BusinessController@CreateOrUpdateBusinessCategory');
+            Route::get('get-user-categories', 'UserBusinessController@getUserCategories');
+            Route::delete('delete-user-category/{id}', 'UserBusinessController@deleteUserCategory');
 
-        Route::post('create-user-category-service', 'UserBusinessController@createUserBusinessService');
+            Route::post('create-or-update-category-service', 'BusinessController@createOrUpdateCaetgoryService');
+            Route::get('get-user-services', 'UserBusinessController@getUserServices');
+            Route::delete('delete-user-service/{id}', 'UserBusinessController@deleteUserService');
 
-        
-    });
-    /*service provider end*/
-    /*client*/
-    Route::group(['middleware' => 'client.jwt'], function () {
-        Route::post('get-businesses-list', 'UserBusinessController@getBusinesseslist');
-        Route::post('create-booking', 'BookingController@create');
-        Route::post('get-estimated-time', 'BookingController@getEstimatedTime');
+            /*user*/
+            Route::post('create-user-business', 'UserBusinessController@createOrUpdate');
+            
+            Route::delete('delete-user-business', 'UserBusinessController@deleteUserBusiness');
+            Route::post('create-business-schedule', 'UserBusinessController@createOrUpdateSchedule');
 
+            Route::post('create-user-category-service', 'UserBusinessController@createUserBusinessService');
+
+            
+        });
+        /*service provider end*/
+        /*client*/
+        Route::group(['middleware' => 'client.jwt'], function () {
+            Route::post('get-businesses-list', 'UserBusinessController@getBusinesseslist');
+            Route::post('create-booking', 'BookingController@create');
+            Route::post('get-estimated-time', 'BookingController@getEstimatedTime');
+
+        });
     });
     /*end*/
 });
