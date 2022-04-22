@@ -10,7 +10,7 @@
   >
     <MDBContainer>
       <MDBNavbarBrand>
-        <router-link :to="role === 'Provider' && store.state.shop ? '/my-shop' : role === 'Provider' && !store.state.shop ? 'add-shop' : '/'">
+        <router-link to="/">
           <img src="../assets/img/logo.svg" alt="logo" class="img-fluid" />
         </router-link>
       </MDBNavbarBrand>

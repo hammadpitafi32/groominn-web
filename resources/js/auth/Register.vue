@@ -218,6 +218,7 @@ import { MDBInput } from "mdb-vue-ui-kit";
 import { register } from "../api";
 import BtnLoader from "../components/custom-components/BtnLoader.vue";
 import { useToast } from "vue-toastification";
+import { watchEffect } from "@vue/runtime-core";
 
 const store = useStore();
 const router = useRouter();
@@ -236,9 +237,9 @@ const confirmPasswordError = ref("");
 
 const errors = ref(null);
 
-if(store.state.auth){
-  router.push('/add-shop')
-}
+watchEffect(() => {
+  store.dispatch('redirection');
+})
 
 const registerHandler = () => {
   loading.value = true;
@@ -256,19 +257,7 @@ const registerHandler = () => {
       errors.value = null;
       toast.success('Registered Successfully!')
       store.dispatch("setLogin", data)
-       if (data.data.role === "Provider" && data.data.is_shop) {
-        setTimeout(() => {
-          router.push("/my-shop");
-        }, 600);
-      } else if (data.data.role === "Provider" && !data.data.is_shop) {
-        setTimeout(() => {
-          router.push("/add-shop");
-        }, 600);
-      }
-        
-      setTimeout(() => {
-        router.push("/add-shop");
-      }, 600);
+       store.dispatch('redirection');
     })
     .catch(({ response }) => {
       loading.value = false;

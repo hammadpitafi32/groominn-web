@@ -96,7 +96,7 @@
                           />
                         </svg>
                       </a>
-                      <a href="javascript:void(0)" class="text-orange">
+                      <a href="javascript:void(0)" class="text-orange" @click="deleteService(service.id)">
                         <svg
                           width="15"
                           height="18"
@@ -248,6 +248,11 @@
       </div>
     </MDBModalBody>
   </MDBModal>
+
+  <!-- Delete Confirmation modal -->
+
+  <ConfirmationModal @getData="getServices" :data="deletedService" />
+
 </template>
 
 <script setup>
@@ -268,6 +273,7 @@ import {
 } from "../../../api";
 import VueTimepicker from "vue3-timepicker/src/VueTimepicker.vue";
 import ServicesLoader from "../../loaders/ServicesLoader.vue";
+import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -285,6 +291,10 @@ const categoryOptions = ref(null);
 const pagination = reactive({
   value: false,
 });
+const deletedService = reactive({
+  id: '',
+  label: ''
+})
 
 const category = ref("");
 const serviceInput = ref("");
@@ -302,15 +312,16 @@ const getServices = () => {
   });
 };
 
-getServices();
-
 watchEffect(() => {
-  if (!store.state.auth) {
+  if (store.state.auth) {
+    getServices();
+    if (store.state.role === "Provider" && !store.state.shop) {
+      router.push("/add-shop");
+    } else if (store.state.role === "Client") {
+      router.push("/");
+    }
+  } else {
     router.push("/login");
-  } else if (store.state.role == "Provider" && !store.state.shop) {
-    router.push("/add-shop");
-  } else if (store.state.role == "Client") {
-    router.push("/");
   }
 });
 
@@ -365,6 +376,12 @@ const addBtnHandler = () => {
     categoryOptions.value = res.data.data;
   });
 };
+
+const deleteService = (id) => {
+  deletedService.id = id;
+  deletedService.label = 'service';
+}
+
 </script>
 
 <style scoped>

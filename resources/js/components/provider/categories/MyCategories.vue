@@ -6,7 +6,9 @@
           <h6 class="text-orange fw-bold mb-0 fs-custom">My Categories</h6>
           <MDBBtn
             @click="
-              (AddNewCategoryModal = true), (editMode = false), (category.name = '', category.id = '')
+              (AddNewCategoryModal = true),
+                (editMode = false),
+                ((category.name = ''), (category.id = ''))
             "
             class="
               bg-orange
@@ -109,7 +111,11 @@
                         />
                       </svg>
                     </a>
-                    <a href="javascript:void(0)" class="text-orange" @click="deleteCategory(category.id)">
+                    <a
+                      href="javascript:void(0)"
+                      class="text-orange"
+                      @click="deleteCategory(category.id)"
+                    >
                       <svg
                         width="15"
                         height="18"
@@ -180,10 +186,8 @@
     </MDBModalBody>
   </MDBModal>
 
-
   <!-- Confirmation Modal -->
   <ConfirmationModal @getData="getCategories()" :data="deletedItem" />
-
 </template>
 
 <script setup>
@@ -197,24 +201,29 @@ import {
 } from "mdb-vue-ui-kit";
 import { createCategory, getUserCategories } from "../../../api";
 import CategoriesLoader from "../../loaders/CategoriesLoader.vue";
-import ConfirmationModal from '../../modals/ConfirmationModal.vue';
-import { watchEffect } from "@vue/runtime-core";
+import ConfirmationModal from "../../modals/ConfirmationModal.vue";
+import {
+  onBeforeUnmount,
+  onMounted,
+  onUnmounted,
+  watchEffect,
+} from "@vue/runtime-core";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router"
-  import { POSITION, useToast } from "vue-toastification";
+import { useRouter } from "vue-router";
+import { POSITION, useToast } from "vue-toastification";
 
 const categories = ref([]);
 const loading = ref(true);
 const AddNewCategoryModal = ref(false);
 const category = reactive({
-  name: '',
-  id: '',
+  name: "",
+  id: "",
 });
 
 const deletedItem = reactive({
-  label: '',
-  id: ''
-})
+  label: "",
+  id: "",
+});
 
 const addedCategory = ref("");
 const errors = ref(null);
@@ -239,35 +248,40 @@ const editCategory = (item) => {
 };
 
 watchEffect(() => {
-  if (!store.state.auth) {
+  if (store.state.auth) {
+    getCategories();
+    if (store.state.role === "Provider" && !store.state.shop) {
+      router.push("/add-shop");
+    } else if (store.state.role === "Client") {
+      router.push("/");
+    }
+  } else {
     router.push("/login");
-  } else if (store.state.role == "Provider" && !store.state.shop) {
-    router.push("/add-shop");
-  } else if (store.state.role == "Client") {
-    router.push("/");
   }
 });
-
-getCategories();
 
 const submitCategory = () => {
   const formData = new FormData();
   formData.append("business_id", "");
   formData.append("name", category.name);
 
-  if(category.id){
-    formData.append('id', category.id);
+  if (category.id) {
+    formData.append("id", category.id);
   }
   createCategory(formData)
     .then(({ data }) => {
       addedCategory.value = data.category.name;
       AddNewCategoryModal.value = false;
       errors.value = null;
-      category.name = '';
-      category.id = ''
+      category.name = "";
+      category.id = "";
       getCategories();
 
-      toast.success(`${addedCategory.value} has been ${editMode.value ? 'updated' : 'added'} successfully`);
+      toast.success(
+        `${addedCategory.value} has been ${
+          editMode.value ? "updated" : "added"
+        } successfully`
+      );
 
       setTimeout(() => {
         addedCategory.value = "";
@@ -278,12 +292,10 @@ const submitCategory = () => {
     });
 };
 
-
 const deleteCategory = (id) => {
   deletedItem.id = id;
-  deletedItem.label = 'category'
-}
-
+  deletedItem.label = "category";
+};
 </script>
 
 <style scoped>

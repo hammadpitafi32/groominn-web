@@ -9,18 +9,25 @@
   >
     <MDBModalBody class="p-4">
       <div class="py-4 text-center">
-        <h4 class="fw-bold mb-5 mt-3">
-          Do you want to delete this category ?
-        </h4>
+        <h4 class="fw-bold mb-5 mt-3">Do you want to delete this {{props.data.label == 'category' ? 'category' : 'service'}} ?</h4>
       </div>
       <div class="d-flex align-items-center justify-content-between">
         <MDBBtn
           class="ok-btn text-capitalize shadow-0 border"
-          @click="exampleModalCenter = false, props.data.id = '', props.data.label = ''"
+          @click="
+            (exampleModalCenter = false),
+              (props.data.id = ''),
+              (props.data.label = '')
+          "
         >
           Cancel
         </MDBBtn>
-        <MDBBtn class="bg-orange text-white ok-btn text-capitalize" @click="handleDelete()"> Ok </MDBBtn>
+        <MDBBtn
+          class="bg-orange text-white ok-btn text-capitalize"
+          @click="handleDelete()"
+        >
+          Ok
+        </MDBBtn>
       </div>
     </MDBModalBody>
   </MDBModal>
@@ -33,8 +40,7 @@ import { watchEffect } from "@vue/runtime-core";
 import { MDBModal, MDBModalBody } from "mdb-vue-ui-kit";
 import { emit } from "process";
 import { useToast } from "vue-toastification";
-import { deleteUserCategory } from "../../api";
-
+import { deleteUserCategory, deleteUserService } from "../../api";
 
 const exampleModalCenter = ref(false);
 const toast = useToast();
@@ -43,7 +49,7 @@ const props = defineProps({
   data: Object,
 });
 
-const emits = defineEmits(['getData']);
+const emits = defineEmits(["getData"]);
 
 watchEffect(() => {
   if (props.data.id) {
@@ -51,22 +57,27 @@ watchEffect(() => {
   }
 });
 
-const handleDelete = () => {
-    if(props.data.label == 'category'){
-        deleteUserCategory(props.data.id).then((res) => {
-            exampleModalCenter.value = false;
-            toast.success(res.data.message);
-            emits('getData');
-        })
-    }
-}
+const setData = (response) => {
+  exampleModalCenter.value = false;
+  toast.success(response.data.message);
+  emits("getData");
+};
 
+const handleDelete = () => {
+  if (props.data.label == "category") {
+    deleteUserCategory(props.data.id).then((res) => {
+      setData(res);
+    });
+  } else if (props.data.label == "service") {
+    deleteUserService(props.data.id).then((res) => {
+      setData(res);
+    });
+  }
+};
 </script>
 
 <style scoped>
-
 .ok-btn {
   padding: 0.3rem 2rem;
 }
-
 </style>

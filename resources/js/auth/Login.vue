@@ -109,10 +109,9 @@ const store = useStore();
 const router = useRouter();
 const toast = useToast();
 
-
-if(store.state.auth){
-  router.push('/add-shop')
-}
+watchEffect(() => {
+  store.dispatch('redirection');
+})
 
 const handleLogin = () => {
   loading.value = true;
@@ -124,21 +123,13 @@ const handleLogin = () => {
     .then((res) => {
       apiResponse.value = res.data;
       store.dispatch("setLogin", res.data);
-      toast.success('Login Successfully!')
-      if (res.data.data.role === "Provider" && res.data.data.is_shop) {
-        setTimeout(() => {
-          router.push("/my-shop");
-        }, 600);
-      } else if (res.data.data.role === "Provider" && !res.data.data.is_shop) {
-        setTimeout(() => {
-          router.push("/add-shop");
-        }, 600);
-      }
+      toast.success("Login Successfully!");
+      store.dispatch('redirection');
       loading.value = false;
     })
     .catch((error) => {
       toast.error(error.response.data.message, {
-        timeout: 2000
+        timeout: 2000,
       });
       loading.value = false;
       apiResponse.value = error.response.data;
