@@ -49,6 +49,13 @@ const store = createStore({
             } else if (context.state.role === 'Client') {
                 router.push('/')
             }
+        },
+        clientRedirection(context) {
+            if (!context.state.auth) {
+                router.push('/login')
+            } else if (context.state.role === 'Provider') {
+                router.push('/my-shop')
+            }
         }
     }
 })

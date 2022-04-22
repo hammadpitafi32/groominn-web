@@ -6,23 +6,23 @@
                     <div class="booking-list-filters mb-3">
                         <form action="">
                             <div class="d-flex">
-                                <select name="location" id="" class="form-select me-3 fw-bold rounded-5">
+                                <select name="location" id="" v-model="location" class="form-select me-3 fw-bold rounded-5">
                                     <option value="">Location</option>
-                                    <option value="loc-1">Location 1</option>
-                                    <option value="loc-2">Location 2</option>
-                                    <option value="loc-3">Location 3</option>
+                                    <option value="location-1">Location 1</option>
+                                    <option value="location-2">Location 2</option>
+                                    <option value="location-3">Location 3</option>
                                 </select>
-                                <select name="date" id="" class="form-select me-3 fw-bold rounded-5">
+                                <select name="date" id="" v-model="date" class="form-select me-3 fw-bold rounded-5">
                                     <option value="">Date</option>
-                                    <option value="loc-1">Date 1</option>
-                                    <option value="loc-2">Date 2</option>
-                                    <option value="loc-3">Date 3</option>
+                                    <option value="date-1">Date 1</option>
+                                    <option value="date-2">Date 2</option>
+                                    <option value="date-3">Date 3</option>
                                 </select>
-                                <select name="category" id="" class="form-select me-3 fw-bold rounded-5">
+                                <select name="category" id="" v-model="category" class="form-select me-3 fw-bold rounded-5">
                                     <option value="">Category</option>
-                                    <option value="loc-1">Category 1</option>
-                                    <option value="loc-2">Category 2</option>
-                                    <option value="loc-3">Category 3</option>
+                                    <option value="category-1">Category 1</option>
+                                    <option value="category-2">Category 2</option>
+                                    <option value="category-3">Category 3</option>
                                 </select>
                                 <MDBBtn class="bg-orange text-white rounded-5 shadow-4-strong fw-bold flex-shrink-0 text-capitalize">
                                     <span class="mx-3">Search</span>
@@ -68,9 +68,17 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import { watchEffect } from "@vue/runtime-core";
+import { useRoute, useRouter } from "vue-router";
+import store from "../../../store";
 import Map from "./Map.vue";
 
 const activeId = ref(1);
+const router = useRouter();
+const route = useRoute();
+const location = ref('');
+const category = ref('');
+const date = ref('');
 
 const bookingList = ref([
     {
@@ -106,6 +114,17 @@ const bookingList = ref([
 const activeBooking = (booking) => {
     activeId.value = booking.id;
 }
+
+
+watchEffect(() => {
+   store.dispatch('clientRedirection')
+   if(route.query.location){
+       location.value = route.query.location
+   }
+   if(route.query.category){
+       category.value = route.query.category
+   }
+})
 
 </script>
 

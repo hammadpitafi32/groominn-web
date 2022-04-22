@@ -85,8 +85,8 @@ const routes = [{
         }
     },
     {
-        path: '/bookings-list',
-        name: 'bookingsList',
+        path: '/booking-list',
+        name: 'bookingList',
         component: BookingsList,
         meta: {
             sidebar: false

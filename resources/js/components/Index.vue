@@ -20,7 +20,7 @@
           making a call
         </p>
         <MDBBtn class="bg-orange text-white text-capitalize"
-          >Get Started</MDBBtn
+           @click="store.state.auth ? router.push('/booking-list') : modalShow = true">Get Started</MDBBtn
         >
       </div>
     </MDBContainer>
@@ -382,6 +382,7 @@
       </MDBRow>
     </MDBContainer>
   </section>
+  <NoAuthModal :show="modalShow" @closeModal="modalShow = false" />
   <!-- section 7 end -->
 </template>
 
@@ -389,12 +390,14 @@
 import { ref } from "@vue/reactivity";
 import { onMounted, watchEffect } from "@vue/runtime-core";
 import { MDBCarousel, MDBIcon } from "mdb-vue-ui-kit";
+import NoAuthModal from "./modals/NoAuthModal.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Filters from "./custom-components/Filters.vue";
 
 const carousel = ref(0);
 const showAll = ref(false);
+const modalShow = ref(false);
 const rightSide = ref(null);
 const imageHeight = ref(null);
 const store = useStore();

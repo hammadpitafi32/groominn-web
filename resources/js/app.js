@@ -10,7 +10,7 @@ import './assets/css/style.css';
 import App from './App.vue';
 import router from './router/router';
 import store from './store';
-// import { globalCookiesConfig } from "vue3-cookies";
+import Vue3Geolocation from 'vue3-geolocation';
 
 const app = createApp({});
 
@@ -29,6 +29,7 @@ app.component('MDBIcon', MDBIcon);
 app.use(router);
 app.use(store);
 app.use(VueTimepicker);
+app.use(Vue3Geolocation);
 app.use(Toast, {
     position: POSITION.TOP_RIGHT,
     timeout: 2000
