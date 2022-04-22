@@ -69,13 +69,18 @@ class UserBusinessRepository implements UserBusinessInterface
         }
 		
 		$user_business = $request->id ? $this->find($request->id) : $this->user_business;
-		// if ($request->id && !$user_business) 
-		// {
-		// 	return response()->json([
-		// 		'success' => false,
-		// 		'msg' => 'not found'
-		// 	]);
-		// }
+		if (!$request->id) 
+		{
+			if ($this->user_business->where('user_id',Auth::id())->count() > 0) 
+			{
+				return response()->json([
+					'success' => false,
+					'message' => 'You already have business, please contact support!'
+				]);
+			}
+			
+			
+		}
 		$user_business->user_id = Auth::id();
 		$user_business->name = $request->name;
         $user_business->description = $request->description;
@@ -304,6 +309,25 @@ class UserBusinessRepository implements UserBusinessInterface
         ], 400);
         
         
+	}
+
+	public function getBusinesseslist()
+	{
+		$request = $this->request;
+		$user_business = $this->user_business;
+        if ($request->pagination == 'false') 
+        {
+            $user_business= $user_business->get();
+        }
+        else
+        {
+            $user_business =$user_business->paginate(10);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user_business
+        ], 200);
 	}
 
 }

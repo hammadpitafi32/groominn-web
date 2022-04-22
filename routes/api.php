@@ -52,6 +52,7 @@ Route::group(['namespace' => 'Api'],function()
     /*service provider end*/
     /*client*/
     Route::group(['middleware' => 'client.jwt'], function () {
+        Route::post('get-businesses-list', 'UserBusinessController@getBusinesseslist');
         Route::post('create-booking', 'BookingController@create');
         Route::post('get-estimated-time', 'BookingController@getEstimatedTime');
 

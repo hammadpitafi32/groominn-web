@@ -10,4 +10,6 @@ interface UserBusinessInterface
     public function createUserBusinessService();
     public function deleteUserCategoryService($id);
 
+    public function getBusinesseslist();
+
 }
