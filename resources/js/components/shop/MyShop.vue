@@ -1,6 +1,9 @@
 <template>
   <div v-if="!loading">
-    <MDBContainer v-if="apiResponse && apiResponse.data">
+    <MDBContainer
+      v-if="apiResponse && apiResponse.data"
+      :class="route.name == 'shopDetail' && 'mt-5 pt-4'"
+    >
       <MDBRow class="mt-5 pt-4">
         <MDBCol col="5">
           <ShopPhotos :photos="apiResponse.data.user_business_images" />
@@ -35,9 +38,7 @@ const { cookies } = useCookies();
 const loading = ref(true);
 const apiResponse = ref(null);
 
-
-
-const getBusiness = () => {
+const getProviderBusiness = () => {
   getUserBusiness().then((res) => {
     apiResponse.value = res.data;
     loading.value = false;
@@ -50,14 +51,31 @@ const getBusiness = () => {
   });
 };
 
+const getShopForClient = () => {
+  if (route.params.id) {
+    getUserBusiness(route.params.id).then(({ data }) => {
+      apiResponse.value = data;
+      loading.value = false;
+    });
+  }
+};
+
 watchEffect(() => {
   if (store.state.auth) {
     if (store.state.role === "Provider" && !store.state.shop) {
       router.push("/add-shop");
-    } else if (store.state.role === "Provider" && store.state.shop) {
-      getBusiness();
-    } else if (store.state.role === "Client" && route.name != 'shopDetail') {
+    } else if (
+      store.state.role === "Provider" &&
+      store.state.shop &&
+      route.name === "myShop"
+    ) {
+      getProviderBusiness();
+    } else if (store.state.role === "Provider" && route.name !== "myShop") {
+      router.push("/my-shop");
+    } else if (store.state.role === "Client" && route.name !== "shopDetail") {
       router.push("/");
+    } else if (store.state.role === "Client" && route.name == "shopDetail") {
+      getShopForClient();
     }
   } else {
     router.push("/login");

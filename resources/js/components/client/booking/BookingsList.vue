@@ -79,28 +79,49 @@
                       class="text-light-color address"
                       >{{ booking.address }}</small
                     >
-                    <p class="mt-2 text-color-1 small description">{{ booking.description }}</p>
+                    <p class="mt-2 text-color-1 small description">
+                      {{ booking.description }}
+                    </p>
                     <div class="mt-3">
                       <span class="d-block fw-500 categories">Categories</span>
                       <div class="d-flex flex-wrap mt-3">
-                        <div class="booking-category me-2 d-flex align-items-center justify-content-center fw-500" :title="category.name" v-for="category in booking.user_categories" :key="category.id">
-                          {{category.name.charAt(0)}}
+                        <div
+                          class="
+                            booking-category
+                            me-2
+                            d-flex
+                            align-items-center
+                            justify-content-center
+                            fw-500
+                          "
+                          :title="category.name"
+                          v-for="category in booking.user_categories"
+                          :key="category.id"
+                        >
+                          {{ category.name.charAt(0) }}
                         </div>
                       </div>
                       <div class="text-end mt-2">
-                        <MDBBtn
-                          class="
-                            btn
-                            bg-orange
-                            text-white
-                            shadow-0
-                            rounded-5
-                            text-capitalize
-                            booking-btn
+                        <router-link
+                          :to="`/shop-detail/${booking.id}`"
+                          :style="
+                            booking.id !== activeId && { pointerEvents: 'none' }
                           "
-                          :disabled="booking.id !== activeId"
-                          >Book Now</MDBBtn
                         >
+                          <MDBBtn
+                            class="
+                              btn
+                              bg-orange
+                              text-white
+                              shadow-0
+                              rounded-5
+                              text-capitalize
+                              booking-btn
+                            "
+                            :disabled="booking.id !== activeId"
+                            >Book Now</MDBBtn
+                          >
+                        </router-link>
                       </div>
                     </div>
                   </div>
@@ -126,7 +147,7 @@ import { getAllShops } from "../../../api";
 import store from "../../../store";
 import Map from "./Map.vue";
 import ShopsLoader from "../../loaders/ShopsLoader.vue";
-import { asset } from '../../../baseURL';
+import { asset } from "../../../baseURL";
 
 const imgUrl = asset.baseUrl;
 
@@ -173,14 +194,15 @@ watchEffect(() => {
   height: 100%;
   object-fit: cover;
 }
-.address, .description{
+.address,
+.description {
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-box-orient: vertical;  
+  -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
-.description{
+.description {
   -webkit-line-clamp: 2;
 }
 </style>

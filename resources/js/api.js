@@ -33,9 +33,9 @@ export const createCategory = async (data) => {
     return response;
 }
 
-export const getUserBusiness = async () => {
-    const response = await axios.get(`${baseURL}/get-user-business`);
-    return response;
+export const getUserBusiness = async (id) => {
+    const response = id ? await axios.get(`${baseURL}/get-user-business/${id}`) : await axios.get(`${baseURL}/get-user-business/${id}`);
+    return response
 }
 
 export const getUserCategories = async (pagination) => {
