@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
 :root {
     --theme-orange-color: #F05922;
     --text-color-1: #7C7C7C;
@@ -16,7 +17,7 @@ body {
     font-weight: 400;
 }
 
-.cursor-pointer{
+.cursor-pointer {
     cursor: pointer;
 }
 
@@ -87,11 +88,11 @@ label[for="terms"] input:checked~.geekmark::after {
     background-color: #BEC5C9;
 }
 
-.fw-500{
+.fw-500 {
     font-weight: 500;
 }
 
-.skelton{
+.skelton {
     background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
     border-radius: 5px;
     background-size: 200% 100%;
@@ -100,9 +101,9 @@ label[for="terms"] input:checked~.geekmark::after {
 
 @keyframes shine {
     to {
-      background-position-x: -200%;
+        background-position-x: -200%;
     }
-  }
+}
 
 .sidebar {
     position: fixed;
@@ -135,9 +136,11 @@ label[for="terms"] input:checked~.geekmark::after {
     font-weight: bold;
     transition: all .3s ease;
 }
-.side-menu .side-menu-item a:hover{
+
+.side-menu .side-menu-item a:hover {
     color: var(--theme-orange-color);
 }
+
 .heading-color {
     color: #343434;
 }
@@ -156,9 +159,10 @@ label[for="terms"] input:checked~.geekmark::after {
     padding-inline: 2rem;
 }
 
-.btn{
+.btn {
     font-size: .8rem;
 }
+
 .text-on-slider {
     position: absolute;
     left: 19%;
@@ -584,40 +588,46 @@ input.border-danger,
 .profile-dropdown .dropdown-toggle::after {
     display: none;
 }
-.booking-list-filters select{
+
+.booking-list-filters select {
     font-size: .9rem;
     padding-block: .6rem;
 }
 
-.booking-category{
+.booking-category {
     height: 30px;
     width: 30px;
     background-color: #EBEBEB;
     border-radius: 50%;
 }
-.booking-profiles{
+
+.booking-profiles {
     height: calc(100vh - 180px);
     overflow: auto;
     padding-left: .5rem;
     direction: rtl;
 }
-.booking-profiles::-webkit-scrollbar-thumb{
+
+.booking-profiles::-webkit-scrollbar-thumb {
     background-color: #C4C4C4;
 }
 
-.booking-profiles .booking-pro{
+.booking-profiles .booking-pro {
     cursor: pointer;
     direction: ltr;
 }
-.booking-profiles .booking-pro.active{
+
+.booking-profiles .booking-pro.active {
     border: 1px solid var(--theme-orange-color) !important;
 }
-.booking-profiles .booking-pro .booking-btn:disabled{
+
+.booking-profiles .booking-pro .booking-btn:disabled {
     opacity: 1;
     background-color: #E4E4E4;
     color: #000 !important;
 }
-.notifiction-panel{
+
+.notifiction-panel {
     max-height: 400px;
     width: 700px;
     z-index: 2;
@@ -628,7 +638,7 @@ input.border-danger,
     overflow: auto;
 }
 
-.time-picker.vue__time-picker input.vue__time-picker-input{
+.time-picker.vue__time-picker input.vue__time-picker-input {
     display: block;
     width: 100%;
     padding: 0.375rem 0.75rem;
@@ -648,9 +658,99 @@ input.border-danger,
     outline: none;
     padding-block: 0.8rem;
 }
-.vue__time-picker .dropdown{
+
+.vue__time-picker .dropdown {
     top: calc(3.2em + 2px) !important;
 }
-.vue__time-picker .dropdown ul li:not([disabled]).active, .vue__time-picker .dropdown ul li:not([disabled]).active:hover, .vue__time-picker .dropdown ul li:not([disabled]).active:focus{
+
+.vue__time-picker .dropdown ul li:not([disabled]).active,
+.vue__time-picker .dropdown ul li:not([disabled]).active:hover,
+.vue__time-picker .dropdown ul li:not([disabled]).active:focus {
     background-color: var(--theme-orange-color) !important;
+}
+
+.select-date {
+    width: 250px;
+    border: 0;
+    border-radius: 9px;
+    background-color: #F2F2F2;
+    padding: .6rem .3rem .6rem 2.9rem;
+    font-weight: bold;
+    position: relative;
+}
+
+.select-parent::before {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    background-image: url('../img//calendar.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 50px;
+    z-index: 1;
+}
+
+.custom-label{
+    position: relative;
+    display: inline-block;
+    height: 15px;
+    width: 30px;
+    cursor: pointer;
+    
+}
+
+.custom-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 22px;
+    border-radius: 3px;
+    border: 2px solid #E4E4E4;
+    transition: all .3s ease;
+}
+
+.custom-label:hover input~.checkmark {
+    background-color: #ccc;
+}
+
+.custom-label input:checked~.checkmark {
+    background-color: #199675;
+    border: 0;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-label input:checked~.checkmark:after {
+    display: block;
+}
+
+.custom-label .checkmark:after {
+    left: 9px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.footer {
+    background-color: #F9F9FA;
 }

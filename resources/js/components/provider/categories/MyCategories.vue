@@ -202,15 +202,10 @@ import {
 import { createCategory, getUserCategories } from "../../../api";
 import CategoriesLoader from "../../loaders/CategoriesLoader.vue";
 import ConfirmationModal from "../../modals/ConfirmationModal.vue";
-import {
-  onBeforeUnmount,
-  onMounted,
-  onUnmounted,
-  watchEffect,
-} from "@vue/runtime-core";
+import { watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { POSITION, useToast } from "vue-toastification";
+import { useToast } from "vue-toastification";
 
 const categories = ref([]);
 const loading = ref(true);

@@ -15,7 +15,7 @@
     </MDBContainer>
   </div>
   <MDBContainer v-else>
-    <MDBRow>
+    <MDBRow :class="route.name == 'shopDetail' && 'mt-5 pt-4'">
       <Loader class="mt-5 pt-4" />
     </MDBRow>
   </MDBContainer>
@@ -70,7 +70,7 @@ watchEffect(() => {
       route.name === "myShop"
     ) {
       getProviderBusiness();
-    } else if (store.state.role === "Provider" && route.name !== "myShop") {
+    } else if (store.state.role === "Provider" && route.name === "shopDetail") {
       router.push("/my-shop");
     } else if (store.state.role === "Client" && route.name !== "shopDetail") {
       router.push("/");

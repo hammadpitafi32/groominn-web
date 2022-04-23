@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer class="footer">
     <div class="footer-items border-bottom">
       <MDBContainer class="pt-5 mt-4">
         <MDBRow>
