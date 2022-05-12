@@ -14,7 +14,7 @@ use DatePeriod;
 
 use Label84\HoursHelper\Facades\HoursHelper;
 
-use Stripe;
+use Cartalyst\Stripe\Stripe;
 
 class BookingRepository implements BookingInterface
 {
@@ -38,13 +38,69 @@ class BookingRepository implements BookingInterface
 	public function create()
 	{
 		$request = $this->request;
-		Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        Stripe\Charge::create ([
-                "amount" => 100*100,
-                "currency" => "INR",
-                "source" => $request->stripeToken,
-                "description" => "This is test payment",
-        ]);
+		$stripe = Stripe::make(env('STRIPE_SECRET'));
+		$token = $stripe->tokens()->create([
+			'card' => [
+				'number' => $request->card_no,
+				'exp_month' => $request->exp_month,
+				'exp_year' => $request->exp_year,
+				'cvc' => $request->cvc
+			]
+		]);
+		if(!isset($token['id']))
+		{
+			return response()->json([
+				'success' => false,
+				'message' => 'The stripe token was not generated correctly, Please contact support!'
+			],400);
+		}
+		// dd($token);
+
+		$customer = $stripe->customers()->create([
+			'name' => Auth::user()->name,
+			'email' => Auth::user()->email,
+			'phone' => Auth::user()->phone,
+			// 'address' => [
+			// 	'line1' =>$this->line1,
+			// 	'postal_code' => $this->zipcode,
+			// 	'city' => $this->city,
+			// 	'state' => $this->province,
+			// 	'country' => $this->country
+			// ],
+			// 'shipping' => [
+			// 	'name' => $this->firstname . ' ' . $this->lastname,
+			// 	'address' => [
+			// 		'line1' =>$this->line1,
+			// 		'postal_code' => $this->zipcode,
+			// 		'city' => $this->city,
+			// 		'state' => $this->province,
+			// 		'country' => $this->country
+			// 	],
+			// ],
+			'source' => $token['id']
+		]);
+
+		$charge = $stripe->charges()->create([
+			'customer' => $customer['id'],
+			'currency' => 'USD',
+			'amount' => 100,
+			'description' => 'Payment for order no ' . 12365
+		]);
+
+		if($charge['status'] == 'succeeded')
+		{
+			dd('done');
+			// $this->makeTransaction($order->id,'approved');
+			// $this->resetCart();
+		}
+		else
+		{
+			return response()->json([
+				'success' => false,
+				'message' => 'Error in Transaction!, Please contact support!'
+			],400);
+			// $this->thankyou = 0;
+		}
 		dd($request->all());
 		$uniqid = Str::random(9);
         $user = $request->id ?  $this->user->find($request->id) : $this->user;
