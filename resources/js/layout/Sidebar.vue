@@ -23,9 +23,11 @@
 <script setup>
 import { ref, watchEffect } from '@vue/runtime-core';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
 const store = useStore();
 const shop = ref(false);
+const route = useRoute();
 
 watchEffect(() => {
     shop.value = store.state.shop;

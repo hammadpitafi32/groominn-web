@@ -72,7 +72,7 @@ watchEffect(() => {
       getProviderBusiness();
     } else if (store.state.role === "Provider" && route.name === "shopDetail") {
       router.push("/my-shop");
-    } else if (store.state.role === "Client" && route.name !== "shopDetail") {
+    } else if (store.state.role === "Client" && (route.name === "myShop" || route.name === "addShop")) {
       router.push("/");
     } else if (store.state.role === "Client" && route.name == "shopDetail") {
       getShopForClient();

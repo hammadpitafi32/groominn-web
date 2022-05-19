@@ -137,6 +137,10 @@ label[for="terms"] input:checked~.geekmark::after {
     transition: all .3s ease;
 }
 
+.side-menu .side-menu-item a.router-link-active{
+    color: var(--theme-orange-color);
+}
+
 .side-menu .side-menu-item a:hover {
     color: var(--theme-orange-color);
 }
