@@ -67,7 +67,7 @@
                 <div class="row">
                   <div class="col-5">
                     <img
-                      :src="imgUrl + booking.user_business_images[0].name"
+                      :src="booking.user_business_images.length > 0 ? imgUrl + booking.user_business_images[0].name : 'http://127.0.0.1:8000/images/no-img.webp?2a1649c3403bc7fe3caf888a0bf327e6'"
                       class="img-fluid rounded-5 booking-img"
                       alt=""
                     />

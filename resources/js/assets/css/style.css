@@ -758,3 +758,54 @@ input.border-danger,
 .footer {
     background-color: #F9F9FA;
 }
+.payment-methods label{
+    padding: 3px 6px;
+    border: 1px solid transparent;
+}
+.payment-methods label img{
+    max-width: 100px;
+}
+.payment-methods label.active{
+    border: 1px solid var(--theme-orange-color);
+    border-radius: 7px;
+}
+.payment-preview {
+    background-color: #F0F2F5;
+    border-radius: 8px;
+    margin-top: 37px;
+}
+
+.master-card{
+    background-color: #FDFDFD;
+    border: 1px solid #E8E8E8;
+    border-radius: 24px;
+    margin-top: -50px;
+}
+
+.card-dots .dot{
+    height: 9px;
+    width: 9px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 13px;
+}
+
+.carted-items{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.carted-items .item{
+    background-color: #fff;
+    padding: .4rem .8rem;
+    margin-right: .4rem;
+    font-size: .7rem;
+    margin-bottom: .4rem;
+}
+
+.price-tag .currency{
+    font-size: 22px;
+    color: #8D8D8D;
+    font-weight: normal;
+}

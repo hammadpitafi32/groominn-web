@@ -7,10 +7,10 @@
     centered
     staticBackdrop
   >
-    <MDBModalBody class="p-4">
+    <MDBModalBody class="py-4">
       <div class="py-4 text-center">
         <h4 class="fw-bold mb-5 mt-3">
-          You are not login, Please login to booking
+          You are not login, Please login for booking
         </h4>
       </div>
       <div class="d-flex align-items-center justify-content-between">

@@ -127,7 +127,11 @@ watch(cvv, (newValue, oldValue) => {
 });
 
 watch(cardNumber, (newValue, oldValue) => {
+  let test = /[a-zA-Z]/.test(newValue);
 
+  if (test) {
+    cardNumber.value = oldValue;
+  } else {
     let matches = cardNumber.value
       .replace(/\s+/g, "")
       .replace(/[^0-9]/gi, "")
@@ -143,8 +147,9 @@ watch(cardNumber, (newValue, oldValue) => {
       cardNumberForRequest.value = parts.join("");
     } else {
       cardNumber.value = newValue;
-      cardNumberForRequest.value = newValue
+      cardNumberForRequest.value = newValue;
     }
+  }
 });
 
 watch(expMonth, (newValue, oldValue) => {
