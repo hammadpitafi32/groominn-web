@@ -12,13 +12,18 @@ class UserCategory extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'user_id','name',
+        'user_id','category_id',
     ];
     
 
     public function user_business_category_services()
     {
         return $this->hasMany(UserBusinessCategoryService::class);  
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     

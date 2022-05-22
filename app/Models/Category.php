@@ -11,4 +11,9 @@ class Category extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function user_categories()
+    {
+        return $this->hasMany(UserCategory::class);  
+    }
 }
