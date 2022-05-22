@@ -1,7 +1,9 @@
 <template>
   <MDBContainer class="pt-5 mt-5">
     <MDBRow>
-      <MDBCol col="7"> </MDBCol>
+      <MDBCol col="7"> 
+        <img src="../assets/img/login-img.jpg" class="img-fluid" alt="">
+      </MDBCol>
       <MDBCol col="5" class="py-5">
         <h2 class="fw-bold mb-1">Get Started</h2>
         <p class="small text-color-1">

@@ -167,19 +167,21 @@
         <h4 class="text-orange fw-500">No categoies found</h4>
       </div>
       <div class="text-end mt-4" v-if="role == 'Client'">
-        <MDBBtn
-          class="
-            text-white
-            bg-orange
-            fw-500
-            text-capitalize
-            rounded-4
-            shadow-0
-            book-btn
-          "
-        >
-          Book now
-        </MDBBtn>
+        <router-link to="/payment">
+          <MDBBtn
+            class="
+              text-white
+              bg-orange
+              fw-500
+              text-capitalize
+              rounded-4
+              shadow-0
+              book-btn
+            "
+          >
+            Book now
+          </MDBBtn>
+        </router-link>
       </div>
     </div>
   </div>
