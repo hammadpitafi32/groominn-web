@@ -1,7 +1,9 @@
 <template>
   <MDBContainer class="py-5 my-5">
-    <MDBRow>
-      <MDBCol :col="!serviceChoose ? '8' : '7'"> </MDBCol>
+    <MDBRow class="align-items-center">
+      <MDBCol :col="!serviceChoose ? '8' : '7'"> 
+        <img src="../assets/img/login-img.jpg" class="img-fluid" alt="">
+      </MDBCol>
       <MDBCol col="4" class="pt-5" v-if="!serviceChoose">
         <h2 class="fw-bold mb-1">Sign Up as a</h2>
         <div class="mt-5 pt-4">
