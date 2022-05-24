@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap');
 
 :root {
     --theme-orange-color: #F05922;
@@ -488,8 +488,15 @@ input.border-danger,
     position: relative;
 }
 
+.navbar-nav .nav-item > a {
+    position: relative;
+    padding-left: 0 !important;
+}
+
 .category-tabs .nav-tabs .nav-link.active::before,
-.category-tabs .nav-tabs .nav-link.active::after {
+.navbar-nav .navlink-active a::before,
+.category-tabs .nav-tabs .nav-link.active::after,
+.navbar-nav .navlink-active a::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -500,7 +507,7 @@ input.border-danger,
     background-color: var(--theme-orange-color);
 }
 
-.category-tabs .nav-tabs .nav-link.active::after {
+.category-tabs .nav-tabs .nav-link.active::after, .navbar-nav .navlink-active a::after {
     width: 4px;
     height: 3px;
     left: 31px;
@@ -808,4 +815,15 @@ input.border-danger,
     font-size: 22px;
     color: #8D8D8D;
     font-weight: normal;
+}
+
+.booking-table-parent .booking-table td{
+    font-family: 'Poppins', sans-serif;
+    vertical-align: middle;
+    border-top: 1px solid #dadada;
+    border-bottom: 0;
+}
+.booking-table-parent .booking-table td button{
+    font-size: .72rem;
+    width: 130px;
 }

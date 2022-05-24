@@ -6,7 +6,8 @@
         v-model="carousel"
         fade
         :items="items"
-        :interval="false"
+        :pause="false"
+        :interval="4000"
         itemsClass="slider-image img-fluid"
         class="main-slider"
       />

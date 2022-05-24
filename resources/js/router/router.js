@@ -7,6 +7,7 @@ import MyCategories from '../components/provider/categories/MyCategories.vue';
 import myServices from '../components/provider/services/MyServices.vue';
 import Bookings from '../components/provider/bookings/Bookings.vue';
 import BookingsList from '../components/client/booking/BookingsList.vue';
+import bookingDetail from '../components/client/booking/BookingDetail.vue';
 import Payment from '../components/client/payment/Payment.vue';
 import NotFound from '../components/custom-components/NotFound.vue'
 import Home from '../components/Index.vue';
@@ -90,6 +91,14 @@ const routes = [{
     path: '/booking-list',
     name: 'bookingList',
     component: BookingsList,
+    meta: {
+        sidebar: false
+    }
+},
+{
+    path: '/booking-detail',
+    name: 'bookingDetail',
+    component: bookingDetail,
     meta: {
         sidebar: false
     }

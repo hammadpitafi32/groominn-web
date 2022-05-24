@@ -163,14 +163,26 @@
     <MDBModalBody class="p-5 pt-3">
       <div class="custom-height">
         <label for="add" class="small mb-2">Category</label>
-        <MDBInput
+        <!-- <MDBInput
           id="add"
           type="text"
           class="small category-input"
           placeholder="Category"
           :class="errors && errors.name && 'border-danger'"
           v-model="category.name"
-        />
+        /> -->
+
+        <select
+          id="add"
+          class="form-select small category-input"
+          :class="errors && errors.name && 'border-danger'"
+          v-model="category.name"
+        >
+          <option value="">Select Category</option>
+          <option value="cat-1">Category 1</option>
+          <option value="cat-2">Category 2</option>
+          <option value="cat-2">Category 3</option>
+        </select>
         <span v-if="errors && errors.name" class="text-danger small">{{
           errors.name[0]
         }}</span>
