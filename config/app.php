@@ -177,6 +177,7 @@ return [
 
 
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class, 
+        Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
 
     ],
 
@@ -235,6 +236,7 @@ return [
 
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class, 
 
     ],
 

@@ -21,6 +21,13 @@ Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
     // Route::get('users', 'AdminController@providerList');
     Route::get('users/{type}', 'UserController@list');
     Route::post('create-user', 'UserController@createOrUpdate')->name('create-user');
+    Route::group(['namespace' => 'Api'],function()
+    {
+
+        Route::post('create-category', 'BusinessController@CreateOrUpdateBusinessCategory')->name('create-category');
+    });
+    Route::get('categories', 'AdminController@getCategories')->name('categories');
+
 });
 
 /*for vue router*/

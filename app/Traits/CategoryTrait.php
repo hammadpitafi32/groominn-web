@@ -23,16 +23,25 @@ trait CategoryTrait {
 
     public function createOrUpdateCategory(Request $request)
     {
-        
-        $user_category = $request->id ?  UserCategory::find($request->id) : new UserCategory;
 
-        if ($request->id && $user_category == null) 
+        $category = $request->id ?  Category::find($request->id) : new Category;
+
+        if ($request->id && $category == null) 
         {
             return;
         }
-        $user_category->user_id = Auth::id();
-        $user_category->name = $request->name;
-        $user_category->save();
+        $category->name = $request->name;
+        $category->save();
+        /*previous logic user can add or update categories (now revoke)*/
+        // $user_category = $request->id ?  UserCategory::find($request->id) : new UserCategory;
+
+        // if ($request->id && $user_category == null) 
+        // {
+        //     return;
+        // }
+        // $user_category->user_id = Auth::id();
+        // $user_category->name = $request->name;
+        // $user_category->save();
         
         /*bind with business*/
         // BusinessCategory::updateOrCreate([
@@ -58,12 +67,14 @@ trait CategoryTrait {
         // }
         
 
-        return $user_category->only('id','name');
+        return $category->only('id','name');
     }
 
     public function userCategories($request)
     {
-        $user_categories = UserCategory::select('id','name')->where('user_id',Auth::id());
+        $user_categories = UserCategory::with('category')
+        // ->select('id','categories.name')
+        ->where('user_id',Auth::id());
         if ($request->pagination == 'false') 
         {
             $user_categories= $user_categories->get();
@@ -72,6 +83,7 @@ trait CategoryTrait {
         {
             $user_categories =$user_categories->paginate(10);
         }
+        // dd($user_categories->first()->category->name);
         return $user_categories;
         
     }
@@ -98,6 +110,43 @@ trait CategoryTrait {
             'success' => true,
             'message' => 'User category deleted successfully!'
         ], 200);
+    }
+
+
+    public function bindCategoriesToUser(Request $request)
+    {
+        $categories = Category::whereIn('id',$request->category_ids)->get();
+        if ($categories->count() > 0) 
+        {
+            if ($request->action == 'bind') 
+            {
+                foreach ($categories as $category) {
+                    $user_category = UserCategory::updateOrCreate([
+                        'category_id' => $category->id,
+                        'user_id' => Auth::id()
+                    ],
+                    [
+                        'category_id' => $category->id,
+                        'user_id' => Auth::id()
+                    ]);
+                }
+            }
+
+            if ($request->action == 'remove') 
+            {
+
+                UserCategory::whereIn('category_id',$request->category_ids)->where('user_id',Auth::id())->delete();
+            }
+        }
+        
+
+        return $this->userCategories($request);
+    }
+
+    /*admin access for now*/
+    public function getAllCategories()
+    {
+        $categories = Category::all();
     }
   
 }

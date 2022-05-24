@@ -20,6 +20,7 @@ use App\Traits\CategoryTrait;
 class BusinessController extends Controller
 {
     use CategoryTrait;
+
     public function __construct()
     {
         // $this->middleware('provider.jwt');
@@ -46,12 +47,15 @@ class BusinessController extends Controller
     public function CreateOrUpdateBusinessCategory(Request $request)
     {
         // dd($request->all());
+        // $validator = Validator::make($request->all(), [
+        //     // 'name' => ['required','string',
+        //     //     Rule::unique('user_categories')->where(function ($query) use ($request) {
+        //     //         return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name)->whereNull('deleted_at');
+        //     //     })
+        // ]);
+
         $validator = Validator::make($request->all(), [
-            'name' => ['required','string',
-                Rule::unique('user_categories')->where(function ($query) use ($request) {
-                    return $query->where('id','!=',$request->id)->where('user_id', Auth::id())->where('name',$request->name)->whereNull('deleted_at');
-                })
-            ],
+            'name' => "required|unique:categories,name,{$request->id}",
         ]);
         //Send failed response if request is not valid
         if ($validator->fails()) {
@@ -62,6 +66,7 @@ class BusinessController extends Controller
         }
 
         $category = $this->createOrUpdateCategory($request);
+
         return response()->json([
             'success' => true,
             'category' => $category
@@ -94,6 +99,16 @@ class BusinessController extends Controller
         return response()->json([
          'success' => 200,
          'service' => $service
+        ]);
+    }
+
+
+    public function bindCategories(Request $request)
+    {
+        $categories = $this->bindCategoriesToUser($request);
+        return response()->json([
+         'success' => 200,
+         'categories' => $categories
         ]);
     }
 }
