@@ -93,4 +93,13 @@ class UserBusinessController extends Controller
     {
         return $this->user_business->getBusinesseslist();
     }
+
+    public function getCategories(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->getAllCategories()
+        ], 200);
+        // dd($this->getAllCategories());
+    }
 }
