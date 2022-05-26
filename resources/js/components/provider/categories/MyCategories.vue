@@ -5,11 +5,7 @@
         <div class="d-flex align-items-center justify-content-between px-5">
           <h6 class="text-orange fw-bold mb-0 fs-custom">My Categories</h6>
           <MDBBtn
-            @click="
-              (AddNewCategoryModal = true),
-                (editMode = false),
-                ((category.name = ''), (category.id = ''))
-            "
+            @click="addNewCategory()"
             class="
               bg-orange
               text-white
@@ -73,13 +69,13 @@
               "
             >
               <span class="fs-custom text-orange">Categories</span>
-              <span class="text-orange fs-custom me-3">Edit</span>
+              <span class="text-orange fs-custom">Action</span>
             </div>
             <div v-if="!loading">
               <div v-if="categories.length > 0">
                 <div
                   v-for="category in categories"
-                  :key="category.id"
+                  :key="category.category_id"
                   class="
                     d-flex
                     align-items-center
@@ -90,10 +86,10 @@
                   "
                 >
                   <span class="fs-custom fw-bold text-capitalize">{{
-                    category.name
+                    category.category.name
                   }}</span>
                   <div class="actions">
-                    <a
+                    <!-- <a
                       href="javascript:void(0)"
                       class="text-orange me-3 edit"
                       @click="editCategory(category)"
@@ -110,7 +106,7 @@
                           fill="#F05922"
                         />
                       </svg>
-                    </a>
+                    </a> -->
                     <a
                       href="javascript:void(0)"
                       class="text-orange"
@@ -156,35 +152,23 @@
       class="justify-content-center border-0 p-4 pb-3"
       :close="false"
     >
-      <MDBModalTitle class="fw-bold fs-4">
-        {{ editMode ? "Update Category" : "Add Category" }}
-      </MDBModalTitle>
+      <MDBModalTitle class="fw-bold fs-4"> Add Category </MDBModalTitle>
     </MDBModalHeader>
     <MDBModalBody class="p-5 pt-3">
       <div class="custom-height">
         <label for="add" class="small mb-2">Category</label>
-        <!-- <MDBInput
-          id="add"
-          type="text"
-          class="small category-input"
-          placeholder="Category"
-          :class="errors && errors.name && 'border-danger'"
-          v-model="category.name"
-        /> -->
 
-        <select
-          id="add"
-          class="form-select small category-input"
-          :class="errors && errors.name && 'border-danger'"
-          v-model="category.name"
-        >
-          <option value="">Select Category</option>
-          <option value="cat-1">Category 1</option>
-          <option value="cat-2">Category 2</option>
-          <option value="cat-2">Category 3</option>
-        </select>
-        <span v-if="errors && errors.name" class="text-danger small">{{
-          errors.name[0]
+        <Multiselect
+          v-model="selectedCategories"
+          :close-on-select="false"
+          mode="tags"
+          placeholder="Select Categories"
+          :options="options"
+          class="py-2 small category-input text-capitalize"
+          :class="errors && errors.category_ids && 'border-danger'"
+        />
+        <span v-if="errors && errors.category_ids" class="text-danger small">{{
+          errors.category_ids[0]
         }}</span>
       </div>
       <div class="text-end mt-3">
@@ -211,7 +195,15 @@ import {
   MDBModalBody,
   MDBInput,
 } from "mdb-vue-ui-kit";
-import { createCategory, getUserCategories } from "../../../api";
+
+import Multiselect from "@vueform/multiselect";
+import "@vueform/multiselect/themes/default.css";
+
+import {
+  createCategory,
+  getAllCategories,
+  getUserCategories,
+} from "../../../api";
 import CategoriesLoader from "../../loaders/CategoriesLoader.vue";
 import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import { watchEffect } from "@vue/runtime-core";
@@ -219,6 +211,9 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 
+const allCategories = ref([]);
+const selectedCategories = ref([]);
+const options = ref([]);
 const categories = ref([]);
 const loading = ref(true);
 const AddNewCategoryModal = ref(false);
@@ -234,7 +229,6 @@ const deletedItem = reactive({
 
 const addedCategory = ref("");
 const errors = ref(null);
-const editMode = ref(false);
 
 const store = useStore();
 const router = useRouter();
@@ -247,11 +241,19 @@ const getCategories = () => {
   });
 };
 
-const editCategory = (item) => {
-  editMode.value = true;
+const addNewCategory = () => {
   AddNewCategoryModal.value = true;
-  category.name = item.name;
-  category.id = item.id;
+
+  getAllCategories().then((res) => {
+    allCategories.value = res.data.data;
+
+    allCategories.value.map((item) => {
+      options.value.push({
+        label: item.name,
+        value: item.id,
+      });
+    });
+  });
 };
 
 watchEffect(() => {
@@ -268,27 +270,18 @@ watchEffect(() => {
 });
 
 const submitCategory = () => {
-  const formData = new FormData();
-  formData.append("business_id", "");
-  formData.append("name", category.name);
-
-  if (category.id) {
-    formData.append("id", category.id);
-  }
-  createCategory(formData)
+  let categoryData = {
+    action: "bind",
+    category_ids: selectedCategories.value,
+  };
+  createCategory(categoryData)
     .then(({ data }) => {
-      addedCategory.value = data.category.name;
       AddNewCategoryModal.value = false;
       errors.value = null;
-      category.name = "";
-      category.id = "";
+      selectedCategories.value = [];
       getCategories();
 
-      toast.success(
-        `${addedCategory.value} has been ${
-          editMode.value ? "updated" : "added"
-        } successfully`
-      );
+      toast.success("Categories has been added successfully");
 
       setTimeout(() => {
         addedCategory.value = "";

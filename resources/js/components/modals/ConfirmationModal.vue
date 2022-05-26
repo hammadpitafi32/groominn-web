@@ -9,9 +9,12 @@
   >
     <MDBModalBody class="p-4">
       <div class="py-4 text-center">
-        <h4 class="fw-bold mb-5 mt-3">Do you want to delete this {{props.data.label == 'category' ? 'category' : 'service'}} ?</h4>
+        <h4 class="fw-bold mt-3">Do you want to delete this {{props.data.label == 'category' ? 'category' : 'service'}} ?</h4>
+        <small v-if="props.data.label == 'category'">
+            <b class="text-orange">Note:</b> All services will also be deleted against this category.
+        </small>
       </div>
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-between mt-4">
         <MDBBtn
           class="ok-btn text-capitalize shadow-0 border"
           @click="

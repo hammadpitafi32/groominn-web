@@ -65,14 +65,14 @@
                     <th scope="col">Categories</th>
                     <th scope="col">Services</th>
                     <th scope="col">Charges</th>
-                    <th scope="col">Duration</th>
+                    <th scope="col">Duration (hh:mm:ss)</th>
                     <th scope="col">Type</th>
                     <th scope="col">Edit</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(service, index) in services" :key="index">
-                    <td>{{ service.user_category.name }}</td>
+                    <td>{{ service.user_category.category.name }}</td>
                     <td>{{ service.user_service.name }}</td>
                     <td>{{ service.charges + ' $' }}</td>
                     <td>{{ service.duration }}</td>
@@ -156,15 +156,16 @@
               :disabled="!categoryOptions"
               v-model="category"
               :class="errors && errors.category_id && 'border-danger'"
-              class="small category-input form-select"
+              class="small category-input form-select text-capitalize"
             >
               <option value="">Select Category</option>
               <option
+                class="text-capitalize"
                 v-for="option in categoryOptions"
                 :key="option.id"
                 :value="option.id"
               >
-                {{ option.name }}
+                {{ option.category.name }}
               </option>
             </select>
             <span

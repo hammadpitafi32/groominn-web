@@ -14,61 +14,53 @@ axios.interceptors.request.use(function (config) {
 });
 
 export const login = async (data) => {
-    const response = await axios.post(`${baseURL}/login`, data);
-    return response;
+    return await axios.post(`${baseURL}/login`, data);
 }
 
 export const register = async (data) => {
-    const response = await axios.post(`${baseURL}/register`, data);
-    return response;
+    return await axios.post(`${baseURL}/register`, data);
 }
 
 export const addShop = async (data) => {
-    const response = await axios.post(`${baseURL}/create-user-business`, data);
-    return response;
+    return await axios.post(`${baseURL}/create-user-business`, data);
 }
 
 export const createCategory = async (data) => {
-    const response = await axios.post(`${baseURL}/create-user-category`, data);
-    return response;
+    return await axios.post(`${baseURL}/bind-categories`, data);
 }
 
 export const getUserBusiness = async (id) => {
-    const response = id ? await axios.get(`${baseURL}/get-user-business/${id}`) : await axios.get(`${baseURL}/get-user-business`);
-    return response
+    return id ? await axios.get(`${baseURL}/get-user-business/${id}`) : await axios.get(`${baseURL}/get-user-business`);
 }
 
 export const getUserCategories = async (pagination) => {
-    const response = pagination ? await axios.get(`${baseURL}/get-user-categories?pagination=${pagination.value}`) : await axios.get(`${baseURL}/get-user-categories`);
-    return response;
+    return pagination ? await axios.get(`${baseURL}/get-user-categories?pagination=${pagination.value}`) : await axios.get(`${baseURL}/get-user-categories`);
+}
+
+export const getAllCategories = async () => {
+    return await axios.get(`${baseURL}/get-categories`);
 }
 
 export const deleteUserCategory = async (id) => {
-    const response = axios.delete(`${baseURL}/delete-user-category/${id}`);
-    return response;
+    return axios.delete(`${baseURL}/delete-user-category/${id}`);
 }
 
 export const createUserService = async (data) => {
-    const response = axios.post(`${baseURL}/create-user-category-service`, data);
-    return response;
+    return axios.post(`${baseURL}/create-user-category-service`, data);
 }
 
 export const getUserServices = async () => {
-    const response = axios.get(`${baseURL}/get-user-services`);
-    return response;
+    return axios.get(`${baseURL}/get-user-services`);
 }
 
 export const deleteUserService = async (id) => {
-    const response = axios.delete(`${baseURL}/delete-user-service/${id}`);
-    return response;
+    return axios.delete(`${baseURL}/delete-user-service/${id}`);
 }
 
 export const getAllShops = async () => {
-    const response = axios.post(`${baseURL}/get-businesses-list`);
-    return response;
+    return axios.post(`${baseURL}/get-businesses-list`);
 }
 
 export const logout = async () => {
-    const response = await axios.get(`${baseURL}/logout`);
-    return response;
+    return await axios.get(`${baseURL}/logout`);
 }

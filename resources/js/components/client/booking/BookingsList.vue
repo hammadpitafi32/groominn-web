@@ -98,7 +98,7 @@
                           v-for="category in booking.user_categories"
                           :key="category.id"
                         >
-                          {{ category.name.charAt(0) }}
+                          {{ category.category.name.charAt(0) }}
                         </div>
                       </div>
                       <div class="text-end mt-2">

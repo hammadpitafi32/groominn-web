@@ -21,7 +21,7 @@
         right
         v-if="route.name != 'home' || store.state.auth"
       >
-        <MDBNavbarItem to="/" class="me-4"> Home </MDBNavbarItem>
+        <MDBNavbarItem to="/" class="me-4" :class="route.name == 'index' && 'navlink-active'"> Home </MDBNavbarItem>
         <MDBNavbarItem to="#" class="me-4"> About </MDBNavbarItem>
         <MDBNavbarItem to="#" class="me-4"> Contact Us </MDBNavbarItem>
         <MDBNavbarItem to="/booking-detail" class="me-4" :class="route.name == 'bookingDetail' && 'navlink-active'"> Bookings </MDBNavbarItem>

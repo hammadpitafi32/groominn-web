@@ -827,3 +827,15 @@ input.border-danger,
     font-size: .72rem;
     width: 130px;
 }
+
+aside.gradiant-list{
+    background: linear-gradient(175.79deg, #F05922 31.97%, #F07345 97.2%);
+} 
+
+aside.gradiant-list a{
+    color: #fff !important;
+}
+
+.multiselect-tag{
+    background-color: var(--theme-orange-color) !important;   
+}

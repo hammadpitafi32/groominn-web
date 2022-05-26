@@ -149,7 +149,7 @@
           </defs>
         </svg>
 
-        <h5 class="mt-3 mb-2">Waqas Asghar</h5>
+        <h5 class="mt-3 mb-2" :style="!props.data.name && {opacity: '.4'}">{{props.data.name ?? 'Enter Your Name'}}</h5>
         <div class="d-flex card-sample">
           <div class="card-dots">
             <span class="dot"></span>
@@ -220,9 +220,18 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import { watchEffect } from "@vue/runtime-core";
 import { MDBRadio } from "mdb-vue-ui-kit";
 
 const paymentMethod = ref("master");
+
+const props = defineProps({
+  data: Object,
+});
+
+watchEffect(() => {
+  console.log(props.data);
+});
 </script>
 
 <style scoped>

@@ -45,7 +45,7 @@
       </div>
       <div class="form-group mb-4">
         <label for="name" class="fw-500 mb-3">Card Holder Number</label>
-        <MDBInput type="text" v-model="name" class="py-3 fw-500" />
+        <input type="text" v-model="name" class="form-control py-3 fw-500" />
       </div>
       <div class="row mb-3 align-items-center">
         <div class="col-6">
@@ -109,6 +109,8 @@ import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 
+const emit = defineEmits(['sendName']);
+
 const name = ref("");
 const cvv = ref("");
 const expMonth = ref("");
@@ -164,6 +166,10 @@ watch(expMonth, (newValue, oldValue) => {
     expMonth.value = oldValue;
   }
 });
+
+watch(name, (val) => {
+    emit('sendName', val);
+})
 
 watch(expYear, (newValue, oldValue) => {
   let regix = /^[0-9]*$/;
