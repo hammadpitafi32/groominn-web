@@ -314,7 +314,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function getBusinesseslist()
 	{
 		$request = $this->request;
-		$user_business = UserBusiness::with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories');
+		$user_business = UserBusiness::with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
         if ($request->pagination == 'false') 
         {
             $user_business= $user_business->get();
