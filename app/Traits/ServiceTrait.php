@@ -35,7 +35,7 @@ trait ServiceTrait {
     public function userServices($request)
     {
         // dd(Auth::user());
-        $user_services = UserBusinessCategoryService::with('user_category','user_service')->where('user_business_id',Auth::user()->user_business->id);
+        $user_services = UserBusinessCategoryService::with('user_category','user_category.category','user_service')->where('user_business_id',Auth::user()->user_business->id);
         if ($request->pagination == 'false') 
         {
             $user_services= $user_services->get();
