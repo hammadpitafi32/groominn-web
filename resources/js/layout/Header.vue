@@ -21,14 +21,14 @@
         right
         v-if="route.name != 'home' || store.state.auth"
       >
-        <MDBNavbarItem to="/" class="me-3"> Home </MDBNavbarItem>
-        <MDBNavbarItem to="#" class="me-3"> About </MDBNavbarItem>
-        <MDBNavbarItem to="#" class="me-3"> Contact Us </MDBNavbarItem>
-        <MDBNavbarItem to="#" class="me-3" v-if="role == 'Provider'"> Bookings </MDBNavbarItem>
-        <MDBNavbarItem to="#" class="me-3" v-if="!store.state.auth">
+        <MDBNavbarItem to="/" class="me-4"> Home </MDBNavbarItem>
+        <MDBNavbarItem to="#" class="me-4"> About </MDBNavbarItem>
+        <MDBNavbarItem to="#" class="me-4"> Contact Us </MDBNavbarItem>
+        <MDBNavbarItem to="/booking-detail" class="me-4" :class="route.name == 'bookingDetail' && 'navlink-active'"> Bookings </MDBNavbarItem>
+        <MDBNavbarItem to="#" class="me-4" v-if="!store.state.auth">
           Support
         </MDBNavbarItem>
-        <MDBNavbarItem class="me-3 position-relative" v-if="store.state.auth">
+        <MDBNavbarItem class="me-4 position-relative" v-if="store.state.auth">
           <span  @click="notification = true" class="position-relative cursor-pointer">
             <svg
               width="17"
