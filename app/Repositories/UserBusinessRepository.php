@@ -35,7 +35,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function find($id)
     {
         return $this->user_business
-        ->with('user_business_images','user_business_schedules','user_categories','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
+        ->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
   //       ->with(['user_categories' => function ($query) {
 		//         // $query->select('id','user_id', 'name');
 		//     }],'user_categories.user_business_category_services'
