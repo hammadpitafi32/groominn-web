@@ -38,7 +38,6 @@ Route::group(['namespace' => 'Api'],function()
 
             Route::post('bind-categories', 'BusinessController@bindCategories');
 
-
             Route::get('get-categories', 'UserBusinessController@getCategories');
             Route::get('get-user-categories', 'UserBusinessController@getUserCategories');
             Route::delete('delete-user-category/{id}', 'UserBusinessController@deleteUserCategory');
