@@ -105,6 +105,17 @@ class BusinessController extends Controller
 
     public function bindCategories(Request $request)
     {
+        // dd($req)
+        $validator = Validator::make($request->all(), [
+            'category_ids' => "required",
+        ]);
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+                'success' => false
+            ], 400);
+        }
         $categories = $this->bindCategoriesToUser($request);
         return response()->json([
          'success' => 200,
