@@ -39,7 +39,7 @@ class BookingRepository implements BookingInterface
 	{
 		$request = $this->request;
 		$stripe = Stripe::make(env('STRIPE_SECRET'));
-		dd($stripe);
+		// dd(env('STRIPE_SECRET'));
 		$token = $stripe->tokens()->create([
 			'card' => [
 				'number' => $request->card_no,
@@ -48,6 +48,7 @@ class BookingRepository implements BookingInterface
 				'cvc' => $request->cvc
 			]
 		]);
+		// dd($token);
 		if(!isset($token['id']))
 		{
 			return response()->json([
