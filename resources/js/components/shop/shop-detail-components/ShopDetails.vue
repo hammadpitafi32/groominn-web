@@ -166,8 +166,23 @@
         <h4 class="text-orange fw-500">No categoies found</h4>
       </div>
       <div class="text-end mt-4" v-if="role == 'Client'">
-        <router-link to="/payment">
+        <router-link
+          :to="{
+            name: 'payment',
+            params: {
+              data: selectedCategories.map((item) => {
+                return JSON.stringify({
+                  name: item.user_service.name,
+                  id: item.id,
+                  price: item.charges,
+                });
+              }),
+            },
+          }"
+          :style="selectedCategories.length === 0 && { pointerEvents: 'none' }"
+        >
           <MDBBtn
+            :disabled="selectedCategories.length === 0"
             class="
               text-white
               bg-orange

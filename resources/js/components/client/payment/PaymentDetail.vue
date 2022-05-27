@@ -106,10 +106,10 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { watch } from "@vue/runtime-core";
+import { watch, watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 
-const emit = defineEmits(['sendName']);
+const emit = defineEmits(['sendData']);
 
 const name = ref("");
 const cvv = ref("");
@@ -167,9 +167,17 @@ watch(expMonth, (newValue, oldValue) => {
   }
 });
 
-watch(name, (val) => {
-    emit('sendName', val);
+
+// Sending Data from this component to paymentMethod component
+watchEffect(() => {
+  emit('sendData', {
+    name: name.value,
+    card_number: cardNumberForRequest.value,
+    exp_month: expMonth.value,
+    exp_year : expYear.value
+  })
 })
+
 
 watch(expYear, (newValue, oldValue) => {
   let regix = /^[0-9]*$/;
