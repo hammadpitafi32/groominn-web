@@ -21,9 +21,9 @@
         right
         v-if="route.name != 'home' || store.state.auth"
       >
-        <MDBNavbarItem to="/" class="me-4" :class="route.name == 'index' && 'navlink-active'"> Home </MDBNavbarItem>
-        <MDBNavbarItem to="#" class="me-4"> About </MDBNavbarItem>
-        <MDBNavbarItem to="#" class="me-4"> Contact Us </MDBNavbarItem>
+        <MDBNavbarItem to="/" class="me-4" :class="route.name == 'home' && 'navlink-active'"> Home </MDBNavbarItem>
+        <MDBNavbarItem to="/about-us" class="me-4" :class="route.name == 'about-us' && 'navlink-active'"> About </MDBNavbarItem>
+        <MDBNavbarItem to="/contact-us" class="me-4" :class="route.name == 'contact-us' && 'navlink-active'"> Contact Us </MDBNavbarItem>
         <MDBNavbarItem to="/booking-detail" class="me-4" :class="route.name == 'bookingDetail' && 'navlink-active'"> Bookings </MDBNavbarItem>
         <MDBNavbarItem to="#" class="me-4" v-if="!store.state.auth">
           Support
@@ -70,7 +70,7 @@
               ></span>
             </MDBDropdownToggle>
             <MDBDropdownMenu aria-labelledby="dropdownMenuButton" class="py-2">
-              <MDBDropdownItem v-if="role === 'Client'" href="javascript:void(0)" @click="profileDropdown = false"
+              <MDBDropdownItem v-if="role === 'Client'" class="cursor-pointer" to="/profile" @click="profileDropdown = false"
                 >Profile</MDBDropdownItem
               >
               <MDBDropdownItem href="javascript:void(0)" @click="logout()"
