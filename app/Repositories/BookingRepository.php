@@ -3,10 +3,12 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\BookingInterface;
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\BookingService;
 use Illuminate\Support\Str;
 
 use Auth;
 use App\Models\UserBusiness;
+use App\Models\UserBusinessCategoryService;
 use Carbon\Carbon;
 use DateTime;
 use DateInterval;
@@ -38,109 +40,64 @@ class BookingRepository implements BookingInterface
 	public function create()
 	{
 		$request = $this->request;
-		$stripe = Stripe::make(env('STRIPE_SECRET'));
-		dd($stripe);
-		$token = $stripe->tokens()->create([
-			'card' => [
-				'number' => $request->card_no,
-				'exp_month' => $request->exp_month,
-				'exp_year' => $request->exp_year,
-				'cvc' => $request->cvc
-			]
-		]);
-		if(!isset($token['id']))
-		{
-			return response()->json([
-				'success' => false,
-				'message' => 'The stripe token was not generated correctly, Please contact support!'
-			],400);
-		}
-		// dd($token);
-
-		$customer = $stripe->customers()->create([
-			'name' => Auth::user()->name,
-			'email' => Auth::user()->email,
-			'phone' => Auth::user()->phone,
-			// 'address' => [
-			// 	'line1' =>$this->line1,
-			// 	'postal_code' => $this->zipcode,
-			// 	'city' => $this->city,
-			// 	'state' => $this->province,
-			// 	'country' => $this->country
-			// ],
-			// 'shipping' => [
-			// 	'name' => $this->firstname . ' ' . $this->lastname,
-			// 	'address' => [
-			// 		'line1' =>$this->line1,
-			// 		'postal_code' => $this->zipcode,
-			// 		'city' => $this->city,
-			// 		'state' => $this->province,
-			// 		'country' => $this->country
-			// 	],
-			// ],
-			'source' => $token['id']
-		]);
-
-		$charge = $stripe->charges()->create([
-			'customer' => $customer['id'],
-			'currency' => 'USD',
-			'amount' => 100,
-			'description' => 'Payment for order no ' . 12365
-		]);
-
-		if($charge['status'] == 'succeeded')
-		{
-			dd('done');
-			// $this->makeTransaction($order->id,'approved');
-			// $this->resetCart();
-		}
-		else
-		{
-			return response()->json([
-				'success' => false,
-				'message' => 'Error in Transaction!, Please contact support!'
-			],400);
-			// $this->thankyou = 0;
-		}
-		dd($request->all());
+		// $this->stripePayment();
+		// dd($request->all());
 		$uniqid = Str::random(9);
-        $user = $request->id ?  $this->user->find($request->id) : $this->user;
+		$total_booking = Booking::withTrashed()->where('created_at','like', '%'.date('Y-m'). '%')->count();
+        $total_booking +=1;
 
-		$user = $this->user->updateOrCreate(
-			[
-				'email' => $request->email,
-			],
-			[
-				'name' => $request->name,
-				'password' => Hash::make($request->password),
-				'role_id' => $request->role_id,
-				'added_by' => $request->added_by,
-			]
-		);
+        $total_duration = null;
 
-		$user->user_detail()->updateOrCreate(
-			[
-				'user_id'=>$user->id,
-			],
-			[
-				'phone'=>$request->phone,
-				'gender'=>$request->gender,
-				'date_of_birth'=>$request->date_of_birth,
-				'address_line_1'=>$request->address_line_1,
-				'address_line_2'=>$request->address_line_2,
-				'country_id'=>$request->country_id,
-                'state_id' => $request->state_id,
-                'city' => $request->city,
-		    	'zip_code' => $request->zip_code,
-				'tax_id'=>$request->tax_id
-			]
-		);
-		// dd($this->request->all(),$request->role_id);
-		return $user;
-		// return response()->json([
-		// 	'success' => 200,
-		// 	'user' => $user
-		// ]);
+		$booking = Booking::create([
+			'booking_no' => 'G-BK-'.date('ym').$total_booking,
+			'user_id' => Auth::id(),
+			'user_business_id' => $request->user_business_id,
+			// 'total_duration' => $request->total_duration,
+			'date' => $request->date,
+			'estimated_time' => $request->estimated_time,
+			'payment_type' => 'stripe',
+			// 'charges' => $request->charges,
+		]);
+
+		foreach ($request->service_ids as $service_id) 
+		{
+			$category_service = UserBusinessCategoryService::find($service_id);
+			
+			if ($category_service) 
+			{
+				$category_service->total_duration;
+				$duration = $category_service->duration;
+
+				if ($total_duration) 
+				{
+					$secs = strtotime($duration) - strtotime("00:00:00");
+					$total_duration = date("H:i:s", strtotime($total_duration) + $secs);
+				}
+				else
+				{
+					$total_duration = $category_service->duration;
+				}
+
+				BookingService::create([
+					'booking_id' => $booking->id,
+					'user_business_category_service_id' => $service_id,
+					'duration' => $category_service->duration,
+					'charges' => $category_service->charges,
+					'type' => $category_service->type,
+				]);
+			}
+			
+		}
+		$booking->booking_services->sum('charges');
+		$booking->update([
+			'total_duration' => $total_duration,
+			'charges' => $booking->booking_services->sum('charges')
+		]);
+        // dd('dsfd');
+        return response()->json([
+            'success' => true,
+            'data' => $booking
+        ], 200);
 	}
 
 	public function getEstimatedTime()
@@ -212,5 +169,74 @@ class BookingRepository implements BookingInterface
 		/*end*/
 
 		dd($bookings->pluck('total_duration')->toArray(),$date);
+	}
+
+	public function stripePayment($request)
+	{
+		$stripe = Stripe::make(env('STRIPE_SECRET'));
+		// dd(env('STRIPE_SECRET'));
+		$token = $stripe->tokens()->create([
+			'card' => [
+				'number' => $request->card_no,
+				'exp_month' => $request->exp_month,
+				'exp_year' => $request->exp_year,
+				'cvc' => $request->cvc
+			]
+		]);
+		// dd($token);
+		if(!isset($token['id']))
+		{
+			return response()->json([
+				'success' => false,
+				'message' => 'The stripe token was not generated correctly, Please contact support!'
+			],400);
+		}
+		// dd($token);
+
+		$customer = $stripe->customers()->create([
+			'name' => Auth::user()->name,
+			'email' => Auth::user()->email,
+			'phone' => Auth::user()->phone,
+			// 'address' => [
+			// 	'line1' =>$this->line1,
+			// 	'postal_code' => $this->zipcode,
+			// 	'city' => $this->city,
+			// 	'state' => $this->province,
+			// 	'country' => $this->country
+			// ],
+			// 'shipping' => [
+			// 	'name' => $this->firstname . ' ' . $this->lastname,
+			// 	'address' => [
+			// 		'line1' =>$this->line1,
+			// 		'postal_code' => $this->zipcode,
+			// 		'city' => $this->city,
+			// 		'state' => $this->province,
+			// 		'country' => $this->country
+			// 	],
+			// ],
+			'source' => $token['id']
+		]);
+
+		$charge = $stripe->charges()->create([
+			'customer' => $customer['id'],
+			'currency' => 'USD',
+			'amount' => 100,
+			'description' => 'Payment for order no ' . 12365
+		]);
+
+		if($charge['status'] == 'succeeded')
+		{
+			dd('done');
+			// $this->makeTransaction($order->id,'approved');
+			// $this->resetCart();
+		}
+		else
+		{
+			return response()->json([
+				'success' => false,
+				'message' => 'Error in Transaction!, Please contact support!'
+			],400);
+			// $this->thankyou = 0;
+		}
 	}
 }

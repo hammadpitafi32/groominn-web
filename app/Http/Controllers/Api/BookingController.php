@@ -16,13 +16,7 @@ class BookingController extends Controller
 
     public function create(Request $request)
     {
-        dd($this->booking->create());
-        $response = $this->user_business->createOrUpdate();
-        
-        return response()->json([
-         'success' => $response['success'],
-         'data' => $response['data']
-        ]);
+        return $this->booking->create();
     }
 
     public function getEstimatedTime(Request $request)
