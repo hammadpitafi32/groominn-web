@@ -104,7 +104,7 @@
             <MDBTabPane
               class="category-tab-pane"
               :tabId="`category-${category.id}`"
-              v-for="(category, index) in props.data.user_categories"
+              v-for="(category, index) in categtoriesArray"
               :key="index"
             >
               <div v-if="category.user_business_category_services.length">
@@ -130,10 +130,11 @@
                         <input
                           type="checkbox"
                           class="me-2"
-                          :class="'service-' + subcategory.user_service.id"
+                          :checked="handleCheckbox(subcategory.id)"
                           :id="'service-' + subcategory.user_service.id"
                           @change="setCategories($event, subcategory)"
                         />
+
                         <span class="checkmark"></span> </label
                     ></span>
                     {{ subcategory.user_service.name }}
@@ -218,6 +219,9 @@ import { useStore } from "vuex";
 const props = defineProps({
   data: Object,
 });
+
+const categtoriesArray = ref(props.data.user_categories);
+
 const store = useStore();
 
 const role = ref(store.state.role);
@@ -240,13 +244,13 @@ const setCategories = (event, val) => {
   }
 };
 
-// Setting items in selectedCategories from localStorage
 watchEffect(() => {
+  // Setting items in selectedCategories from localStorage
   let categoriesInLocalStorage = localStorage.getItem("item_in_cart");
   if (categoriesInLocalStorage) {
     let array = JSON.parse(categoriesInLocalStorage);
 
-    props.data.user_categories.map((item) => {
+    categtoriesArray.value.map((item) => {
       if (item.user_business_category_services.length) {
         item.user_business_category_services.map((service) => {
           array.map((category) => {
@@ -260,16 +264,17 @@ watchEffect(() => {
   }
 });
 
-onMounted(() => {
-  if (selectedCategories.value.length) {
-    selectedCategories.value.map((category) => {
-      let elements = document.getElementById(
-        `service-${category.user_service_id}`
-      );
-      elements.checked = true;
-    });
+const handleCheckbox = (id) => {
+  let categoriesInLocalStorage = localStorage.getItem("item_in_cart");
+  if (categoriesInLocalStorage) {
+    let array = JSON.parse(categoriesInLocalStorage);
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === id) {
+        return true;
+      }
+    }
   }
-});
+};
 </script>
 
 <style scoped>
