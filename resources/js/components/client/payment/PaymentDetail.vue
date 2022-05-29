@@ -98,6 +98,7 @@
           text-capitalize
           fs-6
         "
+        @click="handlePayment()"
         >Pay Now</MDBBtn
       >
     </form>
@@ -106,10 +107,16 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { watch, watchEffect } from "@vue/runtime-core";
+import { computed, watch, watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 
 const emit = defineEmits(['sendData']);
+
+const props = defineProps({
+  data:Object
+})
+
+const itemsForBooking = computed(() => props.data.item_in_cart);
 
 const name = ref("");
 const cvv = ref("");
@@ -188,6 +195,14 @@ watch(expYear, (newValue, oldValue) => {
     expYear.value = oldValue;
   }
 });
+
+
+// Payment function
+const handlePayment = () => {
+  
+}
+
+
 </script>
 
 <style scoped>

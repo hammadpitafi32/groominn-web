@@ -373,6 +373,7 @@ const addBtnHandler = () => {
   charges.value = ''
   duration.value = ''
   serviceId.value = null
+  errors.value = null
   getUserCategories(pagination).then((res) => {
     categoryOptions.value = res.data.data;
   });
