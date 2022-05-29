@@ -1,3 +1,4 @@
+import { createArrayExpression } from '@vue/compiler-core';
 import axios from 'axios';
 import { useCookies } from 'vue3-cookies';
 import { api } from './baseURL';
@@ -42,23 +43,27 @@ export const getAllCategories = async () => {
 }
 
 export const deleteUserCategory = async (id) => {
-    return axios.delete(`${baseURL}/delete-user-category/${id}`);
+    return await axios.delete(`${baseURL}/delete-user-category/${id}`);
 }
 
 export const createUserService = async (data) => {
-    return axios.post(`${baseURL}/create-user-category-service`, data);
+    return await axios.post(`${baseURL}/create-user-category-service`, data);
 }
 
 export const getUserServices = async () => {
-    return axios.get(`${baseURL}/get-user-services`);
+    return await axios.get(`${baseURL}/get-user-services`);
 }
 
 export const deleteUserService = async (id) => {
-    return axios.delete(`${baseURL}/delete-user-service/${id}`);
+    return await axios.delete(`${baseURL}/delete-user-service/${id}`);
 }
 
 export const getAllShops = async () => {
-    return axios.post(`${baseURL}/get-businesses-list`);
+    return await axios.post(`${baseURL}/get-businesses-list`);
+}
+
+export const createBooking = async (data) => {
+    return await axios.post(`${baseURL}/create-booking`, data)
 }
 
 export const logout = async () => {

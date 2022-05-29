@@ -2,7 +2,7 @@
   <MDBContainer class="mt-5 py-5">
     <MDBRow center class="my-4">
       <MDBCol col="6">
-        <PaymentDetail @sendData="sendData" />
+        <PaymentDetail @sendData="sendData" :data="data" />
       </MDBCol>
       <MDBCol col="4">
         <PaymentMethod :data="data" />
