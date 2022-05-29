@@ -179,6 +179,8 @@ watchEffect(() => {
   if (route.query.category) {
     category.value = route.query.category;
   }
+
+  localStorage.clear();
 });
 </script>
 

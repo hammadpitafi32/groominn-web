@@ -104,7 +104,7 @@
             <MDBTabPane
               class="category-tab-pane"
               :tabId="`category-${category.id}`"
-              v-for="(category, index) in props.data.user_categories"
+              v-for="(category, index) in categtoriesArray"
               :key="index"
             >
               <div v-if="category.user_business_category_services.length">
@@ -130,9 +130,11 @@
                         <input
                           type="checkbox"
                           class="me-2"
+                          :checked="handleCheckbox(subcategory.id)"
                           :id="'service-' + subcategory.user_service.id"
                           @change="setCategories($event, subcategory)"
                         />
+
                         <span class="checkmark"></span> </label
                     ></span>
                     {{ subcategory.user_service.name }}
@@ -148,11 +150,12 @@
                       <path
                         d="M0.999787 11.0002H1.99979V18.0002C1.99979 19.1032 2.89679 20.0002 3.99979 20.0002H15.9998C17.1028 20.0002 17.9998 19.1032 17.9998 18.0002V11.0002H18.9998C19.1975 11.0002 19.3908 10.9415 19.5552 10.8316C19.7197 10.7217 19.8478 10.5656 19.9235 10.3829C19.9991 10.2002 20.0189 9.99912 19.9804 9.80517C19.9418 9.61122 19.8466 9.43305 19.7068 9.2932L10.7068 0.293201C10.614 0.200255 10.5038 0.126518 10.3825 0.0762068C10.2612 0.0258961 10.1311 0 9.99979 0C9.86845 0 9.73841 0.0258961 9.61709 0.0762068C9.49578 0.126518 9.38558 0.200255 9.29279 0.293201L0.292787 9.2932C0.152977 9.43305 0.057771 9.61122 0.0192035 9.80517C-0.0193641 9.99912 0.000438951 10.2002 0.076109 10.3829C0.151779 10.5656 0.279918 10.7217 0.444328 10.8316C0.608738 10.9415 0.802037 11.0002 0.999787 11.0002ZM7.99979 18.0002V13.0002H11.9998V18.0002H7.99979ZM9.99979 2.4142L15.9998 8.4142V13.0002L16.0008 18.0002H13.9998V13.0002C13.9998 11.8972 13.1028 11.0002 11.9998 11.0002H7.99979C6.89679 11.0002 5.99979 11.8972 5.99979 13.0002V18.0002H3.99979V8.4142L9.99979 2.4142Z"
                         fill="#8C96A2"
-                      /></svg
-                  ></small>
-                  <small class="text-orange fw-bold price">{{
-                    subcategory.charges + " $"
-                  }}</small>
+                      />
+                    </svg>
+                  </small>
+                  <small class="text-orange fw-bold price"
+                    >{{ subcategory.charges + " $" }}
+                  </small>
                 </div>
               </div>
               <div class="py-5 text-center text-orange" v-else>
@@ -166,8 +169,23 @@
         <h4 class="text-orange fw-500">No categoies found</h4>
       </div>
       <div class="text-end mt-4" v-if="role == 'Client'">
-        <router-link to="/payment">
+        <router-link
+          :to="{
+            name: 'payment',
+            params: {
+              data: selectedCategories.map((item) => {
+                return JSON.stringify({
+                  name: item.user_service.name,
+                  id: item.id,
+                  price: item.charges,
+                });
+              }),
+            },
+          }"
+          :style="selectedCategories.length === 0 && { pointerEvents: 'none' }"
+        >
           <MDBBtn
+            :disabled="selectedCategories.length === 0"
             class="
               text-white
               bg-orange
@@ -188,6 +206,7 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import { computed, onMounted, watchEffect } from "@vue/runtime-core";
 import {
   MDBTabs,
   MDBTabNav,
@@ -200,6 +219,9 @@ import { useStore } from "vuex";
 const props = defineProps({
   data: Object,
 });
+
+const categtoriesArray = ref(props.data.user_categories);
+
 const store = useStore();
 
 const role = ref(store.state.role);
@@ -219,6 +241,38 @@ const setCategories = (event, val) => {
       (item) => item.id === val.id
     );
     selectedCategories.value.splice(index, 1);
+  }
+};
+
+watchEffect(() => {
+  // Setting items in selectedCategories from localStorage
+  let categoriesInLocalStorage = localStorage.getItem("item_in_cart");
+  if (categoriesInLocalStorage) {
+    let array = JSON.parse(categoriesInLocalStorage);
+
+    categtoriesArray.value.map((item) => {
+      if (item.user_business_category_services.length) {
+        item.user_business_category_services.map((service) => {
+          array.map((category) => {
+            if (service.id === category.id) {
+              selectedCategories.value.push(service);
+            }
+          });
+        });
+      }
+    });
+  }
+});
+
+const handleCheckbox = (id) => {
+  let categoriesInLocalStorage = localStorage.getItem("item_in_cart");
+  if (categoriesInLocalStorage) {
+    let array = JSON.parse(categoriesInLocalStorage);
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === id) {
+        return true;
+      }
+    }
   }
 };
 </script>

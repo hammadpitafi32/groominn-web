@@ -149,20 +149,34 @@
           </defs>
         </svg>
 
-        <h5 class="mt-3 mb-2" :style="!props.data.name && {opacity: '.4'}">{{props.data.name ?? 'Enter Your Name'}}</h5>
-        <div class="d-flex card-sample">
+        <h5
+          class="mt-3 mb-2 text-capitalize"
+          :style="!props.data.name && { opacity: '.3' }"
+        >
+          {{ props.data.name ? props.data.name : "Name" }}
+        </h5>
+        <div class="d-flex card-sample" v-if="props.data.card_number">
           <div class="card-dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+            <span class="dot" v-if="props.data.card_number.length >= 1"></span>
+            <span class="dot" v-if="props.data.card_number.length >= 4"></span>
+            <span class="dot" v-if="props.data.card_number.length >= 8"></span>
+            <span class="dot" v-if="props.data.card_number.length >= 12"></span>
           </div>
           <div class="last-four ps-3 fw-500">
-            <small>3469</small>
+            <small>{{ props.data.card_number.slice(12, 16) }}</small>
           </div>
         </div>
+        <div style="opacity: 0.4" v-else>Card Number</div>
         <div class="mt-5 d-flex align-items-end justify-content-between">
-          <small class="date fw-500"> 05 / 22 </small>
+          <small class="date fw-500">
+            <span :style="!props.data.exp_month && { opacity: '.4' }">{{
+              props.data.exp_month ? props.data.exp_month : "MM"
+            }}</span>
+            /
+            <span :style="!props.data.exp_year && { opacity: '.4' }">{{
+              props.data.exp_year ? props.data.exp_year : "YY"
+            }}</span>
+          </small>
           <div class="attached-card">
             <span class="d-block text-center">
               <svg
@@ -197,19 +211,19 @@
 
       <div class="mt-4">
         <small class="d-block fw-500">Booking Summary</small>
-        <div class="carted-items mt-2">
-          <div class="item rounded-pill">Pixie cut</div>
-          <div class="item rounded-pill">Nail paint</div>
-          <div class="item rounded-pill">Pixie cut</div>
-          <div class="item rounded-pill">Pixie cut</div>
+        <div class="carted-items mt-2" v-if="items">
+          <div class="item rounded-pill" v-for="item in items" :key="item.id">
+            {{ item.name }}
+          </div>
         </div>
+        <div v-else>No items selected</div>
         <div class="position-relative hr-parent">
           <hr class="booking-hr mt-5 mx-n1" />
         </div>
         <div class="price-tag pt-2">
           <small class="d-block text-color-1">You have to Pay</small>
           <div class="fw-bold fs-2">
-            99.<span class="cents fs-5">99</span>
+            {{ itemsPrice.split('.')[0] }}.<span class="cents fs-5">{{ itemsPrice.split('.')[1] }}</span>
             <span class="currency ms-1">USD</span>
           </div>
         </div>
@@ -220,17 +234,23 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { watchEffect } from "@vue/runtime-core";
+import { computed, watchEffect } from "@vue/runtime-core";
 import { MDBRadio } from "mdb-vue-ui-kit";
 
 const paymentMethod = ref("master");
+const items = ref(null);
 
 const props = defineProps({
   data: Object,
 });
 
+const itemsPrice = computed(() => {
+  let price = items.value.reduce((count, item) => count + item.price, 0);
+  return price.toFixed(2);
+});
+
 watchEffect(() => {
-  console.log(props.data);
+  items.value = props.data.item_in_cart;
 });
 </script>
 
