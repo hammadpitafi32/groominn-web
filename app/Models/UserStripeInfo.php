@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserStripeInfo extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id','customer_id'
+    ];
 }
