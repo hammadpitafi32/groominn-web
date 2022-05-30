@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@fawmi/vue-google-maps": "^0.9.67",
         "@googlemaps/js-api-loader": "^1.14.1",
         "@vueform/multiselect": "^2.3.4",
         "mdb-vue-ui-kit": "^1.12.0",

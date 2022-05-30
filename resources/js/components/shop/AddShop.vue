@@ -20,16 +20,32 @@
               </div>
               <div class="form-group mb-3">
                 <label for="address" class="mb-2 fw-bold small">Address</label>
-                <MDBInput
-                  id="address"
-                  v-model="address"
-                  class="bg-white py-2"
+                <GMapAutocomplete
+                  class="form-control bg-white py-2"
+                  placeholder=" "
+                  @place_changed="setPlace"
                 />
                 <span
                   v-if="errors && errors.address"
                   class="text-danger small"
                   >{{ errors.address[0] }}</span
                 >
+              </div>
+              <div class="form-group mb-3">
+                <label for="employees" class="mb-2 fw-bold small"
+                  >Numbers of Employees</label
+                >
+                <MDBInput
+                  id="employees"
+                  type="number"
+                  v-model="employees"
+                  class="bg-white py-2"
+                />
+                <!-- <span
+                  v-if="errors && errors.address"
+                  class="text-danger small"
+                  >{{ errors.employees[0] }}</span
+                > -->
               </div>
               <div class="form-group mb-3">
                 <label for="description" class="mb-2 fw-bold small"
@@ -568,7 +584,12 @@ const drag = reactive({
 const imageUrl = ref("");
 const businessName = ref("");
 const description = ref("");
-const address = ref("");
+const address = reactive({
+  place: "",
+  lat: "",
+  lng: "",
+});
+const employees = ref("");
 const loading = ref(false);
 
 const shopPics = ref([]);
@@ -592,6 +613,8 @@ watchEffect(() => {
   } else if (store.state.role == "Client") {
     router.push("/");
   }
+
+  // console.log(address.value);
 });
 
 const uploadPics = (event, val) => {
@@ -645,11 +668,14 @@ const addShopHandler = () => {
   loading.value = true;
   const formData = new FormData();
   formData.append("name", businessName.value);
-  formData.append("address", address.value);
+  formData.append("address", address.place);
+  formData.append("latitude", address.lat);
+  formData.append("longitude", address.lng);
   formData.append("description", description.value);
   formData.append("cnic_front", cnicFrontForApi.value);
   formData.append("cnic_back", cnicBackForApi.value);
   formData.append("license", LiscenceForApi.value);
+  formData.append("no_of_employees", employees.value);
 
   for (let i = 0; i < shopPicsForApi.value.length; i++) {
     formData.append("shop_images[]", shopPicsForApi.value[i]);
@@ -676,6 +702,12 @@ const addShopHandler = () => {
       success.value = null;
       errors.value = err.response.data.errors;
     });
+};
+
+const setPlace = (data) => {
+  address.lat = data.geometry.location.lat();
+  address.lng = data.geometry.location.lng();
+  address.place = data.formatted_address;
 };
 </script>
 

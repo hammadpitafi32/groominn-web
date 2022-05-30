@@ -22,7 +22,7 @@
         </MDBBtn>
         <MDBBtn
           class="bg-orange text-white ok-btn text-capitalize"
-          @click="router.push('/login'), noAuthModal = false;"
+          @click="router.push('/login'), (noAuthModal = false)"
         >
           Login
         </MDBBtn>
@@ -39,18 +39,18 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const props = defineProps({
-    show: Boolean
-})
+  show: Boolean,
+});
 
-const emits = defineEmits(['closeModal']);
+const emits = defineEmits(["closeModal"]);
 
 const noAuthModal = ref(false);
 
 watch(props, () => {
-    if(props.show){
-        noAuthModal.value = true;
-    } else {
-        noAuthModal.value = false;
-    }
-})
+  if (props.show) {
+    noAuthModal.value = true;
+  } else {
+    noAuthModal.value = false;
+  }
+});
 </script>

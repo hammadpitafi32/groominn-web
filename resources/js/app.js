@@ -11,6 +11,7 @@ import App from './App.vue';
 import router from './router/router';
 import store from './store';
 import Vue3Geolocation from 'vue3-geolocation';
+import VueGoogleMaps from '@fawmi/vue-google-maps'
 
 const app = createApp({});
 
@@ -34,4 +35,10 @@ app.use(Toast, {
     position: POSITION.TOP_RIGHT,
     timeout: 2000
 });
+app.use(VueGoogleMaps, {
+    load: {
+        key: 'AIzaSyA7NJiportPdMrSes7VW1XI63-qhL0i3DM',
+        libraries: "places"
+    }
+})
 app.component('my-app', App).mount('#app');

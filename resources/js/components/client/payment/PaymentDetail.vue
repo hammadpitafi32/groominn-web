@@ -110,11 +110,11 @@ import { ref } from "@vue/reactivity";
 import { computed, watch, watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 
-const emit = defineEmits(['sendData']);
+const emit = defineEmits(["sendData"]);
 
 const props = defineProps({
-  data:Object
-})
+  data: Object,
+});
 
 const itemsForBooking = computed(() => props.data.item_in_cart);
 
@@ -174,17 +174,15 @@ watch(expMonth, (newValue, oldValue) => {
   }
 });
 
-
 // Sending Data from this component to paymentMethod component
 watchEffect(() => {
-  emit('sendData', {
+  emit("sendData", {
     name: name.value,
     card_number: cardNumberForRequest.value,
     exp_month: expMonth.value,
-    exp_year : expYear.value
-  })
-})
-
+    exp_year: expYear.value,
+  });
+});
 
 watch(expYear, (newValue, oldValue) => {
   let regix = /^[0-9]*$/;
@@ -196,13 +194,8 @@ watch(expYear, (newValue, oldValue) => {
   }
 });
 
-
 // Payment function
-const handlePayment = () => {
-  
-}
-
-
+const handlePayment = () => {};
 </script>
 
 <style scoped>

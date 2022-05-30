@@ -20,8 +20,14 @@
           Grooming is here to book an Appointment for you without <br />
           making a call
         </p>
-        <MDBBtn class="bg-orange text-white text-capitalize"
-           @click="store.state.auth ? router.push('/booking-list') : modalShow = true">Get Started</MDBBtn
+        <MDBBtn
+          class="bg-orange text-white text-capitalize"
+          @click="
+            store.state.auth
+              ? router.push('/booking-list')
+              : router.push('/register')
+          "
+          >Get Started</MDBBtn
         >
       </div>
     </MDBContainer>
@@ -409,10 +415,10 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-  if(store.state.role == 'Provider'){
-    router.push('/my-shop')
+  if (store.state.role == "Provider") {
+    router.push("/my-shop");
   }
-})
+});
 
 const items = [
   {

@@ -3,7 +3,7 @@
     classNavbar="shadow-0 main-navbar fixed-top"
     :class="[
       route.name != 'home' && 'border-bottom',
-      route.meta.sidebar || store.state.auth && 'bg-white',
+      route.meta.sidebar || (store.state.auth && 'bg-white'),
     ]"
     ref="navbar"
     expand="md"
@@ -21,15 +21,42 @@
         right
         v-if="route.name != 'home' || store.state.auth"
       >
-        <MDBNavbarItem to="/" class="me-4" :class="route.name == 'home' && 'navlink-active'"> Home </MDBNavbarItem>
-        <MDBNavbarItem to="/about-us" class="me-4" :class="route.name == 'about-us' && 'navlink-active'"> About </MDBNavbarItem>
-        <MDBNavbarItem to="/contact-us" class="me-4" :class="route.name == 'contact-us' && 'navlink-active'"> Contact Us </MDBNavbarItem>
-        <MDBNavbarItem to="/booking-detail" class="me-4" :class="route.name == 'bookingDetail' && 'navlink-active'"> Bookings </MDBNavbarItem>
+        <MDBNavbarItem
+          to="/"
+          class="me-4"
+          :class="route.name == 'home' && 'navlink-active'"
+        >
+          {{ store.state.role === "Provider" ? "Dashboard" : "Home" }}
+        </MDBNavbarItem>
+        <MDBNavbarItem
+          to="/about-us"
+          class="me-4"
+          :class="route.name == 'about-us' && 'navlink-active'"
+        >
+          About
+        </MDBNavbarItem>
+        <MDBNavbarItem
+          to="/contact-us"
+          class="me-4"
+          :class="route.name == 'contact-us' && 'navlink-active'"
+        >
+          Contact Us
+        </MDBNavbarItem>
+        <MDBNavbarItem
+          to="/booking-detail"
+          class="me-4"
+          :class="route.name == 'bookingDetail' && 'navlink-active'"
+        >
+          Bookings
+        </MDBNavbarItem>
         <MDBNavbarItem to="#" class="me-4" v-if="!store.state.auth">
           Support
         </MDBNavbarItem>
         <MDBNavbarItem class="me-4 position-relative" v-if="store.state.auth">
-          <span  @click="notification = true" class="position-relative cursor-pointer">
+          <span
+            @click="notification = true"
+            class="position-relative cursor-pointer"
+          >
             <svg
               width="17"
               height="26"
@@ -62,7 +89,7 @@
                 alt=""
               />
               <span class="fw-bold mx-2 auth-name text-capitalize"
-                >{{store.state.name}}
+                >{{ store.state.name }}
                 <em
                   class="fa-solid fa-angle-down text-orange ms-1"
                   :class="profileDropdown && 'rotate'"
@@ -70,7 +97,11 @@
               ></span>
             </MDBDropdownToggle>
             <MDBDropdownMenu aria-labelledby="dropdownMenuButton" class="py-2">
-              <MDBDropdownItem v-if="role === 'Client'" class="cursor-pointer" to="/profile" @click="profileDropdown = false"
+              <MDBDropdownItem
+                v-if="role === 'Client'"
+                class="cursor-pointer"
+                to="/profile"
+                @click="profileDropdown = false"
                 >Profile</MDBDropdownItem
               >
               <MDBDropdownItem href="javascript:void(0)" @click="logout()"
@@ -126,7 +157,7 @@ import { useCookies } from "vue3-cookies";
 const navbar = ref(null);
 const store = useStore();
 const route = useRoute();
-const role = ref('');
+const role = ref("");
 const { cookies } = useCookies();
 const profileDropdown = ref(false);
 const notification = ref(false);
@@ -143,15 +174,15 @@ onMounted(() => {
 
 watchEffect(() => {
   role.value = store.state.role;
-})
+});
 
 const closeNotification = () => {
   notification.value = false;
-}
+};
 
 const logout = () => {
   profileDropdown.value = false;
-  store.dispatch('setLogout');
+  store.dispatch("setLogout");
 };
 </script>
 

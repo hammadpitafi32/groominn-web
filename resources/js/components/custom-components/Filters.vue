@@ -50,20 +50,17 @@ const category = ref("");
 const modalShow = ref(false);
 
 const paramsHandle = () => {
-
   if (store.state.auth) {
-    const queries = {
-        
-    }
+    const queries = {};
     router.push({
       path: "/booking-list",
       query: {
-        ...(location.value && {location: location.value}),
-        ...(category.value && {category: category.value})
+        ...(location.value && { location: location.value }),
+        ...(category.value && { category: category.value }),
       },
     });
   } else {
-      modalShow.value = true
+    router.push("/register");
   }
 };
 </script>
