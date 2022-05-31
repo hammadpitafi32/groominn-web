@@ -12,6 +12,7 @@
                   v-model="sort"
                   class="form-select me-3 fw-bold rounded-5"
                 >
+                  <option value="">Sorting</option>
                   <option value="all">All</option>
                   <option value="star-1">1 Star</option>
                   <option value="star-2">2 Star</option>
@@ -137,15 +138,15 @@
                 style="direction: ltr"
                 v-else
               >
-                <h3 class="fw-bold">Sorry!</h3>
-                Currently no shops are available in your area
+                <h3 class="fw-bold">NO Match Found!</h3>
+                <!-- Currently no shops are available in your area -->
               </div>
             </div>
             <ShopsLoader v-else />
           </div>
         </div>
         <div class="col-7">
-          <Map />
+          <Map :data="bookingList" />
         </div>
       </div>
     </div>
@@ -167,7 +168,7 @@ const imgUrl = asset.baseUrl;
 const activeId = ref(null);
 const router = useRouter();
 const route = useRoute();
-const sort = ref("all");
+const sort = ref("");
 const category = ref("");
 const loading = ref(true);
 
@@ -190,7 +191,18 @@ getAllShops().then(({ data }) => {
 watchEffect(() => {
   store.dispatch("clientRedirection");
   if (route.query.category) {
-    category.value = route.query.category;
+    if (categoriesFromAdmin.value) {
+      categoriesFromAdmin.value.map((item) => {
+        let smallCategory = item.name.toLowerCase();
+        if (smallCategory == route.query.category) {
+          category.value = item.id;
+        }
+      });
+    }
+  }
+
+  if (route.query.rating) {
+    sort.value = route.query.rating;
   }
 
   localStorage.clear();
@@ -219,5 +231,10 @@ watchEffect(() => {
 }
 .description {
   -webkit-line-clamp: 2;
+}
+
+select,
+option {
+  text-transform: capitalize;
 }
 </style>

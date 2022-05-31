@@ -7,7 +7,7 @@
         fade
         :items="items"
         :pause="false"
-        :interval="4000"
+        :interval="false"
         itemsClass="slider-image img-fluid"
         class="main-slider"
       />

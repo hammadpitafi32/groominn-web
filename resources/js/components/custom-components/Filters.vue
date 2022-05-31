@@ -5,8 +5,9 @@
         name="sort"
         id=""
         v-model="sort"
-        class="form-select me-3 fw-bold rounded-5"
+        class="form-select border-0 me-3"
       >
+        <option value="">Sorting</option>
         <option value="all">All</option>
         <option value="star-1">1 Star</option>
         <option value="star-2">2 Star</option>
@@ -25,7 +26,7 @@
         <option
           v-for="category in categoriesFromAdmin"
           :key="category.id"
-          :value="category.id"
+          :value="category.name"
         >
           {{ category.name }}
         </option>
@@ -33,7 +34,7 @@
 
       <MDBBtn
         class="text-white bg-orange w-25"
-        :disabled="!location && !category"
+        :disabled="!sort && !category"
         @click="paramsHandle()"
         >Search</MDBBtn
       >
@@ -52,7 +53,7 @@ import NoAuthModal from "../modals/NoAuthModal.vue";
 const router = useRouter();
 const store = useStore();
 
-const sort = ref("all");
+const sort = ref("");
 const category = ref("");
 const modalShow = ref(false);
 
@@ -64,8 +65,8 @@ const paramsHandle = () => {
     router.push({
       path: "/booking-list",
       query: {
-        ...(location.value && { location: location.value }),
-        ...(category.value && { category: category.value }),
+        ...(sort.value && { rating: sort.value }),
+        ...(category.value && { category: category.value.toLowerCase() }),
       },
     });
   } else {
