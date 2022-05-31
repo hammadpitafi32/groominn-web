@@ -28,6 +28,8 @@ Route::group(['namespace' => 'Api'],function()
         Route::get('logout', 'ApiAuthController@logout');
 
         Route::get('get-user-business/{id?}', 'UserBusinessController@getUserBusiness');
+        Route::get('get-categories', 'UserBusinessController@getCategories');
+
         /*service provider start*/
         Route::group(['middleware' => 'provider.jwt'], function () {
 
@@ -38,7 +40,6 @@ Route::group(['namespace' => 'Api'],function()
 
             Route::post('bind-categories', 'BusinessController@bindCategories');
 
-            Route::get('get-categories', 'UserBusinessController@getCategories');
             Route::get('get-user-categories', 'UserBusinessController@getUserCategories');
             Route::delete('delete-user-category/{id}', 'UserBusinessController@deleteUserCategory');
 

@@ -139,6 +139,11 @@ class BookingRepository implements BookingInterface
 		// dd($token);
 		if(!isset($token['id']))
 		{
+
+			return $data = [
+                'success' => false,
+                'message' => $e,
+            ];
 			return response()->json([
 				'success' => false,
 				'message' => 'The stripe token was not generated correctly, Please contact support!'
