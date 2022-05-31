@@ -38,6 +38,7 @@ const { cookies } = useCookies();
 const loading = ref(true);
 const apiResponse = ref(null);
 
+// Get Business for provider without business id
 const getProviderBusiness = () => {
   getUserBusiness().then((res) => {
     apiResponse.value = res.data;
@@ -51,11 +52,15 @@ const getProviderBusiness = () => {
   });
 };
 
+// Get Business for client with business id so that user can see the data of specific shop
 const getShopForClient = () => {
   if (route.params.id) {
     getUserBusiness(route.params.id).then(({ data }) => {
       apiResponse.value = data;
       loading.value = false;
+      if (data.data === null) {
+        router.push("/booking-list");
+      }
     });
   }
 };
@@ -72,7 +77,10 @@ watchEffect(() => {
       getProviderBusiness();
     } else if (store.state.role === "Provider" && route.name === "shopDetail") {
       router.push("/my-shop");
-    } else if (store.state.role === "Client" && (route.name === "myShop" || route.name === "addShop")) {
+    } else if (
+      store.state.role === "Client" &&
+      (route.name === "myShop" || route.name === "addShop")
+    ) {
       router.push("/");
     } else if (store.state.role === "Client" && route.name == "shopDetail") {
       getShopForClient();

@@ -32,7 +32,7 @@ app.use(store);
 app.use(VueTimepicker);
 app.use(Vue3Geolocation);
 app.use(Toast, {
-    position: POSITION.TOP_RIGHT,
+    position: POSITION.BOTTOM_RIGHT,
     timeout: 2000
 });
 app.use(VueGoogleMaps, {

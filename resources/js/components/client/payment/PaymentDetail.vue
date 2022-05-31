@@ -98,6 +98,7 @@
           text-capitalize
           fs-6
         "
+        :disabled="!itemsForBooking"
         @click="handlePayment()"
         >Pay Now</MDBBtn
       >
@@ -182,6 +183,8 @@ watchEffect(() => {
     exp_month: expMonth.value,
     exp_year: expYear.value,
   });
+
+  // console.log(itemsForBooking.value);
 });
 
 watch(expYear, (newValue, oldValue) => {

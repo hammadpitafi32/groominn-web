@@ -1,6 +1,7 @@
 import { useCookies } from "vue3-cookies";
 import { createStore } from "vuex";
 import { logout } from "../api";
+import { getAllCategories } from "../api";
 import router from '../router/router';
 
 const { cookies } = useCookies();
@@ -11,6 +12,7 @@ const store = createStore({
         name: '',
         role: '',
         shop: '',
+        allCategories: null
     },
     actions: {
         setAuth(context) {
@@ -56,6 +58,11 @@ const store = createStore({
             } else if (context.state.role === 'Provider') {
                 router.push('/my-shop')
             }
+        },
+        getCategories(context) {
+            getAllCategories().then((res) => {
+                context.state.allCategories = res.data.data
+            })
         }
     }
 })

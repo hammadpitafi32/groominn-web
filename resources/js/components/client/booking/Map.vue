@@ -15,9 +15,13 @@
     <GMapMarker
       :key="index"
       v-for="(m, index) in markers"
-      :position="m.position"
+      :position="m.coords"
       :clickable="true"
-      :draggable="true"
+      :icon="{
+        url: '../../../assets/img/marker.png',
+        scaledSize: { height: 50 },
+        labelOrigin: { x: 16, y: -10 },
+      }"
     />
   </GMapMap>
 </template>
@@ -36,9 +40,9 @@ const center = computed(() => ({
 
 const markers = ref([
   {
-    position: {
-      lat: 51.093048,
-      lng: 6.84212,
+    coords: {
+      lat: 33.5407694,
+      lng: 73.075933,
     },
   },
 ]);

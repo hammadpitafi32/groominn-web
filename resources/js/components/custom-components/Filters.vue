@@ -2,15 +2,17 @@
   <div class="bg-white shadow-6-strong p-3 rounded-5 filter-box">
     <div class="d-flex align-items-center">
       <select
-        name="location"
-        id="location"
-        v-model="location"
-        class="form-select border-0 me-4"
+        name="sort"
+        id=""
+        v-model="sort"
+        class="form-select me-3 fw-bold rounded-5"
       >
-        <option value="">Location</option>
-        <option value="location-1">Location 1</option>
-        <option value="location-2">Location 2</option>
-        <option value="location-3">Location 3</option>
+        <option value="all">All</option>
+        <option value="star-1">1 Star</option>
+        <option value="star-2">2 Star</option>
+        <option value="star-3">3 Star</option>
+        <option value="star-4">4 Star</option>
+        <option value="star-5">5 Star</option>
       </select>
 
       <select
@@ -20,9 +22,13 @@
         class="form-select border-0 me-4"
       >
         <option value="">Category</option>
-        <option value="category-1">Category 1</option>
-        <option value="category-2">Category 2</option>
-        <option value="category-3">Category 3</option>
+        <option
+          v-for="category in categoriesFromAdmin"
+          :key="category.id"
+          :value="category.id"
+        >
+          {{ category.name }}
+        </option>
       </select>
 
       <MDBBtn
@@ -38,6 +44,7 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import { computed } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import NoAuthModal from "../modals/NoAuthModal.vue";
@@ -45,9 +52,11 @@ import NoAuthModal from "../modals/NoAuthModal.vue";
 const router = useRouter();
 const store = useStore();
 
-const location = ref("");
+const sort = ref("all");
 const category = ref("");
 const modalShow = ref(false);
+
+const categoriesFromAdmin = computed(() => store.state.allCategories);
 
 const paramsHandle = () => {
   if (store.state.auth) {

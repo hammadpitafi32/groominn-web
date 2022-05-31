@@ -216,14 +216,24 @@
             {{ item.name }}
           </div>
         </div>
-        <div v-else>No items selected</div>
+        <div class="mt-2" v-else>
+          No items selected
+          <router-link
+            to="/booking-list"
+            class="text-orange fw-500 ms-1 text-decoration-underline"
+            >Go to the shop list</router-link
+          >
+        </div>
         <div class="position-relative hr-parent">
           <hr class="booking-hr mt-5 mx-n1" />
         </div>
         <div class="price-tag pt-2">
           <small class="d-block text-color-1">You have to Pay</small>
           <div class="fw-bold fs-2">
-            {{ itemsPrice.split('.')[0] }}.<span class="cents fs-5">{{ itemsPrice.split('.')[1] }}</span>
+            {{ itemsPrice ? itemsPrice.split(".")[0] : "0" }}.<span
+              class="cents fs-5"
+              >{{ itemsPrice ? itemsPrice.split(".")[1] : "00" }}</span
+            >
             <span class="currency ms-1">USD</span>
           </div>
         </div>
@@ -245,8 +255,10 @@ const props = defineProps({
 });
 
 const itemsPrice = computed(() => {
-  let price = items.value.reduce((count, item) => count + item.price, 0);
-  return price.toFixed(2);
+  if (items.value) {
+    let price = items.value.reduce((count, item) => count + item.price, 0);
+    return price.toFixed(2);
+  }
 });
 
 watchEffect(() => {

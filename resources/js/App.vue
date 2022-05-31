@@ -14,10 +14,20 @@ import Footer from "./layout/Footer.vue";
 import { useRoute } from "vue-router";
 import Sidebar from "./layout/Sidebar.vue";
 import { useStore } from "vuex";
+import { watchEffect } from "@vue/runtime-core";
 
 const route = useRoute();
 const store = useStore();
 
 store.dispatch("setAuth");
+
+watchEffect(() => {
+  if (
+    (route.name == "home" || route.name == "bookingList") &&
+    !store.state.allCategories
+  ) {
+    store.dispatch("getCategories");
+  }
+});
 </script>
 

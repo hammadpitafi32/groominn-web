@@ -395,7 +395,7 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { onMounted, watchEffect } from "@vue/runtime-core";
+import { computed, onMounted, watchEffect } from "@vue/runtime-core";
 import { MDBCarousel, MDBIcon } from "mdb-vue-ui-kit";
 import NoAuthModal from "./modals/NoAuthModal.vue";
 import { useRouter } from "vue-router";

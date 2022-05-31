@@ -7,26 +7,17 @@
             <form action="">
               <div class="d-flex">
                 <select
-                  name="location"
+                  name="sort"
                   id=""
-                  v-model="location"
+                  v-model="sort"
                   class="form-select me-3 fw-bold rounded-5"
                 >
-                  <option value="">Location</option>
-                  <option value="location-1">Location 1</option>
-                  <option value="location-2">Location 2</option>
-                  <option value="location-3">Location 3</option>
-                </select>
-                <select
-                  name="date"
-                  id=""
-                  v-model="date"
-                  class="form-select me-3 fw-bold rounded-5"
-                >
-                  <option value="">Date</option>
-                  <option value="date-1">Date 1</option>
-                  <option value="date-2">Date 2</option>
-                  <option value="date-3">Date 3</option>
+                  <option value="all">All</option>
+                  <option value="star-1">1 Star</option>
+                  <option value="star-2">2 Star</option>
+                  <option value="star-3">3 Star</option>
+                  <option value="star-4">4 Star</option>
+                  <option value="star-5">5 Star</option>
                 </select>
                 <select
                   name="category"
@@ -35,9 +26,13 @@
                   class="form-select me-3 fw-bold rounded-5"
                 >
                   <option value="">Category</option>
-                  <option value="category-1">Category 1</option>
-                  <option value="category-2">Category 2</option>
-                  <option value="category-3">Category 3</option>
+                  <option
+                    v-for="category in categoriesFromAdmin"
+                    :key="category.id"
+                    :value="category.id"
+                  >
+                    {{ category.name }}
+                  </option>
                 </select>
                 <MDBBtn
                   class="
@@ -57,75 +52,93 @@
           </div>
           <div class="booking-profiles">
             <div v-if="!loading">
-              <div
-                v-for="(booking, index) in bookingList"
-                :key="index"
-                :class="booking.id === activeId && 'active shadow-4-strong'"
-                class="booking-pro mb-3 rounded-5 border p-3"
-                @click="activeBooking(booking)"
-              >
-                <div class="row">
-                  <div class="col-5">
-                    <img
-                      :src="booking.user_business_images.length > 0 ? imgUrl + booking.user_business_images[0].name : 'http://127.0.0.1:8000/images/no-img.webp?2a1649c3403bc7fe3caf888a0bf327e6'"
-                      class="img-fluid rounded-5 booking-img"
-                      alt=""
-                    />
-                  </div>
-                  <div class="col-7">
-                    <h5 class="fw-bold mb-0">{{ booking.name }}</h5>
-                    <small
-                      v-if="booking.id === activeId"
-                      class="text-light-color address"
-                      >{{ booking.address }}</small
-                    >
-                    <p class="mt-2 text-color-1 small description">
-                      {{ booking.description }}
-                    </p>
-                    <div class="mt-3">
-                      <span class="d-block fw-500 categories">Categories</span>
-                      <div class="d-flex flex-wrap mt-3">
-                        <div
-                          class="
-                            booking-category
-                            me-2
-                            d-flex
-                            align-items-center
-                            justify-content-center
-                            fw-500
-                          "
-                          :title="category.name"
-                          v-for="category in booking.user_categories"
-                          :key="category.id"
+              <div v-if="bookingList.length">
+                <div
+                  v-for="(booking, index) in bookingList"
+                  :key="index"
+                  :class="booking.id === activeId && 'active shadow-4-strong'"
+                  class="booking-pro mb-3 rounded-5 border p-3"
+                  @click="activeBooking(booking)"
+                >
+                  <div class="row">
+                    <div class="col-5">
+                      <img
+                        :src="
+                          booking.user_business_images.length > 0
+                            ? imgUrl + booking.user_business_images[0].name
+                            : 'http://127.0.0.1:8000/images/no-img.webp?2a1649c3403bc7fe3caf888a0bf327e6'
+                        "
+                        class="img-fluid rounded-5 booking-img"
+                        alt=""
+                      />
+                    </div>
+                    <div class="col-7">
+                      <h5 class="fw-bold mb-0">{{ booking.name }}</h5>
+                      <small
+                        v-if="booking.id === activeId"
+                        class="text-light-color address"
+                        >{{ booking.address }}</small
+                      >
+                      <p class="mt-2 text-color-1 small description">
+                        {{ booking.description }}
+                      </p>
+                      <div class="mt-3">
+                        <span class="d-block fw-500 categories"
+                          >Categories</span
                         >
-                          {{ category.category.name.charAt(0) }}
-                        </div>
-                      </div>
-                      <div class="text-end mt-2">
-                        <router-link
-                          :to="`/shop-detail/${booking.id}`"
-                          :style="
-                            booking.id !== activeId && { pointerEvents: 'none' }
-                          "
-                        >
-                          <MDBBtn
+                        <div class="d-flex flex-wrap mt-3">
+                          <div
                             class="
-                              btn
-                              bg-orange
-                              text-white
-                              shadow-0
-                              rounded-5
-                              text-capitalize
-                              booking-btn
+                              booking-category
+                              me-2
+                              d-flex
+                              align-items-center
+                              justify-content-center
+                              fw-500
                             "
-                            :disabled="booking.id !== activeId"
-                            >Book Now</MDBBtn
+                            :title="category.name"
+                            v-for="category in booking.user_categories"
+                            :key="category.id"
                           >
-                        </router-link>
+                            {{ category.category.name.charAt(0) }}
+                          </div>
+                        </div>
+                        <div class="text-end mt-2">
+                          <router-link
+                            :to="`/shop-detail/${booking.id}`"
+                            :style="
+                              booking.id !== activeId && {
+                                pointerEvents: 'none',
+                              }
+                            "
+                          >
+                            <MDBBtn
+                              class="
+                                btn
+                                bg-orange
+                                text-white
+                                shadow-0
+                                rounded-5
+                                text-capitalize
+                                booking-btn
+                              "
+                              :disabled="booking.id !== activeId"
+                              >Book Now</MDBBtn
+                            >
+                          </router-link>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="text-orange text-center fw-bold fs-5 mt-5 pt-5"
+                style="direction: ltr"
+                v-else
+              >
+                <h3 class="fw-bold">Sorry!</h3>
+                Currently no shops are available in your area
               </div>
             </div>
             <ShopsLoader v-else />
@@ -141,7 +154,7 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
-import { watchEffect } from "@vue/runtime-core";
+import { computed, watchEffect } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { getAllShops } from "../../../api";
 import store from "../../../store";
@@ -154,12 +167,13 @@ const imgUrl = asset.baseUrl;
 const activeId = ref(null);
 const router = useRouter();
 const route = useRoute();
-const location = ref("");
+const sort = ref("all");
 const category = ref("");
-const date = ref("");
 const loading = ref(true);
 
 const bookingList = ref(null);
+
+const categoriesFromAdmin = computed(() => store.state.allCategories);
 
 const activeBooking = (booking) => {
   activeId.value = booking.id;
@@ -167,15 +181,14 @@ const activeBooking = (booking) => {
 
 getAllShops().then(({ data }) => {
   bookingList.value = data.data.data;
-  activeId.value = bookingList.value[0].id;
+  if (data.data.data.length) {
+    activeId.value = bookingList.value[0].id;
+  }
   loading.value = false;
 });
 
 watchEffect(() => {
   store.dispatch("clientRedirection");
-  if (route.query.location) {
-    location.value = route.query.location;
-  }
   if (route.query.category) {
     category.value = route.query.category;
   }
