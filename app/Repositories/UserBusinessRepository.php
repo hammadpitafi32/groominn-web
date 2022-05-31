@@ -18,6 +18,8 @@ use App\Models\UserBusinessImage;
 use App\Traits\ServiceTrait;
 
 use App\Models\UserBusinessCategoryService;
+
+use DB;
 class UserBusinessRepository implements UserBusinessInterface
 {
 	use ServiceTrait;
@@ -56,6 +58,8 @@ class UserBusinessRepository implements UserBusinessInterface
             'name' => 'required|string',
             'description' => 'required',
             'address' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
             'cnic_front' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
             'cnic_back' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
             'license' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
@@ -314,7 +318,38 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function getBusinesseslist()
 	{
 		$request = $this->request;
+		// dd($request->all());
 		$user_business = UserBusiness::with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
+		// $latitude = 33.5842344;
+		// $longitude =73.1204018;
+
+		if ($request->latitude && $request->longitude) 
+		{
+			$user_business->selectRaw(
+	        "user_businesses.*, (6371 * acos(
+	            cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude))
+	        )) AS distance", 
+	        [$request->latitude, $request->longitude, $request->latitude])
+		    ->having("distance", "<", $request->radius?:10);
+		}
+
+        
+		// dd($user_business->get());
+		/*filteration*/
+		if ($request->category_id) 
+		{
+			$user_business->whereHas('user_categories',function($q) use($request){
+				$q->where('category_id',$request->category_id);
+			});
+		}
+
+		if ($request->rating) 
+		{
+			// code...
+		}
+		/*end filter*/
+		
+		// dd($user_business->get());
         if ($request->pagination == 'false') 
         {
             $user_business= $user_business->get();
