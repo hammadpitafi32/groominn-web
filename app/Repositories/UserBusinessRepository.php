@@ -60,6 +60,7 @@ class UserBusinessRepository implements UserBusinessInterface
             'address' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
+            'no_of_employees' => 'required|numeric|min:0|not_in:0',
             'cnic_front' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
             'cnic_back' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
             'license' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
@@ -94,6 +95,7 @@ class UserBusinessRepository implements UserBusinessInterface
         $user_business->country_id = $request->country_id;
         $user_business->latitude = $request->latitude;
         $user_business->longitude = $request->longitude;
+        $user_business->no_of_employees = $request->no_of_employees;
         $user_business->save();
         /*images*/
         $file_path = 'uploads/user/'.Auth::id().'/business/'.$user_business->id.'/';
@@ -322,7 +324,7 @@ class UserBusinessRepository implements UserBusinessInterface
 		$user_business = UserBusiness::with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
 		// $latitude = 33.5842344;
 		// $longitude =73.1204018;
-
+		/*filteration*/
 		if ($request->latitude && $request->longitude) 
 		{
 			$user_business->selectRaw(
@@ -333,9 +335,6 @@ class UserBusinessRepository implements UserBusinessInterface
 		    ->having("distance", "<", $request->radius?:10);
 		}
 
-        
-		// dd($user_business->get());
-		/*filteration*/
 		if ($request->category_id) 
 		{
 			$user_business->whereHas('user_categories',function($q) use($request){
@@ -349,7 +348,6 @@ class UserBusinessRepository implements UserBusinessInterface
 		}
 		/*end filter*/
 		
-		// dd($user_business->get());
         if ($request->pagination == 'false') 
         {
             $user_business= $user_business->get();
