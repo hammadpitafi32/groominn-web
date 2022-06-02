@@ -11,7 +11,7 @@
     <MDBContainer>
       <MDBNavbarBrand>
         <router-link to="/">
-          <img src="../assets/img/logo.svg" alt="logo" class="img-fluid" />
+          <img src="../assets/img/logo-2.svg" alt="logo" class="img-fluid" />
         </router-link>
       </MDBNavbarBrand>
       <MDBNavbarToggler target="navbarNav"></MDBNavbarToggler>
