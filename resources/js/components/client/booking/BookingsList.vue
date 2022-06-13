@@ -87,7 +87,10 @@
                         <span class="d-block fw-500 categories"
                           >Categories</span
                         >
-                        <div class="d-flex flex-wrap mt-3">
+                        <div
+                          class="d-flex flex-wrap mt-3"
+                          v-if="booking.user_categories.length"
+                        >
                           <div
                             class="
                               booking-category
@@ -103,6 +106,9 @@
                           >
                             {{ category.category.name.charAt(0) }}
                           </div>
+                        </div>
+                        <div class="text-orange py-2" v-else>
+                          No categories found
                         </div>
                         <div class="text-end mt-2">
                           <router-link

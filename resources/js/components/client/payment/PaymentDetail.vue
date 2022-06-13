@@ -110,6 +110,7 @@
 import { ref } from "@vue/reactivity";
 import { computed, watch, watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
+import { createBooking } from "../../../api";
 
 const emit = defineEmits(["sendData"]);
 
@@ -198,7 +199,23 @@ watch(expYear, (newValue, oldValue) => {
 });
 
 // Payment function
-const handlePayment = () => {};
+const handlePayment = () => {
+  const formData = new FormData();
+  formData.append("card_no", cardNumberForRequest.value);
+  formData.append("exp_month", expMonth.value);
+  formData.append("exp_year", expYear.value);
+  formData.append("cvc", cvv.value);
+  formData.append("user_business_id", props.data.business_id);
+  formData.append("charges", props.data.charges);
+
+  createBooking(formData)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 </script>
 
 <style scoped>

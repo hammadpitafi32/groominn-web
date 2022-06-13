@@ -5,7 +5,7 @@
         <PaymentDetail @sendData="sendData" :data="data" />
       </MDBCol>
       <MDBCol col="4">
-        <PaymentMethod :data="data" />
+        <PaymentMethod @sendCharges="sendCharges" :data="data" />
       </MDBCol>
     </MDBRow>
   </MDBContainer>
@@ -21,24 +21,41 @@ import { useRoute } from "vue-router";
 const store = useStore();
 const route = useRoute();
 const itemsInCart = ref(null);
+const business_id = ref(null);
 const data = ref({});
 
 watchEffect(() => {
   store.dispatch("clientRedirection");
   store.dispatch("setAuth");
   if (route.params.data) {
-    let jsondata = route.params.data.map((item) => JSON.parse(item));
+    let dataForPayment = JSON.parse(route.params.data);
+    let jsondata = dataForPayment.items.map((item) => JSON.parse(item));
     itemsInCart.value = jsondata;
 
-    localStorage.setItem("item_in_cart", JSON.stringify(jsondata));
+    localStorage.setItem(
+      "data",
+      JSON.stringify({
+        items: JSON.stringify(jsondata),
+        id: dataForPayment.user_business_id,
+        date: dataForPayment.booking_date,
+      })
+    );
   } else {
-    let items = localStorage.getItem("item_in_cart");
-    itemsInCart.value = JSON.parse(items);
+    let items = localStorage.getItem("data");
+    itemsInCart.value = JSON.parse(items).items;
   }
 });
 
 const sendData = (val) => {
-  data.value = { ...val, item_in_cart: itemsInCart.value };
+  data.value = {
+    ...val,
+    item_in_cart: itemsInCart.value,
+    business_id: business_id.value,
+  };
+};
+
+const sendCharges = (val) => {
+  data.value = { ...data.value, charges: val };
 };
 </script>
 

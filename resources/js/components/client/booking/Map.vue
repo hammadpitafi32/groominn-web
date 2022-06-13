@@ -3,7 +3,7 @@
     api-key="AIzaSyA7NJiportPdMrSes7VW1XI63-qhL0i3DM"
     style="width: 100%; height: calc(100vh - 120px)"
     :center="center"
-    :zoom="props.activeShop ? 17 : 15"
+    :zoom="props.activeShop ? 18 : 15"
   >
     <Marker
       v-for="(marker, index) in markers"

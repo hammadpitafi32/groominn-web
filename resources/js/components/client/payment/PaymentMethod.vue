@@ -250,6 +250,8 @@ import { MDBRadio } from "mdb-vue-ui-kit";
 const paymentMethod = ref("master");
 const items = ref(null);
 
+const emit = defineEmits(["sendCharges"]);
+
 const props = defineProps({
   data: Object,
 });
@@ -263,6 +265,7 @@ const itemsPrice = computed(() => {
 
 watchEffect(() => {
   items.value = props.data.item_in_cart;
+  emit("sendCharges", itemsPrice.value);
 });
 </script>
 

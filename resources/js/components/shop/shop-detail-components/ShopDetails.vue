@@ -30,12 +30,12 @@
       </div>
       <div class="right ms-4 flex-shrink-0" v-if="role == 'Client'">
         <div class="select-parent position-relative">
-          <select name="date" id="date" class="form-select select-date">
-            <option value="">Select Date</option>
-            <option value="date-1">Date 1</option>
-            <option value="date-3">Date 2</option>
-            <option value="date-3">Date 3</option>
-          </select>
+          <input
+            type="date"
+            v-model="booking_date"
+            class="form-control select-date"
+            readonly
+          />
         </div>
         <div
           class="
@@ -173,12 +173,16 @@
           :to="{
             name: 'payment',
             params: {
-              data: selectedCategories.map((item) => {
-                return JSON.stringify({
-                  name: item.user_service.name,
-                  id: item.id,
-                  price: item.charges,
-                });
+              data: JSON.stringify({
+                user_business_id: route.params.id,
+                booking_date,
+                items: selectedCategories.map((item) => {
+                  return JSON.stringify({
+                    name: item.user_service.name,
+                    id: item.id,
+                    price: item.charges,
+                  });
+                }),
               }),
             },
           }"
@@ -215,14 +219,22 @@ import {
   MDBTabPane,
 } from "mdb-vue-ui-kit";
 import { useStore } from "vuex";
+import { MDBInput } from "mdb-vue-ui-kit";
+import { useRoute } from "vue-router";
 
 const props = defineProps({
   data: Object,
 });
 
 const categtoriesArray = ref(props.data.user_categories);
-
+const route = useRoute();
 const store = useStore();
+const todayDate = computed(() => {
+  let date = new Date();
+  return date.toISOString().split("T")[0];
+});
+
+const booking_date = ref(todayDate.value);
 
 const role = ref(store.state.role);
 const selectedCategories = ref([]);
@@ -246,9 +258,9 @@ const setCategories = (event, val) => {
 
 watchEffect(() => {
   // Setting items in selectedCategories from localStorage
-  let categoriesInLocalStorage = localStorage.getItem("item_in_cart");
+  let categoriesInLocalStorage = localStorage.getItem("data");
   if (categoriesInLocalStorage) {
-    let array = JSON.parse(categoriesInLocalStorage);
+    let array = JSON.parse(JSON.parse(categoriesInLocalStorage).items);
 
     categtoriesArray.value.map((item) => {
       if (item.user_business_category_services.length) {
@@ -265,9 +277,9 @@ watchEffect(() => {
 });
 
 const handleCheckbox = (id) => {
-  let categoriesInLocalStorage = localStorage.getItem("item_in_cart");
+  let categoriesInLocalStorage = localStorage.getItem("data");
   if (categoriesInLocalStorage) {
-    let array = JSON.parse(categoriesInLocalStorage);
+    let array = JSON.parse(JSON.parse(categoriesInLocalStorage).items);
     for (let i = 0; i < array.length; i++) {
       if (array[i].id === id) {
         return true;
