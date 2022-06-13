@@ -146,7 +146,7 @@
           </div>
         </div>
         <div class="col-7">
-          <Map :data="bookingList" />
+          <Map :data="bookingList" :activeShop="activeShop" />
         </div>
       </div>
     </div>
@@ -175,16 +175,21 @@ const loading = ref(true);
 const bookingList = ref(null);
 
 const categoriesFromAdmin = computed(() => store.state.allCategories);
+const activeShop = ref(null);
 
 const activeBooking = (booking) => {
   activeId.value = booking.id;
+  activeShop.value = {
+    lat: booking.latitude,
+    lng: booking.longitude,
+  };
 };
 
 getAllShops().then(({ data }) => {
   bookingList.value = data.data.data;
-  if (data.data.data.length) {
-    activeId.value = bookingList.value[0].id;
-  }
+  // if (data.data.data.length) {
+  //   activeId.value = bookingList.value[0].id;
+  // }
   loading.value = false;
 });
 
