@@ -230,9 +230,9 @@
         <div class="price-tag pt-2">
           <small class="d-block text-color-1">You have to Pay</small>
           <div class="fw-bold fs-2">
-            {{ itemsPrice ? itemsPrice.split(".")[0] : "0" }}.<span
+            {{ totalPrice ? totalPrice.split(".")[0] : "0" }}.<span
               class="cents fs-5"
-              >{{ itemsPrice ? itemsPrice.split(".")[1] : "00" }}</span
+              >{{ totalPrice ? totalPrice.split(".")[1] : "00" }}</span
             >
             <span class="currency ms-1">USD</span>
           </div>
@@ -250,22 +250,14 @@ import { MDBRadio } from "mdb-vue-ui-kit";
 const paymentMethod = ref("master");
 const items = ref(null);
 
-const emit = defineEmits(["sendCharges"]);
-
 const props = defineProps({
   data: Object,
 });
 
-const itemsPrice = computed(() => {
-  if (items.value) {
-    let price = items.value.reduce((count, item) => count + item.price, 0);
-    return price.toFixed(2);
-  }
-});
+const totalPrice = computed(() => props.data.charges);
 
 watchEffect(() => {
   items.value = props.data.item_in_cart;
-  emit("sendCharges", itemsPrice.value);
 });
 </script>
 

@@ -15,6 +15,7 @@
             class="form-control card-number py-3"
             placeholder="xxxx  -  xxxx  -  xxxx  -  xxxx"
             v-model="cardNumber"
+            :class="errors && errors.card_no && 'border-danger'"
           />
           <span class="card-image position-absolute">
             <svg
@@ -42,6 +43,9 @@
             </svg>
           </span>
         </div>
+        <small class="text-danger" v-if="errors && errors.card_no">{{
+          errors.card_no[0]
+        }}</small>
       </div>
       <div class="form-group mb-4">
         <label for="name" class="fw-500 mb-3">Card Holder Number</label>
@@ -60,7 +64,11 @@
             v-model="cvv"
             maxlength="4"
             class="py-3 text-center fw-500 form-control"
+            :class="errors && errors.cvc && 'border-danger'"
           />
+          <small class="text-danger" v-if="errors && errors.cvc">{{
+            errors.cvc[0]
+          }}</small>
         </div>
       </div>
       <div class="row align-items-center mb-4">
@@ -126,6 +134,7 @@ const expMonth = ref("");
 const expYear = ref("");
 const cardNumber = ref("");
 const cardNumberForRequest = ref("");
+const errors = ref(null);
 
 watch(cvv, (newValue, oldValue) => {
   let regix = /^[0-9]*$/;
@@ -207,13 +216,15 @@ const handlePayment = () => {
   formData.append("cvc", cvv.value);
   formData.append("user_business_id", props.data.business_id);
   formData.append("charges", props.data.charges);
+  formData.append("date", props.data.booking_date);
 
   createBooking(formData)
     .then((response) => {
       console.log(response);
     })
     .catch((error) => {
-      console.log(error);
+      errors.value = error.response.data.errors;
+      console.log(errors.value);
     });
 };
 </script>
