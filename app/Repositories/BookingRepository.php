@@ -105,16 +105,16 @@ class BookingRepository implements BookingInterface
 
 	                }
 	            }
-
 	            if (@$payment_intent) 
 	            {
-	                $billing = $payment_intent['charges']['data'][0];
+                    $billing = $payment_intent['charges']['data'][0];
 	                $request['payment_intent_id'] = $payment_intent['id'];
 	                $request['billing_id'] = $billing['id'];
 	                $request['balance_transaction'] = $billing['balance_transaction'];
 	                $request['billing_status'] = $billing['status'];
 	                $request['receipt_url'] = $billing['receipt_url'];
 	            }
+                // dd($request);
 
         	}
         }
@@ -146,7 +146,6 @@ class BookingRepository implements BookingInterface
 		foreach ($category_services as $category_service) 
 		{
             // dd($category_service->user_service->name);
-			$category_service->total_duration;
 			$duration = $category_service->duration;
 
 			if ($total_duration) 
