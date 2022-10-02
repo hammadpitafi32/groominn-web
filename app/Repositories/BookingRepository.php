@@ -53,7 +53,7 @@ class BookingRepository implements BookingInterface
             'service_ids' => 'required',
             'date' => 'required',
             'user_business_id' => 'required',
-            'charges' => 'required',
+            // 'charges' => 'required',
             'card_no' => 'required',
             'exp_month' => 'required',
             'exp_year' => 'required',
@@ -142,9 +142,10 @@ class BookingRepository implements BookingInterface
             'billing_status' => @$request->billing_status,
             'receipt_url' => @$request->receipt_url,
 		]);
-
+        // dd($category_services);
 		foreach ($category_services as $category_service) 
 		{
+            // dd($category_service->user_service->name);
 			$category_service->total_duration;
 			$duration = $category_service->duration;
 
@@ -161,8 +162,8 @@ class BookingRepository implements BookingInterface
 			BookingService::create([
 				'booking_id' => $booking->id,
 				'user_business_category_service_id' => $category_service->id,
-				'category_name' => $category_service->user_category->category->name,
-				'service_name' =>  $category_service->user_service->service->name,
+				'category_name' => @$category_service->user_category->category->name,
+				'service_name' =>  @$category_service->user_service->name,
 				'duration' => $category_service->duration,
 				'charges' => $category_service->charges,
 				'type' => $category_service->type,
