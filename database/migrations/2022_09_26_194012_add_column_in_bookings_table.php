@@ -28,8 +28,8 @@ class AddColumnInBookingsTable extends Migration
     public function down()
     {
         Schema::table('bookings', function (Blueprint $table) {
-            if(Schema::hasColumn('bookings','payment_intent_id','cancel_detail','cancel_by')){
-                $table->dropColumn('payment_intent_id'); 
+            if(Schema::hasColumn('bookings','cancel_detail','cancel_by')){
+                // $table->dropColumn('payment_intent_id'); 
                 $table->dropColumn('cancel_detail'); 
                 $table->dropColumn('cancel_by'); 
             }
