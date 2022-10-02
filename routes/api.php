@@ -30,7 +30,10 @@ Route::group(['namespace' => 'Api'],function()
         Route::get('logout', 'ApiAuthController@logout');
 
         Route::get('get-user-business/{id?}', 'UserBusinessController@getUserBusiness');
-    
+        Route::get('get-bookings', 'BookingController@getBookings');
+        Route::get('booking-detail', 'BookingController@bookingDetail');
+        Route::get('booking-cancelation', 'BookingController@bookingCancel');
+        
         /*service provider start*/
         Route::group(['middleware' => 'provider.jwt'], function () {
 
@@ -55,6 +58,10 @@ Route::group(['namespace' => 'Api'],function()
             Route::post('create-business-schedule', 'UserBusinessController@createOrUpdateSchedule');
 
             Route::post('create-user-category-service', 'UserBusinessController@createUserBusinessService');
+            // bank   
+            Route::post('save-bank-detail', 'ApiUserController@saveBankDetail');
+            Route::get('get-bank-detail', 'ApiUserController@getBankDetail');
+            Route::delete('delete-bank-detail', 'ApiUserController@deleteBankDetail');
 
             
         });
@@ -62,6 +69,7 @@ Route::group(['namespace' => 'Api'],function()
         /*client*/
         Route::group(['middleware' => 'client.jwt'], function () {
             Route::post('get-businesses-list', 'UserBusinessController@getBusinesseslist');
+
             Route::post('create-booking', 'BookingController@create');
             Route::post('get-estimated-time', 'BookingController@getEstimatedTime');
 

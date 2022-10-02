@@ -17,6 +17,12 @@ trait ServiceTrait {
     {
         return UserService::find($id);
     }
+
+    public function serviceFindBy($column,$value)
+    {
+        return UserService::where('user_id', Auth::id())->where($column,$value);
+    }
+
     public function createOrUpdateService(Request $request)
     {
         // dd($request->all());

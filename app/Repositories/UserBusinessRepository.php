@@ -33,24 +33,31 @@ class UserBusinessRepository implements UserBusinessInterface
 		$this->user_business = $user_business;
 		$this->request = $request;
 	}
-
+	
 	public function find($id)
     {
-        return $this->user_business
-        ->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
-  //       ->with(['user_categories' => function ($query) {
-		//         // $query->select('id','user_id', 'name');
-		//     }],'user_categories.user_business_category_services'
-		//    //  ['user_categories.user_business_category_services' => function ($query) {
-	 //    //     // $query->select('id','user_id', 'name');
-	 //    // }]
-		// )
-        ->find($id);
+        // return $this->user_business->whereHas('user_business_category_services')
+        // ->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
+  		// 	//       ->with(['user_categories' => function ($query) {
+		// 	//         // $query->select('id','user_id', 'name');
+		// 	//     }],'user_categories.user_business_category_services'
+		// 	//    //  ['user_categories.user_business_category_services' => function ($query) {
+	 	// 	//    //     // $query->select('id','user_id', 'name');
+	 	// 	//    // }]
+		// // )
+        // ->find($id);
+		return $this->user_business
+        	->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
+			->whereHas('user_categories.user_business_category_services',function($q) use($id){
+				// dd($id);
+				$q->where('user_business_id',$id);
+			})
+        	->find($id);
 
 
-        return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories')->find($id);
+        // return $this->user_business->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories')->find($id);
     }
-
+    /*save business*/
 	public function createOrUpdate()
 	{
 		$request = $this->request;
@@ -192,7 +199,7 @@ class UserBusinessRepository implements UserBusinessInterface
         ];
 		
 	}
-
+	/*save services like hair cut, spa etc*/
 	public function createUserBusinessService()
 	{
 		$request = $this->request;
@@ -209,9 +216,28 @@ class UserBusinessRepository implements UserBusinessInterface
 
 		// dd($user_business_id);
 
-		// dd($user_business_cat_service->user_service_id,$request->all());
 		$request['name'] = $request->service;
 		$request['service_id'] = $user_business_cat_service->user_service_id;
+
+		$user_service = $this->serviceFindBy('name',$request->name)->first();
+		if ($user_service && !$request->id) 
+		{
+			$user_category_service = UserBusinessCategoryService::where('user_business_id',$user_business_id)
+			->where('user_category_id',$request->category_id)
+			->where('user_service_id',$user_service->id)->first();
+			if ($user_category_service) 
+			{
+				return response()->json([
+		            'errors' => ['name' => ["The name has already been taken."]],
+		            'success' => false
+		        ], 400);
+			}
+			
+		}
+		
+		// dd($user_service);
+
+		
 		// dd(date('H:i'));
 		$validator = Validator::make($request->all(), [
             'category_id' => 'required',
@@ -253,7 +279,7 @@ class UserBusinessRepository implements UserBusinessInterface
         ], 200);
 
 	}
-
+	/*get business detail*/
 	public function getUserBusiness($id)
 	{
 		$id =  $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
@@ -270,7 +296,7 @@ class UserBusinessRepository implements UserBusinessInterface
             'data' => $business
         ], 200);
 	}
-
+	/*delete business*/
 	public function deleteUserBusiness($id)
 	{
 		$id = $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
@@ -296,7 +322,7 @@ class UserBusinessRepository implements UserBusinessInterface
         ], 200);
 
 	}
-
+	/*delete service*/
 	public function deleteUserCategoryService($id)
 	{
 		$user_category_service = UserBusinessCategoryService::find($id);
@@ -316,12 +342,12 @@ class UserBusinessRepository implements UserBusinessInterface
         
         
 	}
-
+	/*get business list for client with radius*/
 	public function getBusinesseslist()
 	{
 		$request = $this->request;
 		// dd($request->all());
-		$user_business = UserBusiness::with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
+		$user_business = UserBusiness::whereHas('user_business_category_services')->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
 		// $latitude = 33.5842344;
 		// $longitude =73.1204018;
 		/*filteration*/
@@ -362,5 +388,11 @@ class UserBusinessRepository implements UserBusinessInterface
             'data' => $user_business
         ], 200);
 	}
+
+	public function FunctionName($value='')
+	{
+		// code...
+	}
+
 
 }

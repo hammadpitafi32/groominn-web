@@ -23,4 +23,20 @@ class BookingController extends Controller
     {
         dd($this->booking->getEstimatedTime());
     }
+
+    public function getBookings(Request $request)
+    {
+        return $this->booking->getBookings();
+
+    }
+    public function bookingDetail(Request $request)
+    {
+        return $this->booking->bookingDetail();
+
+    }
+    public function bookingCancel(Request $request)
+    {
+        return $this->booking->bookingCancel();
+
+    }
 }
