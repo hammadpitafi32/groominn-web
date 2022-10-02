@@ -66,8 +66,9 @@ class BookingRepository implements BookingInterface
                 'success' => false
             ], 400);
         }
-        $category_services = UserBusinessCategoryService::find($request->service_ids);
-        if ($category_services->count() > 0 ) 
+        $service_ids = explode(',',$request->service_ids);
+        $category_services = UserBusinessCategoryService::find($service_ids);
+        if ($category_services && $category_services->count() > 0 ) 
         {
         	$total_charges = $category_services->sum('charges');
         	if($total_charges > 0)
@@ -117,6 +118,12 @@ class BookingRepository implements BookingInterface
                 // dd($request);
 
         	}
+        }
+        else{
+            return response()->json([
+                'success' => false,
+                'msg' => 'Selected Service not found!'
+            ], 400);
         }
         
 		/*save booking*/
