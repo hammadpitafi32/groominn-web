@@ -21,7 +21,11 @@ class BookingController extends Controller
 
     public function getEstimatedTime(Request $request)
     {
-        return $this->booking->getEstimatedTime();
+        $data = $this->booking->getEstimatedTime();
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ], 200);
     }
 
     public function getBookings(Request $request)
