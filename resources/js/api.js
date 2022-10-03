@@ -71,6 +71,9 @@ export const getAllShops = async () => {
 export const createBooking = async (data) => {
     return await axios.post(`${baseURL}/create-booking`, data);
 };
+export const getBooking = async (data) => {
+    return await axios.get(`${baseURL}/get-bookings`);
+};
 
 export const logout = async () => {
     return await axios.get(`${baseURL}/logout`);
