@@ -66,8 +66,11 @@ class BookingRepository implements BookingInterface
                 'success' => false
             ], 400);
         }
+        // dd($this->getEstimatedTime());
+
         $service_ids = explode(',',$request->service_ids);
         $category_services = UserBusinessCategoryService::find($service_ids);
+
         if ($category_services && $category_services->count() > 0 ) 
         {
         	$total_charges = $category_services->sum('charges');
@@ -125,21 +128,27 @@ class BookingRepository implements BookingInterface
                 'msg' => 'Selected Service not found!'
             ], 400);
         }
-        
+        // dd($request->all());
+        // dd($this->getEstimatedTime());
 		/*save booking*/
 		$uniqid = Str::random(9);
 		$total_booking = Booking::withTrashed()->where('created_at','like', '%'.date('Y-m'). '%')->count();
         $total_booking +=1;
 
         $total_duration = null;
+        try {
+            $estimated_time = $this->getEstimatedTime();
+        } catch (\Throwable $th) {
+            $estimated_time = date('Y-m-d H:i:s');
+        }
 
 		$booking = Booking::create([
 			'booking_no' => 'G-BK-'.date('ym').$total_booking,
 			'user_id' => Auth::id(),
 			'user_business_id' => $request->user_business_id,
 			// 'total_duration' => $request->total_duration,
-			'date' => $request->date,
-			'estimated_time' => $request->estimated_time,
+			'date' =>  date('Y-m-d H:i:s', strtotime($request->date)),
+			'estimated_time' => $estimated_time,
 			'charges' => $total_charges,
 			/*billing*/
 			'payment_type' => 'stripe',
@@ -152,6 +161,7 @@ class BookingRepository implements BookingInterface
         // dd($category_services);
 		foreach ($category_services as $category_service) 
 		{
+            // dd($category_service->duration);
             // dd($category_service->user_service->name);
 			$duration = $category_service->duration;
 
@@ -438,11 +448,30 @@ class BookingRepository implements BookingInterface
 
 		$current_time = date('H:i:s');
 		$estimated_time = 0;
-		$no_of_employees = 5;
-
 		$user_business = UserBusiness::with('user_business_schedules')->find($request->user_business_id);
-		$bookings = $this->booking->where('user_business_id',$user_business->id)->whereDate('date',$date)->get();
-		dd($bookings);
+		$no_of_employees = ($user_business->no_of_employees?:1);
+        // dd($no_of_employees);
+		$bookings = $this->booking->where('user_business_id',$user_business->id)->whereDate('date',$date)->where('status','pending')->get();
+        $total_time_left = date('H:i:s');
+        if ($bookings->count() > $no_of_employees ) 
+        {
+            foreach ($bookings as $booking) 
+            {
+                $created_duration = date('H:i:s',strtotime($booking->created_at));
+                $total_duration = $booking->total_duration;
+                $left = date('H:i:s', strtotime($current_time) - strtotime($created_duration));
+                $time_left = date('H:i:s', strtotime($total_duration) - strtotime($left));
+                $total_time_left = date('H:i:s', strtotime($total_time_left) + strtotime($time_left));
+            }
+        }
+        
+        return date('Y-m-d H:i:s', strtotime($total_time_left));
+        // dd('dfg');
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => $data
+        // ], 200);
+    
 	}
 	public function getEstimatedTimeold()
 	{
