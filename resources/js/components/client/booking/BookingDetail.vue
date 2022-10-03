@@ -83,9 +83,7 @@
                                 <td>{{ booking.user_business.user.email }}</td>
                                 <td>
                                     {{
-                                        booking.estimated_time
-                                            ? booking.estimated_time
-                                            : "N/A"
+                                        setEstimatedTime(booking.estimated_time)
                                     }}
                                 </td>
                                 <td>{{ booking.date.split(" ")[0] }}</td>
@@ -138,8 +136,21 @@ getBooking().then(({ data }) => {
     bookings.value = data.data;
     loading.value = false;
 });
-// };
-// getAllBooking();
+
+const setEstimatedTime = (time) => {
+    if (time) {
+        let newTime = time.split(" ")[1];
+        let hours = newTime.split(":")[0];
+        let mins = newTime.split(":")[1];
+        let ampm = hours >= 12 ? 'PM' : 'AM';
+        hours %= 12;
+        hours = hours || 12;
+        mins = mins < 10 ? `0${mins}` : mins;
+        return hours + ":" + mins + " " + ampm;
+    } else {
+        return "N/A";
+    }
+};
 
 watchEffect(() => {
     store.dispatch("clientRedirection");
