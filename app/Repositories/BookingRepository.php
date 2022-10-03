@@ -529,12 +529,15 @@ class BookingRepository implements BookingInterface
             $q->where('user_business_id',$user_business_id);
         })
         ->whereHas('booking_services')
-        ->select('id','user_id','booking_no','total_duration','date','estimated_time','payment_type','status','charges','created_at')
+        ->select('id','user_id','user_business_id','booking_no','total_duration','date','estimated_time','payment_type','status','charges','created_at')
         ->with(['user.user_detail' => function ($q) {
             $q->select('user_id','phone','gender','date_of_birth','address_line_1','address_line_2','country_id','state_id','city','zip_code','tax_id');
         }])
         ->with(['user' => function ($q) {
             $q->select('id','name','email');
+        }])
+        ->with(['user_business' => function ($q) {
+            $q->select('id','name','address','city');
         }])
         
         // ->with(['booking_services.category_services.user_category' => function ($q) {
