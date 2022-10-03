@@ -36,15 +36,15 @@ class UserBusinessRepository implements UserBusinessInterface
 	
 	public function find($id)
     {
-        // return $this->user_business->whereHas('user_business_category_services')
+        // return $this->user_business
         // ->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
-  		// 	//       ->with(['user_categories' => function ($query) {
-		// 	//         // $query->select('id','user_id', 'name');
-		// 	//     }],'user_categories.user_business_category_services'
-		// 	//    //  ['user_categories.user_business_category_services' => function ($query) {
-	 	// 	//    //     // $query->select('id','user_id', 'name');
-	 	// 	//    // }]
-		// // )
+  		// 	      ->with(['user_categories' => function ($query) {
+		// 	        // $query->select('id','user_id', 'name');
+		// 	    }],'user_categories.user_business_category_services'
+		// 	   //  ['user_categories.user_business_category_services' => function ($query) {
+	 	// 	   //     // $query->select('id','user_id', 'name');
+	 	// 	   // }]
+		// )
         // ->find($id);
 		return $this->user_business
         	->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
@@ -283,8 +283,18 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function getUserBusiness($id)
 	{
 		$id =  $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
-		// dd($id);
-		$business = $this->find($id);
+		// dd($id ,Auth::user()->user_business);
+		$business = $this->user_business
+        ->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
+  			      ->with(['user_categories' => function ($query) {
+			        // $query->select('id','user_id', 'name');
+			    }]
+			   //  ['user_categories.user_business_category_services' => function ($query) {
+	 		   //     // $query->select('id','user_id', 'name');
+	 		   // }]
+		)
+        ->find($id);
+		// $business = $this->find($id);
 
 		// dd($business->user_categories,Auth::id());
 		// $business['cnic_front'] = asset($business->cnic_front);
