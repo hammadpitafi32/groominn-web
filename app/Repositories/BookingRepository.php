@@ -536,8 +536,11 @@ class BookingRepository implements BookingInterface
         ->with(['user' => function ($q) {
             $q->select('id','name','email');
         }])
+        ->with(['user_business.user' => function ($q) {
+            $q->select('id','name','email');
+        }])
         ->with(['user_business' => function ($q) {
-            $q->select('id','name','address','city');
+            $q->select('id','user_id','name','address','city');
         }])
         
         // ->with(['booking_services.category_services.user_category' => function ($q) {
