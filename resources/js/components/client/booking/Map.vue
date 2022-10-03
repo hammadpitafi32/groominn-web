@@ -1,6 +1,6 @@
 <template>
   <GoogleMap
-    api-key="AIzaSyA7NJiportPdMrSes7VW1XI63-qhL0i3DM"
+    api-key="AIzaSyDoWPQ82mh0PFBOYhhHCK924wOffWOFSdc"
     style="width: 100%; height: calc(100vh - 120px)"
     :center="center"
     :zoom="props.activeShop ? 18 : 15"
