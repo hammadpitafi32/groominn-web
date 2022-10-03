@@ -1,24 +1,26 @@
 <template>
-  <div v-if="!loading">
-    <MDBContainer
-      v-if="apiResponse && apiResponse.data"
-      :class="route.name == 'shopDetail' && 'mt-5 pt-4'"
-    >
-      <MDBRow class="mt-5 pt-4">
-        <MDBCol col="5">
-          <ShopPhotos :photos="apiResponse.data.user_business_images" />
-        </MDBCol>
-        <MDBCol col="7">
-          <ShopDetails :data="apiResponse.data" />
-        </MDBCol>
-      </MDBRow>
+    <div v-if="!loading">
+        <MDBContainer
+            v-if="apiResponse && apiResponse.data"
+            :class="route.name == 'shopDetail' && 'mt-5 pt-4'"
+        >
+            <MDBRow class="pt-4" :class="route.name == 'shopDetail' && 'mt-5'">
+                <MDBCol col="5">
+                    <ShopPhotos
+                        :photos="apiResponse.data.user_business_images"
+                    />
+                </MDBCol>
+                <MDBCol col="7">
+                    <ShopDetails :data="apiResponse.data" />
+                </MDBCol>
+            </MDBRow>
+        </MDBContainer>
+    </div>
+    <MDBContainer v-else>
+        <MDBRow :class="route.name == 'shopDetail' && 'mt-5 pt-4'">
+            <Loader class="mt-5 pt-4" />
+        </MDBRow>
     </MDBContainer>
-  </div>
-  <MDBContainer v-else>
-    <MDBRow :class="route.name == 'shopDetail' && 'mt-5 pt-4'">
-      <Loader class="mt-5 pt-4" />
-    </MDBRow>
-  </MDBContainer>
 </template>
 
 <script setup>
@@ -40,54 +42,59 @@ const apiResponse = ref(null);
 
 // Get Business for provider without business id
 const getProviderBusiness = () => {
-  getUserBusiness().then((res) => {
-    apiResponse.value = res.data;
-    loading.value = false;
-    if (!res.data.data) {
-      let user = cookies.get("user");
-      user.is_shop = false;
-      cookies.set("user", user);
-      store.dispatch("setAuth");
-    }
-  });
+    getUserBusiness().then((res) => {
+        apiResponse.value = res.data;
+        loading.value = false;
+        if (!res.data.data) {
+            let user = cookies.get("user");
+            user.is_shop = false;
+            cookies.set("user", user);
+            store.dispatch("setAuth");
+        }
+    });
 };
 
 // Get Business for client with business id so that user can see the data of specific shop
 const getShopForClient = () => {
-  if (route.params.id) {
-    getUserBusiness(route.params.id).then(({ data }) => {
-      apiResponse.value = data;
-      loading.value = false;
-      if (data.data === null) {
-        router.push("/booking-list");
-      }
-    });
-  }
+    if (route.params.id) {
+        getUserBusiness(route.params.id).then(({ data }) => {
+            apiResponse.value = data;
+            loading.value = false;
+            if (data.data === null) {
+                router.push("/booking-list");
+            }
+        });
+    }
 };
 
 watchEffect(() => {
-  if (store.state.auth) {
-    if (store.state.role === "Provider" && !store.state.shop) {
-      router.push("/add-shop");
-    } else if (
-      store.state.role === "Provider" &&
-      store.state.shop &&
-      route.name === "myShop"
-    ) {
-      getProviderBusiness();
-    } else if (store.state.role === "Provider" && route.name === "shopDetail") {
-      router.push("/my-shop");
-    } else if (
-      store.state.role === "Client" &&
-      (route.name === "myShop" || route.name === "addShop")
-    ) {
-      router.push("/");
-    } else if (store.state.role === "Client" && route.name == "shopDetail") {
-      getShopForClient();
+    if (store.state.auth) {
+        if (store.state.role === "Provider" && !store.state.shop) {
+            router.push("/add-shop");
+        } else if (
+            store.state.role === "Provider" &&
+            store.state.shop &&
+            route.name === "myShop"
+        ) {
+            getProviderBusiness();
+        } else if (
+            store.state.role === "Provider" &&
+            route.name === "shopDetail"
+        ) {
+            router.push("/my-shop");
+        } else if (
+            store.state.role === "Client" &&
+            (route.name === "myShop" || route.name === "addShop")
+        ) {
+            router.push("/");
+        } else if (
+            store.state.role === "Client" &&
+            route.name == "shopDetail"
+        ) {
+            getShopForClient();
+        }
+    } else {
+        router.push("/login");
     }
-  } else {
-    router.push("/login");
-  }
 });
 </script>
-

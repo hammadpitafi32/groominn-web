@@ -25904,6 +25904,64 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/client/booking/BookingDetail.vue?vue&type=script&setup=true&lang=js":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/client/booking/BookingDetail.vue?vue&type=script&setup=true&lang=js ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vue_reactivity__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/reactivity */ "./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js");
+/* harmony import */ var _vue_runtime_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @vue/runtime-core */ "./node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../api */ "./resources/js/api.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  setup: function setup(__props, _ref) {
+    var expose = _ref.expose;
+    expose();
+    var bookings = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_1__.ref)([]);
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_2__.useStore)();
+    var loading = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_1__.ref)(true); // const getAllBooking = () => {
+
+    (0,_api__WEBPACK_IMPORTED_MODULE_0__.getBooking)().then(function (_ref2) {
+      var data = _ref2.data;
+      // console.log(data.data);
+      bookings.value = data.data;
+      loading.value = false;
+    }); // };
+    // getAllBooking();
+
+    (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_3__.watchEffect)(function () {
+      store.dispatch("clientRedirection");
+      store.dispatch("setAuth");
+    });
+    var __returned__ = {
+      bookings: bookings,
+      store: store,
+      loading: loading,
+      ref: _vue_reactivity__WEBPACK_IMPORTED_MODULE_1__.ref,
+      watchEffect: _vue_runtime_core__WEBPACK_IMPORTED_MODULE_3__.watchEffect,
+      getBooking: _api__WEBPACK_IMPORTED_MODULE_0__.getBooking,
+      useStore: vuex__WEBPACK_IMPORTED_MODULE_2__.useStore
+    };
+    Object.defineProperty(__returned__, '__isScriptSetup', {
+      enumerable: false,
+      value: true
+    });
+    return __returned__;
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/client/booking/BookingsList.vue?vue&type=script&setup=true&lang=js":
 /*!********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/client/booking/BookingsList.vue?vue&type=script&setup=true&lang=js ***!
@@ -26139,6 +26197,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     expose();
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_2__.useStore)();
     var route = (0,vue_router__WEBPACK_IMPORTED_MODULE_3__.useRoute)();
+    var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_3__.useRouter)();
     var itemsInCart = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_4__.ref)(null);
     var business_id = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_4__.ref)(null);
     var booking_date = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_4__.ref)(null);
@@ -26161,13 +26220,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           id: dataForPayment.user_business_id,
           date: dataForPayment.booking_date
         }));
-      } else {
+      } else if (localStorage.getItem("data")) {
         // If page is refresh then get data from localStorage
         // fetching data from localStorage
         var items = localStorage.getItem("data");
         itemsInCart.value = JSON.parse(JSON.parse(items).items);
         business_id.value = JSON.parse(items).id;
         booking_date.value = JSON.parse(items).date;
+      } else {
+        router.push("/booking-list");
       }
     });
     var itemsPrice = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_5__.computed)(function () {
@@ -26191,6 +26252,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var __returned__ = {
       store: store,
       route: route,
+      router: router,
       itemsInCart: itemsInCart,
       business_id: business_id,
       booking_date: booking_date,
@@ -26203,7 +26265,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       PaymentDetail: _PaymentDetail_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
       PaymentMethod: _PaymentMethod_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
       useStore: vuex__WEBPACK_IMPORTED_MODULE_2__.useStore,
-      useRoute: vue_router__WEBPACK_IMPORTED_MODULE_3__.useRoute
+      useRoute: vue_router__WEBPACK_IMPORTED_MODULE_3__.useRoute,
+      useRouter: vue_router__WEBPACK_IMPORTED_MODULE_3__.useRouter
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -26345,7 +26408,7 @@ __webpack_require__.r(__webpack_exports__);
       var serviceIds = itemsForBooking.value.map(function (item) {
         return item.id;
       });
-      formData.append("service_ids", JSON.stringify(serviceIds));
+      formData.append("service_ids", serviceIds);
       (0,_api__WEBPACK_IMPORTED_MODULE_2__.createBooking)(formData).then(function (response) {
         bookingSuccess.value = true;
       })["catch"](function (error) {
@@ -26543,25 +26606,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _vue_reactivity__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/reactivity */ "./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js");
+/* harmony import */ var _vue_reactivity__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @vue/reactivity */ "./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js");
+/* harmony import */ var _vue_runtime_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/runtime-core */ "./node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js");
 /* harmony import */ var mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mdb-vue-ui-kit */ "./node_modules/mdb-vue-ui-kit/js/mdb.umd.min.js");
 /* harmony import */ var mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0__);
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    bookingModal: Boolean
+    bookingModal: Boolean,
+    data: Object
   },
-  emits: ['closeModal'],
+  emits: ["closeModal"],
   setup: function setup(__props, _ref) {
     var expose = _ref.expose,
         emit = _ref.emit;
     expose();
     var props = __props;
+    var address = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
+      return props.data.user.user_detail.address_line_1 ? props.data.user.user_detail.address_line_1 + props.data.user.user_detail.address_line_2 : "N/A";
+    });
+    var services = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
+      return props.data.booking_services.map(function (service) {
+        return service.service_name;
+      });
+    });
     var __returned__ = {
       props: props,
       emit: emit,
-      ref: _vue_reactivity__WEBPACK_IMPORTED_MODULE_1__.ref,
+      address: address,
+      services: services,
+      ref: _vue_reactivity__WEBPACK_IMPORTED_MODULE_2__.ref,
+      computed: _vue_runtime_core__WEBPACK_IMPORTED_MODULE_1__.computed,
+      watchEffect: _vue_runtime_core__WEBPACK_IMPORTED_MODULE_1__.watchEffect,
       MDBTable: mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0__.MDBTable,
       MDBModal: mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0__.MDBModal,
       MDBModalHeader: mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0__.MDBModalHeader,
@@ -26736,13 +26814,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _vue_reactivity__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @vue/reactivity */ "./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js");
-/* harmony import */ var _vue_runtime_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @vue/runtime-core */ "./node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js");
+/* harmony import */ var _vue_reactivity__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @vue/reactivity */ "./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js");
+/* harmony import */ var _vue_runtime_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @vue/runtime-core */ "./node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js");
 /* harmony import */ var mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mdb-vue-ui-kit */ "./node_modules/mdb-vue-ui-kit/js/mdb.umd.min.js");
 /* harmony import */ var mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _modals_BookingDetail_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../modals/BookingDetail.vue */ "./resources/js/components/modals/BookingDetail.vue");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../api */ "./resources/js/api.js");
+/* harmony import */ var _modals_BookingDetail_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../modals/BookingDetail.vue */ "./resources/js/components/modals/BookingDetail.vue");
+
 
 
 
@@ -26753,14 +26833,22 @@ __webpack_require__.r(__webpack_exports__);
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
-    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_2__.useStore)();
-    var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_3__.useRouter)();
-    var ShowModal = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_4__.ref)(false);
-    (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_5__.watchEffect)(function () {
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.useStore)();
+    var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_4__.useRouter)();
+    var ShowModal = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_5__.ref)(false);
+    var loading = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_5__.ref)(true);
+    var activeBooking = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_5__.ref)(null);
+    var bookings = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_5__.ref)([]);
+    (0,_api__WEBPACK_IMPORTED_MODULE_1__.getBooking)().then(function (_ref2) {
+      var data = _ref2.data;
+      bookings.value = data.data;
+      loading.value = false;
+    });
+    (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_6__.watchEffect)(function () {
       if (!store.state.auth) {
-        router.push('/login');
-      } else if (store.state.role === 'Client') {
-        router.push('/');
+        router.push("/login");
+      } else if (store.state.role === "Client") {
+        router.push("/");
       }
     });
 
@@ -26768,49 +26856,22 @@ __webpack_require__.r(__webpack_exports__);
       ShowModal.value = false;
     };
 
-    var bookings = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_4__.ref)([{
-      customer: "Daneil joy",
-      service: "Facial",
-      price: "12$",
-      duration: "30min",
-      type: "Home Service"
-    }, {
-      customer: "RIkke Jackson",
-      service: "Facial",
-      price: "12$",
-      duration: "30min",
-      type: "Home Service"
-    }, {
-      customer: "Daneil joy",
-      service: "Facial",
-      price: "12$",
-      duration: "30min",
-      type: "Home Service"
-    }, {
-      customer: "Daneil joy",
-      service: "Facial",
-      price: "12$",
-      duration: "30min",
-      type: "Home Service"
-    }, {
-      customer: "Daneil joy",
-      service: "Facial",
-      price: "12$",
-      duration: "30min",
-      type: "Home Service"
-    }]);
     var __returned__ = {
       store: store,
       router: router,
       ShowModal: ShowModal,
-      closeModal: closeModal,
+      loading: loading,
+      activeBooking: activeBooking,
       bookings: bookings,
-      ref: _vue_reactivity__WEBPACK_IMPORTED_MODULE_4__.ref,
-      watchEffect: _vue_runtime_core__WEBPACK_IMPORTED_MODULE_5__.watchEffect,
+      closeModal: closeModal,
+      ref: _vue_reactivity__WEBPACK_IMPORTED_MODULE_5__.ref,
+      computed: _vue_runtime_core__WEBPACK_IMPORTED_MODULE_6__.computed,
+      watchEffect: _vue_runtime_core__WEBPACK_IMPORTED_MODULE_6__.watchEffect,
       MDBTable: mdb_vue_ui_kit__WEBPACK_IMPORTED_MODULE_0__.MDBTable,
-      useRouter: vue_router__WEBPACK_IMPORTED_MODULE_3__.useRouter,
-      useStore: vuex__WEBPACK_IMPORTED_MODULE_2__.useStore,
-      MainModal: _modals_BookingDetail_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+      useRouter: vue_router__WEBPACK_IMPORTED_MODULE_4__.useRouter,
+      useStore: vuex__WEBPACK_IMPORTED_MODULE_3__.useStore,
+      getBooking: _api__WEBPACK_IMPORTED_MODULE_1__.getBooking,
+      MainModal: _modals_BookingDetail_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -30062,88 +30123,117 @@ var _hoisted_3 = {
 };
 
 var _hoisted_4 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Saloon name"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "E-mail"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Estimated time"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Date"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Status"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-    style: {
-      "width": "300px"
-    }
-  })], -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Saloon name", -1
   /* HOISTED */
   );
 });
 
 var _hoisted_5 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Saloon 1", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "E-mail", -1
   /* HOISTED */
   );
 });
 
 var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "abc@abc.com", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Estimated time", -1
   /* HOISTED */
   );
 });
 
 var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "10:10 PM", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Date", -1
   /* HOISTED */
   );
 });
 
 var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "12/12/2020", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Status", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Pending", -1
-  /* HOISTED */
-  );
-});
-
+var _hoisted_9 = {
+  key: 0
+};
 var _hoisted_10 = {
-  "class": "text-end"
+  key: 0
 };
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Cancle booking ");
+var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
+  /* HOISTED */
+  );
+});
 
 var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Saloon 1", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
   /* HOISTED */
   );
 });
 
 var _hoisted_13 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "abc@abc.com", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
   /* HOISTED */
   );
 });
 
 var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Done", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
   /* HOISTED */
   );
 });
 
 var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "12/12/2020", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
   /* HOISTED */
   );
 });
 
-var _hoisted_16 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Done", -1
-  /* HOISTED */
-  );
-});
-
+var _hoisted_16 = [_hoisted_11, _hoisted_12, _hoisted_13, _hoisted_14, _hoisted_15];
 var _hoisted_17 = {
+  key: 1
+};
+var _hoisted_18 = {
+  "class": "text-capitalize"
+};
+var _hoisted_19 = {
   "class": "text-end"
 };
+var _hoisted_20 = {
+  key: 2
+};
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Give review ");
+var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    colspan: "6",
+    "class": "text-center fs-6 fw-bold"
+  }, " No Bookings Found ")], -1
+  /* HOISTED */
+  );
+});
 
-function render(_ctx, _cache) {
+var _hoisted_22 = [_hoisted_21];
+function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_MDBBtn = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("MDBBtn");
 
   var _component_MDBCol = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("MDBCol");
@@ -30162,25 +30252,42 @@ function render(_ctx, _cache) {
             col: "12"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_5, _hoisted_6, _hoisted_7, _hoisted_8, _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MDBBtn, {
-                "class": "bg-orange text-white text-capitalize rounded-5 shadow-0 px-3"
-              }, {
-                "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                  return [_hoisted_11];
-                }),
-                _: 1
-                /* STABLE */
+              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [_hoisted_4, _hoisted_5, _hoisted_6, _hoisted_7, _hoisted_8, $setup.bookings.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("th", _hoisted_9)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $setup.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_10, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(4, function (n) {
+                return (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+                  key: n
+                }, _hoisted_16);
+              }), 64
+              /* STABLE_FRAGMENT */
+              ))])) : $setup.bookings.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_17, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.bookings, function (booking, index) {
+                return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+                  key: index
+                }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.user_business.name), 1
+                /* TEXT */
+                ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.user_business.user.email), 1
+                /* TEXT */
+                ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.estimated_time ? booking.estimated_time : "N/A"), 1
+                /* TEXT */
+                ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.date.split(" ")[0]), 1
+                /* TEXT */
+                ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.status), 1
+                /* TEXT */
+                ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MDBBtn, {
+                  "class": "bg-orange text-white text-capitalize rounded-5 shadow-0 px-3"
+                }, {
+                  "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                    return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.status == "pending" ? "Cancel Booking" : "Give Review"), 1
+                    /* TEXT */
+                    )];
+                  }),
+                  _: 2
+                  /* DYNAMIC */
 
-              })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_12, _hoisted_13, _hoisted_14, _hoisted_15, _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MDBBtn, {
-                "class": "bg-orange text-white text-capitalize rounded-5 shadow-0 px-3"
-              }, {
-                "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                  return [_hoisted_18];
-                }),
-                _: 1
-                /* STABLE */
-
-              })])])])])])];
+                }, 1024
+                /* DYNAMIC_SLOTS */
+                )])]);
+              }), 128
+              /* KEYED_FRAGMENT */
+              ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_20, _hoisted_22))])])];
             }),
             _: 1
             /* STABLE */
@@ -30984,7 +31091,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MDBBtn, {
             "class": "bg-orange text-white rounded-5 px-5 py-2 text-uppercase",
             onClick: _cache[6] || (_cache[6] = function ($event) {
-              return $setup.bookingSuccess = false, $setup.router.push('/booking-detail');
+              return $setup.bookingSuccess = false, $setup.router.push('/booking-detail'), _ctx.localStorage.clear();
             })
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -31824,13 +31931,31 @@ var _withScopeId = function _withScopeId(n) {
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Booking Detail ");
 
 var _hoisted_2 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "fw-bold"
-  }, "Name:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Danny Joe")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "Name:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_3 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "fw-bold"
-  }, "Phone no:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "+92347896570")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "Phone no:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_4 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "fw-bold"
-  }, "Address:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  }, "Address:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_5 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     width: "12",
     height: "17",
     viewBox: "0 0 14 19",
@@ -31839,11 +31964,29 @@ var _hoisted_2 = /*#__PURE__*/_withScopeId(function () {
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
     d: "M7 18.0035C5.73694 16.9261 4.56619 15.745 3.5 14.4725C1.9 12.5615 8.78894e-07 9.71551 8.78894e-07 7.00351C-0.00069302 5.61847 0.409509 4.26436 1.17869 3.11254C1.94788 1.96072 3.04147 1.06297 4.32107 0.532908C5.60067 0.00284672 7.00875 -0.1357 8.36712 0.134802C9.72548 0.405303 10.9731 1.07269 11.952 2.05251C12.6038 2.70137 13.1203 3.47305 13.4719 4.32288C13.8234 5.17272 14.0029 6.08384 14 7.00351C14 9.71551 12.1 12.5615 10.5 14.4725C9.4338 15.745 8.26306 16.9261 7 18.0035ZM7 2.00351C5.67441 2.0051 4.40356 2.53239 3.46622 3.46973C2.52888 4.40707 2.00159 5.67792 2 7.00351C2 8.16951 2.527 10.1885 5.035 13.1895C5.65313 13.9276 6.30901 14.6332 7 15.3035C7.69102 14.6339 8.34721 13.9293 8.966 13.1925C11.473 10.1875 12 8.16851 12 7.00351C11.9984 5.67792 11.4711 4.40707 10.5338 3.46973C9.59644 2.53239 8.3256 2.0051 7 2.00351ZM7 10.0035C6.20435 10.0035 5.44129 9.68744 4.87868 9.12483C4.31607 8.56222 4 7.79916 4 7.00351C4 6.20786 4.31607 5.4448 4.87868 4.88219C5.44129 4.31958 6.20435 4.00351 7 4.00351C7.79565 4.00351 8.55871 4.31958 9.12132 4.88219C9.68393 5.4448 10 6.20786 10 7.00351C10 7.79916 9.68393 8.56222 9.12132 9.12483C8.55871 9.68744 7.79565 10.0035 7 10.0035Z",
     fill: "#B7B7B7"
-  })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" G9RF+2C2, Sarwar Colony, Lahore, Pakistan ")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "fw-bold"
-  }, "Services:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Slop cut , waxing , nail painting")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "Services:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "fw-bold"
-  }, "Charges:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "125 $")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  }, "Charges:", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "fw-bold"
   }, "Booking time:"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
     "class": "d-flex align-items-center"
@@ -31860,16 +32003,16 @@ var _hoisted_2 = /*#__PURE__*/_withScopeId(function () {
   }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
     d: "M11.1198 10.2609L8.57335 8.4198V4.00016C8.57335 3.92159 8.50907 3.8573 8.4305 3.8573H7.57157C7.493 3.8573 7.42871 3.92159 7.42871 4.00016V8.91801C7.42871 8.96444 7.45014 9.0073 7.48764 9.03409L10.4412 11.1877C10.5055 11.2341 10.5948 11.2198 10.6412 11.1573L11.1519 10.4609C11.1984 10.3948 11.1841 10.3055 11.1198 10.2609Z",
     fill: "#6B6A6A"
-  })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 10:00pm ")])])], -1
+  })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 10:00pm ")])], -1
   /* HOISTED */
   );
 });
 
-var _hoisted_3 = {
+var _hoisted_9 = {
   "class": "text-end mt-3"
 };
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ok");
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Ok");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_MDBBtn = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("MDBBtn");
@@ -31914,19 +32057,29 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "class": "booking-detials-table"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_2];
+              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.props.data.user.name), 1
+              /* TEXT */
+              )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.props.data.user.user_detail.phone), 1
+              /* TEXT */
+              )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.address), 1
+              /* TEXT */
+              )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.services.join(', ')), 1
+              /* TEXT */
+              )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.props.data.charges) + " $", 1
+              /* TEXT */
+              )]), _hoisted_8])];
             }),
             _: 1
             /* STABLE */
 
-          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MDBBtn, {
+          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MDBBtn, {
             onClick: _cache[0] || (_cache[0] = function ($event) {
               return $setup.emit('closeModal');
             }),
             "class": "bg-orange text-white rounded-4 fw-bold ok-btn shadow-0"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_4];
+              return [_hoisted_10];
             }),
             _: 1
             /* STABLE */
@@ -32227,16 +32380,74 @@ var _hoisted_5 = /*#__PURE__*/_withScopeId(function () {
     scope: "col"
   }, "Charges"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     scope: "col"
-  }, "Duration"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-    scope: "col"
-  }, "Type"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, "Duration"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <th scope=\"col\">Type</th> "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     scope: "col"
   }, "View")])], -1
   /* HOISTED */
   );
 });
 
-var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_6 = {
+  key: 0
+};
+
+var _hoisted_7 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_8 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_9 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_10 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    "class": "px-3"
+  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "skelton"
+  })], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_12 = [_hoisted_7, _hoisted_8, _hoisted_9, _hoisted_10, _hoisted_11];
+var _hoisted_13 = {
+  key: 1
+};
+var _hoisted_14 = ["onClick"];
+
+var _hoisted_15 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     width: "22",
     height: "15",
@@ -32260,7 +32471,21 @@ var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_7 = [_hoisted_6];
+var _hoisted_16 = [_hoisted_15];
+var _hoisted_17 = {
+  key: 2
+};
+
+var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+    colspan: "6",
+    "class": "text-center fs-6 fw-bold"
+  }, " No Bookings Found ")], -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_19 = [_hoisted_18];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_MDBCol = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("MDBCol");
 
@@ -32280,29 +32505,37 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 "class": "booking-table"
               }, {
                 "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                  return [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.bookings, function (booking, index) {
+                  return [_hoisted_5, $setup.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(4, function (n) {
+                    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+                      key: n
+                    }, _hoisted_12);
+                  }), 64
+                  /* STABLE_FRAGMENT */
+                  ))])) : $setup.bookings.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.bookings, function (booking, index) {
                     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
                       key: index
-                    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.customer), 1
+                    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.user.name), 1
                     /* TEXT */
-                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.service), 1
+                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.booking_services.map(function (book) {
+                      return book.service_name;
+                    }).join(', ')), 1
                     /* TEXT */
-                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.price), 1
+                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.charges) + " $", 1
                     /* TEXT */
-                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.duration), 1
+                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.total_duration), 1
                     /* TEXT */
-                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(booking.type), 1
-                    /* TEXT */
-                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+                    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>{{ booking.type }}</td> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
                       href: "javascript:void(0)",
-                      onClick: _cache[0] || (_cache[0] = function ($event) {
-                        return $setup.ShowModal = true;
-                      }),
+                      onClick: function onClick($event) {
+                        return $setup.ShowModal = true, $setup.activeBooking = booking;
+                      },
                       "class": "text-orange"
-                    }, _hoisted_7)])]);
+                    }, _hoisted_16, 8
+                    /* PROPS */
+                    , _hoisted_14)])]);
                   }), 128
                   /* KEYED_FRAGMENT */
-                  ))])];
+                  ))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_17, _hoisted_19))];
                 }),
                 _: 1
                 /* STABLE */
@@ -32324,10 +32557,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Booking Detaail modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["MainModal"], {
     bookingModal: $setup.ShowModal,
+    data: $setup.activeBooking,
     onCloseModal: $setup.closeModal
   }, null, 8
   /* PROPS */
-  , ["bookingModal"])], 64
+  , ["bookingModal", "data"])], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -33991,7 +34225,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MDBRow, {
-        "class": "mt-5 pt-4"
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["pt-4", $setup.route.name == 'shopDetail' && 'mt-5'])
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_MDBCol, {
@@ -34025,7 +34259,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         _: 1
         /* STABLE */
 
-      })];
+      }, 8
+      /* PROPS */
+      , ["class"])];
     }),
     _: 1
     /* STABLE */
@@ -34758,7 +34994,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
               }, 8
               /* PROPS */
-              , ["class"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["MDBNavbarItem"], {
+              , ["class"]), $setup.store.state.auth && $setup.role === 'Client' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["MDBNavbarItem"], {
+                key: 0,
                 to: "/booking-detail",
                 "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["me-4", $setup.route.name == 'bookingDetail' && 'navlink-active'])
               }, {
@@ -34770,8 +35007,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
               }, 8
               /* PROPS */
-              , ["class"]), !$setup.store.state.auth ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["MDBNavbarItem"], {
-                key: 0,
+              , ["class"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$setup.store.state.auth ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["MDBNavbarItem"], {
+                key: 1,
                 to: "#",
                 "class": "me-4"
               }, {
@@ -34782,7 +35019,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 /* STABLE */
 
               })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.store.state.auth ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["MDBNavbarItem"], {
-                key: 1,
+                key: 2,
                 "class": "me-4 position-relative"
               }, {
                 "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -34811,7 +35048,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 /* STABLE */
 
               })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.store.state.auth ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["MDBNavbarItem"], {
-                key: 2,
+                key: 3,
                 "class": "me-3"
               }, {
                 "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -35105,6 +35342,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "deleteUserService": () => (/* binding */ deleteUserService),
 /* harmony export */   "getAllCategories": () => (/* binding */ getAllCategories),
 /* harmony export */   "getAllShops": () => (/* binding */ getAllShops),
+/* harmony export */   "getBooking": () => (/* binding */ getBooking),
 /* harmony export */   "getUserBusiness": () => (/* binding */ getUserBusiness),
 /* harmony export */   "getUserCategories": () => (/* binding */ getUserCategories),
 /* harmony export */   "getUserServices": () => (/* binding */ getUserServices),
@@ -35489,14 +35727,14 @@ var createBooking = /*#__PURE__*/function () {
     return _ref13.apply(this, arguments);
   };
 }();
-var logout = /*#__PURE__*/function () {
-  var _ref14 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee14() {
+var getBooking = /*#__PURE__*/function () {
+  var _ref14 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee14(data) {
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
             _context14.next = 2;
-            return axios__WEBPACK_IMPORTED_MODULE_2___default().get("".concat(baseURL, "/logout"));
+            return axios__WEBPACK_IMPORTED_MODULE_2___default().get("".concat(baseURL, "/get-bookings"));
 
           case 2:
             return _context14.abrupt("return", _context14.sent);
@@ -35509,8 +35747,32 @@ var logout = /*#__PURE__*/function () {
     }, _callee14);
   }));
 
-  return function logout() {
+  return function getBooking(_x11) {
     return _ref14.apply(this, arguments);
+  };
+}();
+var logout = /*#__PURE__*/function () {
+  var _ref15 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee15() {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.next = 2;
+            return axios__WEBPACK_IMPORTED_MODULE_2___default().get("".concat(baseURL, "/logout"));
+
+          case 2:
+            return _context15.abrupt("return", _context15.sent);
+
+          case 3:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15);
+  }));
+
+  return function logout() {
+    return _ref15.apply(this, arguments);
   };
 }();
 
@@ -41226,7 +41488,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.booking-table th[data-v-521e813b]{\r\n    padding: 1rem 1.4rem;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.booking-table th[data-v-521e813b] {\r\n    padding: 1rem 1.4rem;\n}\n.skelton[data-v-521e813b] {\r\n    height: 26px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -41442,7 +41704,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.ok-btn[data-v-30d72f4c] {\r\n  padding: 0.3rem 2rem;\n}\n.booking-detials-table td[data-v-30d72f4c] {\r\n  border-bottom: 0;\r\n  padding-bottom: .4rem;\n}\n.booking-detials-table td[data-v-30d72f4c]:first-child {\r\n  padding-left: 0;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.ok-btn[data-v-30d72f4c] {\r\n    padding: 0.3rem 2rem;\n}\n.booking-detials-table td[data-v-30d72f4c] {\r\n    border-bottom: 0;\r\n    padding-bottom: 0.4rem;\n}\n.booking-detials-table td[data-v-30d72f4c]:first-child {\r\n    padding-left: 0;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -41490,7 +41752,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.fs-custom[data-v-6fd54ffc] {\r\n  font-size: 0.84rem;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.fs-custom[data-v-6fd54ffc] {\r\n    font-size: 0.84rem;\n}\n.skelton[data-v-6fd54ffc] {\r\n    height: 26px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -41634,7 +41896,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.cus-pad[data-v-a55d1ab8] {\r\n  padding: 0.19rem 0.3rem;\r\n  margin-top: -0.2rem;\r\n  margin-left: -0.4rem;\n}\n.avatar[data-v-a55d1ab8] {\r\n  max-width: 50px;\n}\n.auth-name[data-v-a55d1ab8] {\r\n  font-size: 0.95rem;\n}\n.fa-angle-down[data-v-a55d1ab8] {\r\n  transition: 0.27s ease;\n}\n.fa-angle-down.rotate[data-v-a55d1ab8] {\r\n  transform: rotate(180deg);\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.cus-pad[data-v-a55d1ab8] {\r\n    padding: 0.19rem 0.3rem;\r\n    margin-top: -0.2rem;\r\n    margin-left: -0.4rem;\n}\n.avatar[data-v-a55d1ab8] {\r\n    max-width: 50px;\n}\n.auth-name[data-v-a55d1ab8] {\r\n    font-size: 0.95rem;\n}\n.fa-angle-down[data-v-a55d1ab8] {\r\n    transition: 0.27s ease;\n}\n.fa-angle-down.rotate[data-v-a55d1ab8] {\r\n    transform: rotate(180deg);\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -64525,15 +64787,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _BookingDetail_vue_vue_type_template_id_521e813b_scoped_true__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BookingDetail.vue?vue&type=template&id=521e813b&scoped=true */ "./resources/js/components/client/booking/BookingDetail.vue?vue&type=template&id=521e813b&scoped=true");
-/* harmony import */ var _BookingDetail_vue_vue_type_style_index_0_id_521e813b_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BookingDetail.vue?vue&type=style&index=0&id=521e813b&scoped=true&lang=css */ "./resources/js/components/client/booking/BookingDetail.vue?vue&type=style&index=0&id=521e813b&scoped=true&lang=css");
-/* harmony import */ var D_projects_grooming_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _BookingDetail_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BookingDetail.vue?vue&type=script&setup=true&lang=js */ "./resources/js/components/client/booking/BookingDetail.vue?vue&type=script&setup=true&lang=js");
+/* harmony import */ var _BookingDetail_vue_vue_type_style_index_0_id_521e813b_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BookingDetail.vue?vue&type=style&index=0&id=521e813b&scoped=true&lang=css */ "./resources/js/components/client/booking/BookingDetail.vue?vue&type=style&index=0&id=521e813b&scoped=true&lang=css");
+/* harmony import */ var D_projects_grooming_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
-const script = {}
+
+
 
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,D_projects_grooming_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(script, [['render',_BookingDetail_vue_vue_type_template_id_521e813b_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-521e813b"],['__file',"resources/js/components/client/booking/BookingDetail.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_projects_grooming_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_BookingDetail_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_BookingDetail_vue_vue_type_template_id_521e813b_scoped_true__WEBPACK_IMPORTED_MODULE_0__.render],['__scopeId',"data-v-521e813b"],['__file',"resources/js/components/client/booking/BookingDetail.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -65415,6 +65679,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Index_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Index_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Index.vue?vue&type=script&setup=true&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Index.vue?vue&type=script&setup=true&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./resources/js/components/client/booking/BookingDetail.vue?vue&type=script&setup=true&lang=js":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/client/booking/BookingDetail.vue?vue&type=script&setup=true&lang=js ***!
+  \*****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BookingDetail_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BookingDetail_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./BookingDetail.vue?vue&type=script&setup=true&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/client/booking/BookingDetail.vue?vue&type=script&setup=true&lang=js");
  
 
 /***/ }),

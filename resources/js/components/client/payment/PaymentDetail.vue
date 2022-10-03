@@ -156,7 +156,9 @@
                 <MDBBtn
                     class="bg-orange text-white rounded-5 px-5 py-2 text-uppercase"
                     @click="
-                        (bookingSuccess = false), router.push('/booking-detail')
+                        (bookingSuccess = false),
+                            router.push('/booking-detail'),
+                            localStorage.clear()
                     "
                 >
                     Ok
@@ -279,7 +281,7 @@ const handlePayment = () => {
     // formData.append("charges", props.data.charges);
     formData.append("date", props.data.booking_date);
     let serviceIds = itemsForBooking.value.map((item) => item.id);
-    formData.append("service_ids", JSON.stringify(serviceIds));
+    formData.append("service_ids", serviceIds);
 
     createBooking(formData)
         .then((response) => {
