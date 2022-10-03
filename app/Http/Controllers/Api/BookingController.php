@@ -21,7 +21,7 @@ class BookingController extends Controller
 
     public function getEstimatedTime(Request $request)
     {
-        dd($this->booking->getEstimatedTime());
+        return $this->booking->getEstimatedTime();
     }
 
     public function getBookings(Request $request)
