@@ -66,12 +66,6 @@ class BookingRepository implements BookingInterface
                 'success' => false
             ], 400);
         }
-        $stripe = StripeTrait::obj();
-
-        return response()->json([
-            'errors' => $stripe,
-            'success' => false
-        ], 400);
         $service_ids = explode(',',$request->service_ids);
         $category_services = UserBusinessCategoryService::find($service_ids);
 
