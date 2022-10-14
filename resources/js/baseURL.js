@@ -1,7 +1,7 @@
 export const api = {
-    baseUrl: 'https://staging.groominn/api'
+    baseUrl: 'https://groominn.co/api'
 }
 
 export const asset = {
-    baseUrl: 'https://staging.groominn/'
+    baseUrl: 'https://groominn.co/'
 }

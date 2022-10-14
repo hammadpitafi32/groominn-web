@@ -35873,10 +35873,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "asset": () => (/* binding */ asset)
 /* harmony export */ });
 var api = {
-  baseUrl: 'https://staging.groominn/api'
+  baseUrl: 'https://groominn.co/api'
 };
 var asset = {
-  baseUrl: 'https://staging.groominn/'
+  baseUrl: 'https://groominn.co/'
 };
 
 /***/ }),
