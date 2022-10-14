@@ -48,11 +48,7 @@ class BookingRepository implements BookingInterface
 	public function create()
 	{
 		$request = $this->request;
-        return response()->json([
-            'errors' => '$validator->messages()',
-            'success' => false
-        ], 400);
-        dd($request->all());
+        // dd($request->all());
 		$validator = Validator::make($request->all(), [
             'service_ids' => 'required',
             'date' => 'required',
@@ -70,6 +66,12 @@ class BookingRepository implements BookingInterface
                 'success' => false
             ], 400);
         }
+        $stripe = StripeTrait::obj();
+
+        return response()->json([
+            'errors' => $stripe,
+            'success' => false
+        ], 400);
         $service_ids = explode(',',$request->service_ids);
         $category_services = UserBusinessCategoryService::find($service_ids);
 
