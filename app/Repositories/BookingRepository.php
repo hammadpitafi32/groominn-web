@@ -48,7 +48,7 @@ class BookingRepository implements BookingInterface
 	public function create()
 	{
 		$request = $this->request;
-        // dd($request->all());
+        dd($request->all());
 		$validator = Validator::make($request->all(), [
             'service_ids' => 'required',
             'date' => 'required',
