@@ -75,6 +75,14 @@ const routes = [{
     },
 },
 {
+    path: '/edit-shop/:id',
+    name: 'editShop',
+    component: AddShop,
+    meta: {
+        sidebar: true
+    },
+},
+{
     path: '/my-shop',
     name: 'myShop',
     component: MyShop,

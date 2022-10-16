@@ -26,6 +26,7 @@
                                 >
                                 <GMapAutocomplete
                                     class="form-control bg-white py-2"
+                                    id="googleAutoComplete"
                                     placeholder=""
                                     @place_changed="setPlace"
                                 />
@@ -648,15 +649,17 @@
 <script setup>
 import { reactive, ref } from "@vue/reactivity";
 import { MDBInput, MDBTextarea, MDBFile } from "mdb-vue-ui-kit";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import BtnLoader from "../custom-components/BtnLoader.vue";
-import { addShop } from "../../api";
+import { addShop, getUserBusiness } from "../../api";
 import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useCookies } from "vue3-cookies";
+import { asset } from "../../baseURL";
 import { useToast } from "vue-toastification";
 
 const router = useRouter();
+const route = useRoute();
 const store = useStore();
 const toast = useToast();
 const { cookies } = useCookies();
@@ -696,11 +699,62 @@ const LiscenceForApi = ref("");
 const success = ref(null);
 const errors = ref(null);
 
+const convertUrlToFile = async (url) => {
+    let response = await fetch(url);
+    let data = await response.blob();
+    return new File([data], "image.jpg", {
+        type: data.type,
+    });
+};
+
+const getOwnProfile = async () => {
+    let { data } = await getUserBusiness(route.params.id);
+    let shop = data.data;
+    businessName.value = shop.name;
+    employees.value = shop.no_of_employees;
+    description.value = shop.description;
+
+    if (shop.user_business_images.length) {
+        shop.user_business_images.map((img) => {
+            let url = asset.baseUrl + img.name;
+            convertUrlToFile(url).then((file) => {
+                uploadPics(file, "shop", true);
+            });
+        });
+    }
+    if (shop.cnic_front) {
+        let url = asset.baseUrl + shop.cnic_front;
+        convertUrlToFile(url).then((file) => {
+            uploadPics(file, "cnic-front", true);
+        });
+    }
+    if (shop.cnic_back) {
+        let url = asset.baseUrl + shop.cnic_back;
+        convertUrlToFile(url).then((file) => {
+            uploadPics(file, "cnic-back", true);
+        });
+    }
+    if (shop.license) {
+        let url = asset.baseUrl + shop.license;
+        convertUrlToFile(url).then((file) => {
+            uploadPics(file, "liscence", true);
+        });
+    }
+    address.place = shop.address;
+    address.lat = shop.latitude;
+    address.lng = shop.longitude;
+    document.getElementById("googleAutoComplete").value = shop.address;
+};
+
 watchEffect(() => {
     if (!store.state.auth) {
         router.push("/login");
     } else if (store.state.role == "Provider" && store.state.shop) {
-        router.push("/my-shop");
+        if (!route.params.id) {
+            router.push("/my-shop");
+        } else {
+            getOwnProfile();
+        }
     } else if (store.state.role == "Client") {
         router.push("/");
     }
@@ -708,8 +762,10 @@ watchEffect(() => {
     // console.log(address.value);
 });
 
-const uploadPics = (event, val) => {
-    const files = event.target.files;
+const uploadPics = (event, val, firstTimeSet) => {
+    let array = [];
+    firstTimeSet && array.push(event);
+    const files = firstTimeSet ? array : event.target.files;
     const fileReader = new FileReader();
     fileReader.addEventListener("load", () => {
         if (val == "shop") {
@@ -751,11 +807,11 @@ watch(Liscence, () => {
     }
 });
 
+watch("address.place", (val) => {
+    console.log(val);
+});
+
 const addShopHandler = () => {
-    // console.log(shopPicsForApi.value, cnicBackForApi.value);
-
-    // return
-
     loading.value = true;
     const formData = new FormData();
     formData.append("name", businessName.value);

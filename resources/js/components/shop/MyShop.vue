@@ -4,7 +4,18 @@
             v-if="apiResponse && apiResponse.data"
             :class="route.name == 'shopDetail' && 'mt-5 pt-4'"
         >
-            <MDBRow class="pt-4" :class="route.name == 'shopDetail' && 'mt-5'">
+            <MDBRow
+                class="pt-4 mx-3"
+                :class="route.name == 'shopDetail' && 'mt-5'"
+            >
+                <MDBCol col="12" class="pb-4 text-end" v-if="store.state.role === 'Provider'">
+                    <MDBBtn
+                        class="bg-orange text-white rounded-4 text-capitalize fw-normal edit-btn"
+                        @click="router.push(`/edit-shop/${apiResponse.data.id}`)"
+                    >
+                        Edit Shop
+                    </MDBBtn>
+                </MDBCol>
                 <MDBCol col="5">
                     <ShopPhotos
                         :photos="apiResponse.data.user_business_images"
@@ -42,10 +53,10 @@ const apiResponse = ref(null);
 
 // Get Business for provider without business id
 const getProviderBusiness = () => {
-    getUserBusiness().then((res) => {
-        apiResponse.value = res.data;
+    getUserBusiness().then(({ data }) => {
+        apiResponse.value = data;
         loading.value = false;
-        if (!res.data.data) {
+        if (!data.data) {
             let user = cookies.get("user");
             user.is_shop = false;
             cookies.set("user", user);
@@ -98,3 +109,8 @@ watchEffect(() => {
     }
 });
 </script>
+<style scoped>
+.edit-btn {
+    padding: 0.65rem 2rem;
+}
+</style>
