@@ -10,7 +10,7 @@ use Auth;
 use File;
 use Carbon\Carbon;
 
-use App\Helpers\UploadImageHelper;
+use App\Helpers\ImageHelper;
 
 use App\Models\UserBusiness;
 use App\Models\UserBusinessSchedule;
@@ -49,7 +49,6 @@ class UserBusinessRepository implements UserBusinessInterface
 		return $this->user_business
         	->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
 			->whereHas('user_categories.user_business_category_services',function($q) use($id){
-				// dd($id);
 				$q->where('user_business_id',$id);
 			})
         	->find($id);
@@ -61,6 +60,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function createOrUpdate()
 	{
 		$request = $this->request;
+		// dd($request->all());
 		$validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'description' => 'required',
@@ -68,9 +68,31 @@ class UserBusinessRepository implements UserBusinessInterface
             'latitude' => 'required',
             'longitude' => 'required',
             'no_of_employees' => 'required|numeric|min:0|not_in:0',
-            'cnic_front' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
-            'cnic_back' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
-            'license' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+
+			'cnic_front' =>[Rule::requiredIf(function () use($request){
+				if (!empty(UserBusiness::find($request->id)->cnic_front)) {
+				   return false;
+				}
+				  return true;
+			   }),'image','mimes:jpeg,png,jpg,svg,gif','max:2048'],
+
+			'cnic_back' =>[Rule::requiredIf(function () use($request){
+				if (!empty(UserBusiness::find($request->id)->cnic_back)) {
+				   return false;
+				}
+				  return true;
+			   }),'image','mimes:jpeg,png,jpg,svg,gif','max:2048'],
+
+			'license' =>[Rule::requiredIf(function () use($request){
+				if (!empty(UserBusiness::find($request->id)->license)) {
+				   return false;
+				}
+				  return true;
+			   }),'image','mimes:jpeg,png,jpg,svg,gif','max:2048'],
+
+            // 'cnic_front' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'cnic_back' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'license' => 'required|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         //Send failed response if request is not valid
         if ($validator->fails()) {
@@ -80,7 +102,8 @@ class UserBusinessRepository implements UserBusinessInterface
             ], 400);
         }
 		
-		$user_business = $request->id ? $this->find($request->id) : $this->user_business;
+		$user_business = ($request->id ? $this->user_business->find($request->id) : $this->user_business);
+	
 		if (!$request->id) 
 		{
 			if ($this->user_business->where('user_id',Auth::id())->count() > 0) 
@@ -90,8 +113,6 @@ class UserBusinessRepository implements UserBusinessInterface
 					'message' => 'You already have business, please contact support!'
 				]);
 			}
-			
-			
 		}
 		$user_business->user_id = Auth::id();
 		$user_business->name = $request->name;
@@ -115,21 +136,33 @@ class UserBusinessRepository implements UserBusinessInterface
         if (isset($request->cnic_front))
         {
             $file =$request->cnic_front;
-            $cnic_front = UploadImageHelper::upload($file,$path,@$user_business);
+			if(@$request->id)
+			{
+				ImageHelper::delete($user_business->cnic_front);
+			}
+            $cnic_front = ImageHelper::upload($file,$path,@$user_business);
             $user_business->cnic_front = $file_path.$cnic_front;
         }
 
         if (isset($request->cnic_back))
         {
             $file =$request->cnic_back;
-            $cnic_back = UploadImageHelper::upload($file,$path,@$user_business);
+			if(@$request->id)
+			{
+				ImageHelper::delete($user_business->cnic_front);
+			}
+            $cnic_back = ImageHelper::upload($file,$path,@$user_business);
             $user_business->cnic_back = $file_path.$cnic_back;
         }
 
         if (isset($request->license))
         {
             $file =$request->license;
-            $license = UploadImageHelper::upload($file,$path,@$user_business);
+			if(@$request->id)
+			{
+				ImageHelper::delete($user_business->cnic_front);
+			}
+            $license = ImageHelper::upload($file,$path,@$user_business);
             $user_business->license = $file_path.$license;
         }
         /*required images*/
@@ -149,7 +182,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	        // {
 	        	foreach ($request->shop_images as $file) 
 	        	{
-		            $file_name = UploadImageHelper::upload($file,$path,@$user_business);
+		            $file_name = ImageHelper::upload($file,$path,@$user_business);
 		            UserBusinessImage::create([
 		            	'user_business_id' => $user_business->id,
 		            	'name' => $file_path.$file_name
@@ -399,10 +432,24 @@ class UserBusinessRepository implements UserBusinessInterface
         ], 200);
 	}
 
-	public function FunctionName($value='')
+	public function deleteBusinessImage()
 	{
-		// code...
+		$request = $this->request;
+		// Auth::user()->user_business->id
+		$image = UserBusinessImage::where('id',$request['id'])->where('user_business_id',Auth::user()->user_business->id)->first();
+		if(!$image)
+		{
+			return response()->json([
+				'success' => false,
+				'message' => 'Image not found, if you have any query please contact support!'
+			], 400);
+		}
+
+		ImageHelper::delete(@$image->name);
+		$image->delete();
+		return response()->json([
+            'success' => true,
+            'message' => 'Image Deleted successfully!'
+        ], 200);
 	}
-
-
 }

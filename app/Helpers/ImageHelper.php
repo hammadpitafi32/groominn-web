@@ -3,7 +3,7 @@
 namespace App\Helpers;
 use File;
 
-class UploadImageHelper
+class ImageHelper
 {
 	public static function upload($file,$path,$model)
 	{
@@ -22,4 +22,13 @@ class UploadImageHelper
         }
         return $file_name;
 	}
+
+    public static function delete($path)
+    {
+        if(File::exists(public_path($path))){
+            File::delete(public_path($path));
+            return true;
+        }
+        return false;
+    }
 }

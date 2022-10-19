@@ -56,6 +56,7 @@ Route::group(['namespace' => 'Api'],function()
             
             Route::delete('delete-user-business', 'UserBusinessController@deleteUserBusiness');
             Route::post('create-business-schedule', 'UserBusinessController@createOrUpdateSchedule');
+            Route::delete('delete-business-image', 'UserBusinessController@deleteBusinessImage');
 
             Route::post('create-user-category-service', 'UserBusinessController@createUserBusinessService');
             // bank   

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Role;
 
 use Auth;
+use App\Notifications\RegisterNotification;
 
 trait UserTrait {
   
@@ -66,8 +67,7 @@ trait UserTrait {
         $request['role_id'] = $role->id;
         $request['name'] = $request->first_name.' '.$request->last_name;
 
-        // dd($request->all());
-        $user = $request->id ?  User::find($request->id) : new User;
+        $user = ($request->id ?  User::find($request->id) : new User);
 
         $user = $user->updateOrCreate(
             [
@@ -98,6 +98,11 @@ trait UserTrait {
                 'tax_id'=>$request->tax_id
             ]
         );
+
+        if(!$request->id)
+        {
+            $user->notify(new RegisterNotification());
+        }
 
         return response()->json([
             'success' => true,
