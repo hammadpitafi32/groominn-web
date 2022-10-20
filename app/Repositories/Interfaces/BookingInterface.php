@@ -8,5 +8,5 @@ interface BookingInterface
     public function getBookings();
     public function bookingDetail();
     public function bookingCancel();
-    public function getUserEraning();
+    public function getUserEarning();
 }

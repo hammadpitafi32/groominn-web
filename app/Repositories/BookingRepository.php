@@ -626,7 +626,7 @@ class BookingRepository implements BookingInterface
         ], 200);
     }
 
-    public function getUserEraning()
+    public function getUserEarning()
     {
         $request = $this->request;
 
