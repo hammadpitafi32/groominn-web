@@ -58,6 +58,8 @@ Route::group(['namespace' => 'Api'],function()
             Route::post('create-business-schedule', 'UserBusinessController@createOrUpdateSchedule');
             Route::delete('delete-business-image', 'UserBusinessController@deleteBusinessImage');
 
+            Route::get('get-user-eraning', 'BookingController@getUserEraning');
+
             Route::post('create-user-category-service', 'UserBusinessController@createUserBusinessService');
             // bank   
             Route::post('save-bank-detail', 'ApiUserController@saveBankDetail');

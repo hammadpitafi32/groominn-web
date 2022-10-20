@@ -43,4 +43,10 @@ class BookingController extends Controller
         return $this->booking->bookingCancel();
 
     }
+
+    public function getUserEraning(Request $request)
+    {
+        return $this->booking->getUserEraning();
+
+    }
 }

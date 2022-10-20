@@ -27,6 +27,8 @@ Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
         Route::post('create-category', 'BusinessController@CreateOrUpdateBusinessCategory')->name('create-category');
     });
     Route::get('categories', 'AdminController@getCategories')->name('categories');
+    Route::get('services', 'AdminController@getServices')->name('services');
+    Route::post('change-service-status', 'AdminController@changeServiceStatus')->name('change-service-status');
 
 });
 
