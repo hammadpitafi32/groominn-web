@@ -1,7 +1,7 @@
 export const api = {
-    baseUrl: 'http://127.0.0.1:8000/api'
+    baseUrl: 'https://groominn.co/api'
 }
 
 export const asset = {
-    baseUrl: 'http://127.0.0.1:8000/'
+    baseUrl: 'https://groominn.co/'
 }

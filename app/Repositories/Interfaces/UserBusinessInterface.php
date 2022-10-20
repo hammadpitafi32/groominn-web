@@ -11,5 +11,6 @@ interface UserBusinessInterface
     public function deleteUserCategoryService($id);
 
     public function getBusinesseslist();
+    public function deleteBusinessImage();
 
 }

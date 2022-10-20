@@ -14,7 +14,7 @@ use App\Models\BusinessCategory;
 use App\Models\CategoryService;
 use File;
 use Auth;
-use App\Helpers\UploadImageHelper;
+use App\Helpers\ImageHelper;
 use App\Traits\CategoryTrait;
 
 class BusinessController extends Controller

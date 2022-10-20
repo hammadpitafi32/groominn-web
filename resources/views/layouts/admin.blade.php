@@ -106,6 +106,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Add/Update:</h6>
             <a class="collapse-item" href="{{route('categories')}}">Categories</a>
+            <a class="collapse-item" href="{{route('services')}}">Services</a>
             {{-- <a class="collapse-item" href="register.html">Register</a>
             <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
             <div class="collapse-divider"></div>

@@ -76,4 +76,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo('App\Models\UserBusiness','id', 'user_id');
     }
+
+    public function Bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

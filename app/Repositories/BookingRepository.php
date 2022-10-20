@@ -626,5 +626,24 @@ class BookingRepository implements BookingInterface
         ], 200);
     }
 
+    public function getUserEarning()
+    {
+        $request = $this->request;
+
+        $bookings =  Auth::user()->user_business->bookings()->whereNotIn('status',['cancelled']);
+
+        $data['total_earning'] = (clone $bookings)->sum('charges');
+        
+        $data['total_year_earning'] = (clone $bookings)->whereYear('created_at', date('Y'))->sum('charges');
+
+        $data['total_weekly_earning'] = (clone $bookings)->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('charges');
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ], 200);
+
+    }
+
 	
 }

@@ -94,6 +94,12 @@ class UserBusinessController extends Controller
         return $this->user_business->getBusinesseslist();
     }
 
+    public function deleteBusinessImage(Request $request)
+    {
+        // dd($request->all());
+        return $this->user_business->deleteBusinessImage();
+    }
+
     public function getCategories(Request $request)
     {
         return response()->json([
