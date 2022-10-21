@@ -48,11 +48,6 @@
                                     v-model="employees"
                                     class="bg-white py-2"
                                 />
-                                <!-- <span
-                  v-if="errors && errors.address"
-                  class="text-danger small"
-                  >{{ errors.employees[0] }}</span
-                > -->
                             </div>
                             <div class="form-group mb-3">
                                 <label
@@ -126,14 +121,9 @@
                                                 <span
                                                     class="remove-img"
                                                     @click="
-                                                        shopPics.splice(
-                                                            index,
-                                                            1
-                                                        ),
-                                                            shopPicsForApi.splice(
-                                                                index,
-                                                                1
-                                                            )
+                                                        handleDeleteShopPics(
+                                                            index
+                                                        )
                                                     "
                                                 >
                                                     <svg
@@ -624,7 +614,9 @@
                             <MDBRow class="mt-5">
                                 <MDBCol col="12" class="text-end pt-4">
                                     <MDBBtn
-                                        class="text-white bg-light-grey shadow-0 text-capitalize px-5 rounded-4"
+                                        v-if="editMode"
+                                        @click="router.push('/my-shop')"
+                                        class="shadow-4-strong"
                                     >
                                         Cancel
                                     </MDBBtn>
@@ -633,7 +625,11 @@
                                         :disabled="loading"
                                         @click="addShopHandler()"
                                     >
-                                        <span v-if="!loading">Add shop</span>
+                                        <span v-if="!loading">{{
+                                            editMode
+                                                ? "Save Changes"
+                                                : "Add shop"
+                                        }}</span>
                                         <BtnLoader v-else />
                                     </MDBBtn>
                                 </MDBCol>
@@ -651,7 +647,7 @@ import { reactive, ref } from "@vue/reactivity";
 import { MDBInput, MDBTextarea, MDBFile } from "mdb-vue-ui-kit";
 import { useRoute, useRouter } from "vue-router";
 import BtnLoader from "../custom-components/BtnLoader.vue";
-import { addShop, getUserBusiness } from "../../api";
+import { addShop, deleteBusinessImage, getUserBusiness } from "../../api";
 import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useCookies } from "vue3-cookies";
@@ -685,11 +681,13 @@ const address = reactive({
 });
 const employees = ref("");
 const loading = ref(false);
+const editMode = ref(false);
 
 const shopPics = ref([]);
 const cnicFront = ref("");
 const cnicBack = ref("");
 const Liscence = ref("");
+const imagesIds = ref([]);
 
 const shopPicsForApi = ref([]);
 const cnicFrontForApi = ref("");
@@ -707,12 +705,23 @@ const convertUrlToFile = async (url) => {
     });
 };
 
+const handleDeleteShopPics = async (index) => {
+    let id = imagesIds.value.at(index);
+    if (editMode.value && id) {
+        await deleteBusinessImage({ id });
+        imagesIds.value.splice(index, 1);
+    }
+    shopPics.value.splice(index, 1);
+    shopPicsForApi.value.splice(index, 1);
+};
+
 const getOwnProfile = async () => {
     let { data } = await getUserBusiness(route.params.id);
     let shop = data.data;
     businessName.value = shop.name;
     employees.value = shop.no_of_employees;
     description.value = shop.description;
+    imagesIds.value = shop.user_business_images.map((item) => item.id);
 
     if (shop.user_business_images.length) {
         shop.user_business_images.map((img) => {
@@ -753,6 +762,7 @@ watchEffect(() => {
         if (!route.params.id) {
             router.push("/my-shop");
         } else {
+            editMode.value = true;
             getOwnProfile();
         }
     } else if (store.state.role == "Client") {
@@ -823,6 +833,7 @@ const addShopHandler = () => {
     formData.append("cnic_back", cnicBackForApi.value);
     formData.append("license", LiscenceForApi.value);
     formData.append("no_of_employees", employees.value);
+    editMode.value && formData.append("id", route.params.id);
 
     for (let i = 0; i < shopPicsForApi.value.length; i++) {
         formData.append("shop_images[]", shopPicsForApi.value[i]);
@@ -834,7 +845,11 @@ const addShopHandler = () => {
             errors.value = null;
             success.value = res.data;
 
-            toast.success("Shop has been added successfully");
+            toast.success(
+                `Shop has been ${
+                    editMode.value ? "updated" : "added"
+                } successfully`
+            );
             let user = cookies.get("user");
             user.is_shop = true;
             cookies.set("user", user);

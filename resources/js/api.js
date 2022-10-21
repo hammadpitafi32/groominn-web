@@ -78,3 +78,6 @@ export const getBooking = async (data) => {
 export const logout = async () => {
     return await axios.get(`${baseURL}/logout`);
 };
+export const deleteBusinessImage = async ({id}) => {
+    return await axios.delete(`${baseURL}/delete-business-image?id=${id}`);
+};
