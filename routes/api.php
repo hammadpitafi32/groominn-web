@@ -76,6 +76,9 @@ Route::group(['namespace' => 'Api'],function()
             Route::post('create-booking', 'BookingController@create');
             Route::post('get-estimated-time', 'BookingController@getEstimatedTime');
 
+            Route::get('get-auth-user', 'ApiAuthController@getAuthUser');
+            Route::get('save-user', 'UserController@createOrUpdate');
+
         });
     });
     /*end*/

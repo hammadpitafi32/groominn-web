@@ -90,14 +90,25 @@ class ApiAuthController extends Controller
  
     public function getAuthUser(Request $request)
     {
-        $this->validate($request, [
+        $token['token'] = $request->bearerToken();
+        //valid credential
+        $validator = Validator::make($token, [
             'token' => 'required'
         ]);
- 
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()
+            ], 400);
+        }
+        
         $user = JWTAuth::authenticate($request->token);
  
         return response()->json(['user' => $user]);
     }
+
 
     
 }
