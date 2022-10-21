@@ -1,7 +1,7 @@
 export const api = {
-    baseUrl: 'https://groominn.co/api'
+    baseUrl: process.env.MIX_APP_API_URL
 }
 
 export const asset = {
-    baseUrl: 'https://groominn.co/'
+    baseUrl: process.env.MIX_APP_ASSET_URL
 }
