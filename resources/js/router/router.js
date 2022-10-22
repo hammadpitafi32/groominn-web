@@ -9,6 +9,8 @@ import Bookings from '../components/provider/bookings/Bookings.vue';
 import BookingsList from '../components/client/booking/BookingsList.vue';
 import Profile from '../components/client/profile/Profile.vue';
 import bookingDetail from '../components/client/booking/BookingDetail.vue';
+import MyEarnings from '../components/provider/earnings/MyEarnings.vue'
+import BankDetails from '../components/provider/bank-details/BankDetails.vue'
 import Payment from '../components/client/payment/Payment.vue';
 import NotFound from '../components/custom-components/NotFound.vue'
 import Home from '../components/Index.vue';
@@ -128,6 +130,22 @@ const routes = [{
     component: BookingsList,
     meta: {
         sidebar: false
+    }
+},
+{
+    path: '/my-earnings',
+    name: 'myEarnings',
+    component: MyEarnings,
+    meta: {
+        sidebar: true
+    }
+},
+{
+    path: '/bank-details',
+    name: 'bankDetails',
+    component: BankDetails,
+    meta: {
+        sidebar: true
     }
 },
 {

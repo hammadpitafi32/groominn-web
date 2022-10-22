@@ -3,6 +3,7 @@
         <MDBRow>
             <MDBCol col="12">
                 <div class="p-5 pt-4">
+                    <h5 class="fw-bold mb-3">Business Details</h5>
                     <div class="py-5 px-4 rounded-5 bg-light-grey shop-form">
                         <form action="">
                             <div class="form-group mb-3">
@@ -759,7 +760,7 @@ watchEffect(() => {
     if (!store.state.auth) {
         router.push("/login");
     } else if (store.state.role == "Provider" && store.state.shop) {
-        if (!route.params.id) {
+        if (!route.params.id && !editMode.value) {
             router.push("/my-shop");
         } else {
             editMode.value = true;
