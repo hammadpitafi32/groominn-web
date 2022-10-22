@@ -13,7 +13,7 @@
                             <span class="text-orange mb-0 fw-bold"
                                 >Total Earnings</span
                             >
-                            <h4 class="mb-0">150</h4>
+                            <h4 class="mb-0">{{earnings?.total_earning}}</h4>
                         </div>
                         <div class="dollar-img">
                             <img
@@ -30,7 +30,7 @@
                             <span class="text-orange mb-0 fw-bold"
                                 >Weekly Earnings</span
                             >
-                            <h4 class="mb-0">150</h4>
+                            <h4 class="mb-0">{{earnings?.total_weekly_earning}}</h4>
                         </div>
                         <div class="dollar-img">
                             <img
@@ -47,7 +47,7 @@
                             <span class="text-orange mb-0 fw-bold"
                                 >Yearly Earnings</span
                             >
-                            <h4 class="mb-0">150</h4>
+                            <h4 class="mb-0">{{earnings?.total_year_earning}}</h4>
                         </div>
                         <div class="dollar-img">
                             <img
@@ -64,12 +64,18 @@
 </template>
 
 <script setup>
-import { watchEffect } from "@vue/runtime-core";
+import { ref, watchEffect } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { getEarnings } from "../../../api";
 
 const store = useStore();
 const router = useRouter();
+const earnings = ref(null);
+
+getEarnings().then(({ data }) => {
+    earnings.value = data.data;
+});
 
 watchEffect(() => {
     if (!store.state.auth) {

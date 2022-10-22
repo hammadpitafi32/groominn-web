@@ -6,6 +6,10 @@ import { api } from "./baseURL";
 const { cookies } = useCookies();
 const baseURL = api.baseUrl;
 
+const instance = axios.create({
+    baseURL: baseURL
+})
+
 axios.interceptors.request.use(function (config) {
     const token = cookies.get("token");
     if (token) {
@@ -81,3 +85,7 @@ export const logout = async () => {
 export const deleteBusinessImage = async ({id}) => {
     return await axios.delete(`${baseURL}/delete-business-image?id=${id}`);
 };
+
+export const getEarnings = async () => {
+    return await instance.get('/get-user-earning')
+}
