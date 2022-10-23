@@ -168,6 +168,7 @@ import {
 import { useRoute } from "vue-router";
 import Notifications from "./Notifications.vue";
 import { useCookies } from "vue3-cookies";
+import router from "../router/router";
 
 const navbar = ref(null);
 const store = useStore();

@@ -886,3 +886,21 @@ aside.gradiant-list a {
 .gm-style-iw {
     max-width: 350px !important;
 }
+
+.earning-box {
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1.4rem;
+}
+.earning-box .dollar-img{
+    background-color: #FFD3C3;
+    border-radius: 12px;
+    padding: .8rem;
+}
+
+.earning-box .dollar-img img{
+    max-width: 90%;
+}

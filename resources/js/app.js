@@ -37,8 +37,9 @@ app.component("MDBCardTitle", MDBCardTitle);
 app.component("MDBCardText", MDBCardText);
 app.component("MDBIcon", MDBIcon);
 
-app.use(router);
 app.use(store);
+app.use(router);
+
 app.use(VueTimepicker);
 app.use(Vue3Geolocation);
 app.use(Toast, {

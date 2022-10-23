@@ -86,11 +86,11 @@
                                     <td>{{ booking.user.name }}</td>
                                     <td>
                                         {{
-                                            booking.booking_services.map(
-                                                (book) => {
+                                            booking.booking_services
+                                                .map((book) => {
                                                     return book.service_name;
-                                                }
-                                            ).join(', ')
+                                                })
+                                                .join(", ")
                                         }}
                                     </td>
                                     <td>{{ booking.charges }} $</td>
@@ -179,11 +179,7 @@ getBooking().then(({ data }) => {
 });
 
 watchEffect(() => {
-    if (!store.state.auth) {
-        router.push("/login");
-    } else if (store.state.role === "Client") {
-        router.push("/");
-    }
+    store.dispatch("providerRedirection");
 });
 
 const closeModal = () => {
