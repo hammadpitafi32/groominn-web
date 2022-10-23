@@ -33,6 +33,9 @@ Route::group(['namespace' => 'Api'],function()
         Route::get('get-bookings', 'BookingController@getBookings');
         Route::get('booking-detail', 'BookingController@bookingDetail');
         Route::get('booking-cancelation', 'BookingController@bookingCancel');
+
+        Route::post('update-user', 'ApiUserController@createOrUpdate');
+
         
         /*service provider start*/
         Route::group(['middleware' => 'provider.jwt'], function () {
@@ -77,7 +80,7 @@ Route::group(['namespace' => 'Api'],function()
             Route::post('get-estimated-time', 'BookingController@getEstimatedTime');
 
             Route::get('get-auth-user', 'ApiAuthController@getAuthUser');
-            Route::get('save-user', 'UserController@createOrUpdate');
+
 
         });
     });

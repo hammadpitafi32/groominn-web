@@ -149,7 +149,7 @@ class UserBusinessRepository implements UserBusinessInterface
             $file =$request->cnic_back;
 			if(@$request->id)
 			{
-				ImageHelper::delete($user_business->cnic_front);
+				ImageHelper::delete($user_business->cnic_back);
 			}
             $cnic_back = ImageHelper::upload($file,$path,@$user_business);
             $user_business->cnic_back = $file_path.$cnic_back;
@@ -160,7 +160,7 @@ class UserBusinessRepository implements UserBusinessInterface
             $file =$request->license;
 			if(@$request->id)
 			{
-				ImageHelper::delete($user_business->cnic_front);
+				ImageHelper::delete($user_business->license);
 			}
             $license = ImageHelper::upload($file,$path,@$user_business);
             $user_business->license = $file_path.$license;
