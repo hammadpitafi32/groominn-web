@@ -2,22 +2,22 @@ import { useCookies } from "vue3-cookies";
 import { createStore } from "vuex";
 import { logout } from "../api";
 import { getAllCategories } from "../api";
-import router from '../router/router';
+import router from "../router/router";
 
 const { cookies } = useCookies();
 
 const store = createStore({
     state: {
         auth: false,
-        name: '',
-        role: '',
-        shop: '',
-        allCategories: null
+        name: "",
+        role: "",
+        shop: "",
+        allCategories: null,
     },
     actions: {
         setAuth(context) {
-            let token = cookies.get('token');
-            let user = cookies.get('user');
+            let token = cookies.get("token");
+            let user = cookies.get("user");
 
             if (token && user) {
                 context.state.auth = true;
@@ -26,45 +26,52 @@ const store = createStore({
                 context.state.shop = user.is_shop;
             } else {
                 context.state.auth = false;
-                context.state.name = '';
-                context.state.role = '';
-                context.state.shop = '';
+                context.state.name = "";
+                context.state.role = "";
+                context.state.shop = "";
             }
         },
         setLogin(context, data) {
-            cookies.set('token', data.token, "1d");
-            cookies.set('user', data.data, "1d");
-            context.dispatch('setAuth');
+            cookies.set("token", data.token, "1d");
+            cookies.set("user", data.data, "1d");
+            context.dispatch("setAuth");
         },
         setLogout(context) {
             logout().then(() => {
-                cookies.remove('token');
-                cookies.remove('user');
-                context.dispatch('setAuth');
+                cookies.remove("token");
+                cookies.remove("user");
+                context.dispatch("setAuth");
+                router.push('/login');
             });
         },
         redirection(context) {
-            if (context.state.role === 'Provider' && context.state.shop) {
-                router.push('/my-shop')
-            } else if (context.state.role === 'Provider' && !context.state.shop) {
-                router.push('/add-shop')
-            } else if (context.state.role === 'Client') {
-                router.push('/')
+            if (context.state.role === "Provider" && context.state.shop) {
+                router.push("/my-shop");
+            } else if (
+                context.state.role === "Provider" &&
+                !context.state.shop
+            ) {
+                router.push("/add-shop");
+            } else if (context.state.role === "Client") {
+                router.push("/");
             }
         },
         clientRedirection(context) {
-            if (!context.state.auth) {
-                router.push('/login')
-            } else if (context.state.role === 'Provider') {
-                router.push('/my-shop')
+            if (context.state.role === "Provider") {
+                router.push("/my-shop");
+            }
+        },
+        providerRedirection(context) {
+            if (context.state.role === "Client") {
+                router.push("/my-shop");
             }
         },
         getCategories(context) {
             getAllCategories().then((res) => {
-                context.state.allCategories = res.data.data
-            })
-        }
-    }
-})
+                context.state.allCategories = res.data.data;
+            });
+        },
+    },
+});
 
 export default store;

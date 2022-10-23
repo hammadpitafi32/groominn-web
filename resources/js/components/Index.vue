@@ -415,9 +415,7 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-  if (store.state.role == "Provider") {
-    router.push("/my-shop");
-  }
+  store.dispatch('clientRedirection');
 });
 
 const items = [

@@ -27,8 +27,7 @@ const booking_date = ref(null);
 const data = ref({});
 
 watchEffect(() => {
-    store.dispatch("clientRedirection");
-    store.dispatch("setAuth");
+    store.dispatch("client");
     if (route.params.data) {
         // setting Data in localStorage in real time
         let dataForPayment = JSON.parse(route.params.data);

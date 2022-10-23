@@ -130,9 +130,7 @@ const bookings = ref([]);
 const store = useStore();
 const loading = ref(true);
 
-// const getAllBooking = () => {
 getBooking().then(({ data }) => {
-    // console.log(data.data);
     bookings.value = data.data;
     loading.value = false;
 });
@@ -154,7 +152,6 @@ const setEstimatedTime = (time) => {
 
 watchEffect(() => {
     store.dispatch("clientRedirection");
-    store.dispatch("setAuth");
 });
 </script>
 

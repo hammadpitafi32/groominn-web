@@ -61,10 +61,6 @@ const bankNumber = ref("");
 const loading = ref(false);
 
 watchEffect(() => {
-    if (!store.state.auth) {
-        router.push("/login");
-    } else if (store.state.role == "Client" || !store.state.shop) {
-        router.push("/");
-    }
+    store.dispatch('providerRedirection');
 });
 </script>

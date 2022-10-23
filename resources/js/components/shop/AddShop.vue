@@ -757,20 +757,19 @@ const getOwnProfile = async () => {
 };
 
 watchEffect(() => {
-    if (!store.state.auth) {
-        router.push("/login");
-    } else if (store.state.role == "Provider" && store.state.shop) {
+    store.dispatch("providerRedirection");
+    if (
+        store.state.auth &&
+        store.state.role == "Provider" &&
+        store.state.shop
+    ) {
         if (!route.params.id && !editMode.value) {
             router.push("/my-shop");
         } else {
             editMode.value = true;
             getOwnProfile();
         }
-    } else if (store.state.role == "Client") {
-        router.push("/");
     }
-
-    // console.log(address.value);
 });
 
 const uploadPics = (event, val, firstTimeSet) => {

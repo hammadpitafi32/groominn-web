@@ -13,7 +13,7 @@
                             <span class="text-orange mb-0 fw-bold"
                                 >Total Earnings</span
                             >
-                            <h4 class="mb-0">{{earnings?.total_earning}}</h4>
+                            <h4 class="mb-0">{{ earnings?.total_earning }}</h4>
                         </div>
                         <div class="dollar-img">
                             <img
@@ -30,7 +30,9 @@
                             <span class="text-orange mb-0 fw-bold"
                                 >Weekly Earnings</span
                             >
-                            <h4 class="mb-0">{{earnings?.total_weekly_earning}}</h4>
+                            <h4 class="mb-0">
+                                {{ earnings?.total_weekly_earning }}
+                            </h4>
                         </div>
                         <div class="dollar-img">
                             <img
@@ -47,7 +49,9 @@
                             <span class="text-orange mb-0 fw-bold"
                                 >Yearly Earnings</span
                             >
-                            <h4 class="mb-0">{{earnings?.total_year_earning}}</h4>
+                            <h4 class="mb-0">
+                                {{ earnings?.total_year_earning }}
+                            </h4>
                         </div>
                         <div class="dollar-img">
                             <img
@@ -78,10 +82,6 @@ getEarnings().then(({ data }) => {
 });
 
 watchEffect(() => {
-    if (!store.state.auth) {
-        router.push("/login");
-    } else if (store.state.role == "Client" || !store.state.shop) {
-        router.push("/");
-    }
+    store.dispatch("providerRedirection");
 });
 </script>
