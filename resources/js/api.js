@@ -89,3 +89,11 @@ export const deleteBusinessImage = async ({ id }) => {
 export const getEarnings = async () => {
     return await instance.get("/get-user-earning");
 };
+
+export const getUserBank = async () => {
+    return await instance.get("/get-bank-detail");
+};
+
+export const createUserBank = async (data) => {
+    return await instance.post(`/save-bank-detail`, data);
+};
