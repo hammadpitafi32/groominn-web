@@ -26,10 +26,10 @@ trait UserTrait {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email|unique:users,email,'.$request->id,
+            'email' => "required|unique:users,email,{$request->id}",
             'phone' => 'required',
-            'role' => 'required'
         ]);
+       
         if ($request->id && $request->current_password) 
         {
             $validator = Validator::make($request->all(), [
@@ -40,38 +40,34 @@ trait UserTrait {
         if(!$request->id)
         {
             $validator = Validator::make($request->all(), [
+                'first_name' => 'required|string',
+                'last_name' => 'required|string',
+                'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:6|max:50|confirmed',
+                'phone' => 'required',
+                'role' => 'required'
             ]);
-        }
 
-        // $validator = Validator::make($request->all(), [
-        //     'first_name' => 'required|string',
-        //     'last_name' => 'required|string',
-        //     'email' => 'required|email|unique:users,email,'.$request->id,
-        //     // 'email' => "required|email|unique:users,{$request->id}",
-        //     'password' => 'required|string|min:6|max:50|confirmed',
-        //     'phone' => 'required',
-        //     'role' => 'required'
-        // ]);
+            $role = Role::where('name',$request->role)->first();
+
+            if ($role && $role->name == 'Admin' && Auth::user()->role->name != 'Admin') {
+                return response()->json([
+                    'errors' => ['role' => ['Cannot add user against this role!']],
+                    'success' => false
+                ], 400);
+            }
+            elseif(!$role)
+            {
+                return response()->json([
+                    'errors' => ['role' => ['Role Not found!']],
+                    'success' => false
+                ], 400);
+            }
+        }
         //Send failed response if request is not valid
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->messages(),
-                'success' => false
-            ], 400);
-        }
-        $role = Role::where('name',$request->role)->first();
-
-        if ($role && $role->name == 'Admin' && Auth::user()->role->name != 'Admin') {
-            return response()->json([
-                'errors' => ['role' => ['Cannot add user against this role!']],
-                'success' => false
-            ], 400);
-        }
-        elseif(!$role)
-        {
-            return response()->json([
-                'errors' => ['role' => ['Role Not found!']],
                 'success' => false
             ], 400);
         }
@@ -85,25 +81,42 @@ trait UserTrait {
         if ($response && $response->getStatusCode() == 400) {
             return $response;
         }
-
-        $role = Role::where('name',$request->role)->first();
+        // dd('gg');
+        $user = ($request->id ?  User::find($request->id) : new User);
+        if(!$request->id)
+        {
+            $role = Role::where('name',$request->role)->first();
+        }
+        else{
+            $role = $user->role;
+        }
 
         $request['role_id'] = $role->id;
         $request['name'] = $request->first_name.' '.$request->last_name;
 
-        $user = ($request->id ?  User::find($request->id) : new User);
-        // dd($user );
-        $user = $user->updateOrCreate(
-            [
-                'email' => $request->email,
-            ],
-            [
-                'name' => $request->name,
-                'password' => Hash::make($request->password),
-                'role_id' => $request->role_id,
-                'added_by' => $request->added_by,
-            ]
-        );
+        // dd($request->password);
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->role_id = $request->role_id;
+        $user->added_by = $request->added_by;
+        if (@$request->password) {
+            $user->password = Hash::make($request->password);
+        }
+        $user->save();
+
+
+        // $user = $user->updateOrCreate(
+        //     [
+        //         'email' => $request->email,
+        //     ],
+        //     [
+        //         'name' => $request->name,
+        //         // 'password' => Hash::make($request->password),
+        //         'role_id' => $request->role_id,
+        //         'added_by' => $request->added_by,
+        //     ]
+        // );
+
 
         $user->user_detail()->updateOrCreate(
             [

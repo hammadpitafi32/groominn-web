@@ -80,36 +80,100 @@
                                         <label for="" class="fw-bold mb-2"
                                             >First Name</label
                                         >
-                                        <MDBInput id="firstName" class="py-2" />
+                                        <MDBInput class="py-2" 
+                                        :class="errors && errors.first_name &&'border-danger'"
+                                        v-model="firstName"
+                                        />
+                                        <span v-if="errors && errors.first_name"
+                                        class="text-danger small"
+                                        >{{ errors.first_name[0] }}</span>
                                     </div>
                                     <div class="form-gruop mb-3">
                                         <label for="" class="fw-bold mb-2"
                                             >Last Name</label
                                         >
-                                        <MDBInput id="lastName" class="py-2" />
+                                        <MDBInput class="py-2" 
+                                        :class="errors && errors.last_name &&'border-danger'"
+                                        v-model="lastName"
+                                        />
+                                        <span v-if="errors && errors.last_name"
+                                        class="text-danger small"
+                                        >{{ errors.last_name[0] }}</span>
+                                    </div>
+                                    <div class="form-gruop mb-3">
+                                        <label for="" class="fw-bold mb-2"
+                                            >Phone Number</label
+                                        >
+                                        <MDBInput
+                                            type="text"
+                                            class="py-2"
+                                            :class="errors && errors.phone &&'border-danger'"
+                                            v-model="phoneNumber"
+                                        />
+                                        <span v-if="errors && errors.phone"
+                                        class="text-danger small"
+                                        >{{ errors.phone[0] }}</span>
                                     </div>
                                     <div class="form-gruop mb-3">
                                         <label for="" class="fw-bold mb-2"
                                             >Email</label
                                         >
                                         <MDBInput
-                                            id="email"
                                             type="email"
                                             class="py-2"
+                                            :class="errors && errors.email &&'border-danger'"
+                                            v-model="email"
                                         />
+                                        <span v-if="errors && errors.email"
+                                        class="text-danger small"
+                                        >{{ errors.email[0] }}</span>
                                     </div>
                                     <div class="form-gruop mb-3">
                                         <label for="" class="fw-bold mb-2"
-                                            >Password</label
+                                            >Current Password</label
                                         >
                                         <MDBInput
                                             type="password"
-                                            id="password"
                                             class="py-2"
+                                            :class="errors && errors.current_password &&'border-danger'"
+                                            v-model="currentPassword"
+
                                         />
+                                        <span v-if="errors && errors.current_password"
+                                        class="text-danger small"
+                                        >{{ errors.current_password[0] }}</span>
+                                    </div>
+                                    <div class="form-gruop mb-3">
+                                        <label for="" class="fw-bold mb-2"
+                                            >New Password</label
+                                        >
+                                        <MDBInput
+                                            type="password"
+                                            class="py-2"
+                                            :class="errors && errors.password &&'border-danger'"
+                                            v-model="newPassword"
+                                        />
+                                        <span v-if="errors && errors.password"
+                                        class="text-danger small"
+                                        >{{ errors.password[0] }}</span>
+                                    </div>
+                                    <div class="form-gruop mb-3">
+                                        <label for="" class="fw-bold mb-2"
+                                            >Confirm New Password</label
+                                        >
+                                        <MDBInput
+                                            type="password"
+                                            class="py-2"
+                                            :class="errors && errors.confirm_password &&'border-danger'"
+                                            v-model="confirmNewPassword"
+                                        />
+                                        <span v-if="errors && errors.confirm_password"
+                                        class="text-danger small"
+                                        >{{ errors.confirm_password[0] }}</span>
                                     </div>
                                     <div class="text-end pt-3">
                                         <MDBBtn
+                                            @click="saveUserHandler()"
                                             class="bg-orange text-white text-capitalize"
                                             >Save Changes</MDBBtn
                                         >
@@ -125,13 +189,74 @@
 </template>
 
 <script setup>
-import { watchEffect } from "@vue/runtime-core";
+import {ref, watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { useStore } from "vuex";
+import { useToast } from "vue-toastification";
+
+import {
+    getUserData,
+    saveUserData,
+} from "../../../api";
 
 const store = useStore();
+
+const toast = useToast();
+
+const firstName = ref("");
+const lastName = ref("");
+const email = ref("");
+
+const phoneNumber = ref("");
+const currentPassword  = ref("");
+const newPassword = ref("");
+const confirmNewPassword = ref("");
+const user_detail = ref(null);
+
+const errors = ref(null);
 
 watchEffect(() => {
     store.dispatch("clientRedirection");
 });
+getUserData().then(({ data }) => {
+    user_detail.value = data.data;
+    // console.log(user_detail.value);
+    if(user_detail.value)
+    {
+        firstName.value = user_detail.value.first_name;
+        if(user_detail.value.last_name)
+        {
+
+            lastName.value = user_detail.value.last_name;
+        }
+        phoneNumber.value = user_detail.value.user_detail.phone;
+        email.value = user_detail.value.email;
+    }
+});
+const saveUserHandler = () => {
+    const formData = new FormData();
+    if (user_detail.value) {
+        formData.append("id", user_detail.value.id);
+    }
+    formData.append("first_name", firstName.value);
+    formData.append("last_name", lastName.value);
+    formData.append("phone", phoneNumber.value);
+    formData.append("email", email.value);
+    formData.append("current_password", currentPassword.value);
+    formData.append("password", newPassword.value);
+    formData.append("password_confirmation", confirmNewPassword.value);
+
+    saveUserData(formData)
+        .then((response) => {
+            errors.value = null;
+            if(response.data.success == true)
+            {
+                user_detail.value = response.data.data;
+            }
+            toast.success("Changes Saved Successfully!");
+        })
+        .catch((err) => {
+            errors.value = err.response.data.errors;
+        });
+};
 </script>

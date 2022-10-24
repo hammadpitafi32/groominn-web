@@ -105,8 +105,24 @@ class ApiAuthController extends Controller
         }
         
         $user = JWTAuth::authenticate($request->token);
- 
-        return response()->json(['user' => $user]);
+        $decode_user = json_decode($user);
+
+        $user = User::with('user_detail')->find($decode_user->id);
+
+        $full_name = explode(' ',$user->name);
+        $user->first_name = $full_name[0];
+        // dd($user);
+        // $user['role_name'] = $user->role->name;
+        // $user->last_name = null;
+        if ((array_key_exists(1, $full_name))) 
+        {
+            $user->last_name = $full_name[1].' '.(array_key_exists(2, $full_name)?$full_name[2]:'');
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
     }
 
 

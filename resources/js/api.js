@@ -97,3 +97,11 @@ export const getUserBank = async () => {
 export const createUserBank = async (data) => {
     return await instance.post(`/save-bank-detail`, data);
 };
+
+export const getUserData = async () => {
+    return await instance.get("/get-auth-user");
+};
+
+export const saveUserData = async (data) => {
+    return await instance.post(`/update-user`, data);
+};

@@ -15,7 +15,6 @@
                                     v-model="bankName"
                                     :class="errors && errors.bank_name && 'border-danger'"
                                     class="bg-white py-2"
-                                    value="sdff"
                                 />
                                 <span
                                 v-if="errors && errors.bank_name"
@@ -43,7 +42,7 @@
                                 </MDBCol>
                                 <MDBCol col="2">
                                     <MDBBtn
-                                        @click="addNewServiceHandler()"
+                                        @click="addNewBankHandler()"
                                         class="text-white bg-orange shadow-0 text-capitalize px-5 rounded-4 ms-3"
                                         :disabled="loading"
                                     >
@@ -95,7 +94,7 @@ getUserBank().then(({ data }) => {
     }
 });
 
-const addNewServiceHandler = () => {
+const addNewBankHandler = () => {
     const formData = new FormData();
     if (bank_detail.value) {
         formData.append("id", bank_detail.value.id);
