@@ -5,12 +5,14 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 use App\Models\User;
 use App\Models\Role;
 
 use Auth;
 use App\Notifications\RegisterNotification;
+use App\Rules\MatchOldPassword;
 
 trait UserTrait {
   
@@ -20,14 +22,37 @@ trait UserTrait {
      */
     public function validation($request)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|max:50|confirmed',
+            'email' => 'required|email|unique:users,email,'.$request->id,
             'phone' => 'required',
             'role' => 'required'
         ]);
+        if ($request->id && $request->current_password) 
+        {
+            $validator = Validator::make($request->all(), [
+                'current_password' => ['required', new MatchOldPassword],
+                'password' => 'required|string|min:6|max:50|confirmed',
+            ]);
+        }
+        if(!$request->id)
+        {
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|string|min:6|max:50|confirmed',
+            ]);
+        }
+
+        // $validator = Validator::make($request->all(), [
+        //     'first_name' => 'required|string',
+        //     'last_name' => 'required|string',
+        //     'email' => 'required|email|unique:users,email,'.$request->id,
+        //     // 'email' => "required|email|unique:users,{$request->id}",
+        //     'password' => 'required|string|min:6|max:50|confirmed',
+        //     'phone' => 'required',
+        //     'role' => 'required'
+        // ]);
         //Send failed response if request is not valid
         if ($validator->fails()) {
             return response()->json([
@@ -35,8 +60,7 @@ trait UserTrait {
                 'success' => false
             ], 400);
         }
-
-        $role =Role::where('name',$request->role)->first();
+        $role = Role::where('name',$request->role)->first();
 
         if ($role && $role->name == 'Admin' && Auth::user()->role->name != 'Admin') {
             return response()->json([
@@ -62,13 +86,13 @@ trait UserTrait {
             return $response;
         }
 
-        $role =Role::where('name',$request->role)->first();
+        $role = Role::where('name',$request->role)->first();
 
         $request['role_id'] = $role->id;
         $request['name'] = $request->first_name.' '.$request->last_name;
 
         $user = ($request->id ?  User::find($request->id) : new User);
-
+        // dd($user );
         $user = $user->updateOrCreate(
             [
                 'email' => $request->email,
@@ -83,19 +107,19 @@ trait UserTrait {
 
         $user->user_detail()->updateOrCreate(
             [
-                'user_id'=>$user->id,
+                'user_id' => $user->id,
             ],
             [
-                'phone'=>$request->phone,
-                'gender'=>$request->gender,
-                'date_of_birth'=>$request->date_of_birth,
-                'address_line_1'=>$request->address_line_1,
-                'address_line_2'=>$request->address_line_2,
-                'country_id'=>$request->country_id,
-                'state_id' => $request->state_id,
-                'city' => $request->city,
-                'zip_code' => $request->zip_code,
-                'tax_id'=>$request->tax_id
+                'phone' => $request->phone,
+                'gender' => $request->gender,
+                'date_of_birth' => $request->date_of_birth,
+                'address_line_1' => $request->address_line_1,
+                'address_line_2' => $request->address_line_2,
+                'country_id' => $request->country_id,
+                'state_id'  =>  $request->state_id,
+                'city'  =>  $request->city,
+                'zip_code'  =>  $request->zip_code,
+                'tax_id' => $request->tax_id
             ]
         );
 

@@ -80,9 +80,7 @@ class BookingRepository implements BookingInterface
 	            {
 	                // dd('dsf');
 	                $stripe = StripeTrait::obj();
-	                $payment_intent = $stripe->paymentIntents->retrieve(
-	                  $request['payment_intent_id'],
-	                );
+	                $payment_intent = $stripe->paymentIntents->retrieve($request['payment_intent_id']);
 	            }
 	            else
 	            {
@@ -364,7 +362,7 @@ class BookingRepository implements BookingInterface
             {
                 // dd('intent');
                 $intent = $stripe->paymentIntents->retrieve(
-                  $request['payment_intent_id'],
+                  $request['payment_intent_id']
                 );
                 $intent->confirm();
             }
