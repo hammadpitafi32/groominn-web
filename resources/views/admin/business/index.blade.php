@@ -19,6 +19,9 @@
             <th>Shop Name</th>
             <th>Address</th>
             <th>Shop Owner</th>
+            <th>CNIC Front Image</th>
+            <th>CNIC Back Image</th>
+            <th>License Image</th>
             <th>Created At</th>
           </tr>
         </thead>
@@ -28,6 +31,9 @@
             <th>Shop Name</th>
             <th>Address</th>
             <th>Shop Owner</th>
+            <th>CNIC Front Image</th>
+            <th>CNIC Back Image</th>
+            <th>License Image</th>
             <th>Created At</th>
           </tr>
         </tfoot>
@@ -43,6 +49,9 @@
             <td>{{$user_business->name}}</td>
             <td>{{$user_business->address}}</td>
             <td>{{$user_business->user->email}}</td>
+            <td><a href="javascript:void(0)" ><img src="{{asset($user_business->cnic_front)}}" alt="" class="img-thumbnail img-click"></a></td>
+            <td><a href="javascript:void(0)" ><img src="{{asset($user_business->cnic_back)}}" alt="" class="img-thumbnail img-click"></a></td>
+            <td><a href="javascript:void(0)" ><img src="{{asset($user_business->license)}}" alt="" class="img-thumbnail img-click"></a></td>
             <td>{{$user_business->created_at}}</td>
           </tr>
           @endforeach
@@ -82,6 +91,33 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="imagemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Image Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col text-center">
+                            <img src="" id="imagepreview" style="width: 700px;" >
+
+                        </div>
+                    </div>`
+                </div>
+                <div class="modal-footer">
+                    <p style="color: green;" id="Message"></p>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {{-- <button type="button" class="btn btn-primary modifyCategory">Submit</button> --}}
+                </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('javascripts')
 
@@ -116,5 +152,10 @@
 
         });
     });
+
+    $(".img-click").on("click", function() {
+        $('#imagepreview').attr('src', $(this).attr('src')); // here asign the image to the modal when the user click the enlarge link
+        $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+        });
 </script>
 @endpush
