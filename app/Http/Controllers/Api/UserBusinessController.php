@@ -108,4 +108,18 @@ class UserBusinessController extends Controller
         ], 200);
         // dd($this->getAllCategories());
     }
+
+    public function getAllBusinesses(Request $request)
+    {
+        // dd($this->user_business->all());
+        $user_businesses = $this->user_business->all();
+
+        return view('admin.business.index',compact('user_businesses'));
+    }
+
+    public function changeBusinessStatus(Request $request)
+    {
+        return $this->user_business->changeStatus();
+
+    }
 }

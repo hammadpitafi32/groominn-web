@@ -41,9 +41,10 @@
         @foreach($users as $user)
         <tr>
           <td>
-            <a href="javascript:void(0);" class="btn {{($user->status?'btn-danger':'btn-success')}} btn-circle btn-sm changeStatus" data-id="{{$user->id}}" data-name="{{$user->name}}">
+            --
+            {{-- <a href="javascript:void(0);" class="btn {{($user->status?'btn-danger':'btn-success')}} btn-circle btn-sm changeStatus" data-id="{{$user->id}}" data-name="{{$user->name}}">
                 <i class="fas {{($user->status?'fa-ban':'fa-check')}}"></i>
-             </a>
+             </a> --}}
           </td>
           <td>{{$user->name}}</td>
           <td>{{$user->email}}</td>

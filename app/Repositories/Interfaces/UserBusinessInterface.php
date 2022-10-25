@@ -12,5 +12,6 @@ interface UserBusinessInterface
 
     public function getBusinesseslist();
     public function deleteBusinessImage();
-
+    
+    public function changeStatus();
 }
