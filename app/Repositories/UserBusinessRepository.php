@@ -464,7 +464,8 @@ class UserBusinessRepository implements UserBusinessInterface
     {
 		$request = $this->request;
 
-        $user_business = $this->find($request['id']);
+        $user_business = $this->user_business->find($request['id']);
+		// dd($user_business);
         $user_business->status = (($user_business->status == 'active')?'inactive':'active');
         // dd($user_business);
         $user_business->save();
