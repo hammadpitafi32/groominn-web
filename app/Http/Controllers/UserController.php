@@ -29,6 +29,11 @@ class UserController extends Controller
 
         return view('admin.users.index',compact('users','roles'));
     }
+    public function changeUserStatus(Request $request)
+    {
+        return $this->user->changeStatus();
+    }
+    
 
    
 

@@ -8,4 +8,5 @@ interface UserInterface
     public function saveBankDetail();
     public function getBankDetail();
     public function deleteBankDetail();
+    public function changeStatus();
 }
