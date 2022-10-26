@@ -4,28 +4,43 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use App\Http\Requests\RegisterAuthRequest;
-use App\Models\User;
-use App\Models\Role;
 use Illuminate\Http\Request;
+use Auth;
+// 3rd part packages
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
+use Twilio\Rest\Client;
+
+// models
+use App\Models\User;
+use App\Models\Role;
+// traits
 use App\Traits\UserTrait;
-use Auth;
+use App\Traits\TwilioTrait;
+// notication
+use App\Notifications\OtpNotification;
+
 class ApiAuthController extends Controller
 {
-
     use UserTrait;
+    use TwilioTrait;
+
     public $loginAfterSignUp = true;
  
     public function register(Request $request)
     {
         $response = $this->createOrUpdateUser($request);
+        
         if ($response && $response->getStatusCode() == 400) {
             return $response;
         }
+
+        if ($response && $response->getStatusCode() == 201 ) {
+            return $response;
+        }
         // dd(json_decode($response->getContent(), true));
-        if ($this->loginAfterSignUp) {
+        if ($this->loginAfterSignUp ) {
             return $this->login($request);
         }
         return $response;
@@ -35,14 +50,32 @@ class ApiAuthController extends Controller
     {
         $input = $request->only('email', 'password');
         $jwt_token = null;
- 
-        if (!$jwt_token = JWTAuth::attempt($input)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid Email or Password',
-            ], 401);
-        }
+        // dd($request->all());
+        if ($request['verified']) 
+        {
+            $user = User::where('email',$request->email)
+            ->orWhereHas('user_detail',function($q) use($request){
+                $q->where('phone',$request['phone']);
+            })
+            ->first();
 
+            if (!$jwt_token=JWTAuth::fromUser($user)) 
+            {
+                return response()->json(['error' => 'invalid_credentials'], 401);
+            }
+            Auth::login($user);
+        }
+        else
+        {
+            if (!$jwt_token = JWTAuth::attempt($input)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid Email or Password',
+                ], 401);
+            }
+        }
+        
+        // dd(Auth::user());
         $user = Auth::user();
         $data['name'] = $user->name;
         $data['email'] = $user->email;
@@ -125,6 +158,59 @@ class ApiAuthController extends Controller
         ]);
     }
 
+    public function sendOtp(Request $request)
+    {
+        if($request['type'] == 'phone')
+        {
+            $data['phone'] = $request['phone'];
+            $data['method'] = "sms";
 
-    
+            $twilio_response = self::sentTwilioOtp($data);
+            return response()->json([
+                'success' => true,
+                'message' => 'Verification code sent to phone number',
+                'action_require' => true
+            ], 200);
+        }
+
+        if ($request['type'] == 'email')
+        {
+            $user = $this->generateOtp($request);
+            $user->notify(new OtpNotification());
+            return response()->json([
+                'success' => true,
+                'message' => 'Verification code sent to email',
+                'action_require' => true
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Please Select Verification Platform',
+            'action_require' => true
+        ], 400);
+    }
+
+    public function otpVerify(Request $request)
+    {
+        // dd($request->all());
+        if ($request['type'] == 'phone')
+        {
+            $response = TwilioTrait::verifyOtp($request);
+        }
+
+        if ($request['type'] == 'email')
+        {
+            $response = $this->verifyEmailOtp($request);
+        }
+
+        if ($response['success'] != true) 
+        {
+            return response()->json($response, 400);
+        }
+
+        $request['verified'] = true;
+        return $this->login($request);
+
+    }
 }

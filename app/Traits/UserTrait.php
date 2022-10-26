@@ -11,8 +11,10 @@ use App\Models\User;
 use App\Models\Role;
 
 use Auth;
-use App\Notifications\RegisterNotification;
 use App\Rules\MatchOldPassword;
+
+use App\Notifications\RegisterNotification;
+use App\Notifications\OtpNotification;
 
 trait UserTrait {
   
@@ -138,13 +140,69 @@ trait UserTrait {
 
         if(!$request->id)
         {
-            $user->notify(new RegisterNotification());
+            // $user->notify(new RegisterNotification());
         }
+        if (!$user->is_verified) 
+        {
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+                'action_require' => true
 
+            ], 201);
+        }
+    
         return response()->json([
             'success' => true,
             'data' => $user
         ], 200);
+    }
+
+    public function generateOtp($request)
+    {
+        $code = rand(1000, 9999); //generate random code
+        $request['code'] = $code; //add code in $request body
+        $user = User::where('email',$request['email'])->first();
+
+        $user->two_factor_code = $code;
+        $user->is_verified = false;
+        $user->save();
+
+        return $user;
+    }
+    public function verifyEmailOtp($request)
+    {
+        $user = User::where('email',$request['email'])->first();
+
+        if ($user) {
+            if ($user->two_factor_code == $request['code']) 
+            {
+                $user = tap($user)->update([
+                    'two_factor_code' => null,
+                    'is_verified' => true
+                ]);
+
+                return [
+                    'success' => true,
+                    'user' => $user
+                ];
+            }
+            else{
+                return [
+                    'success' => false,
+                    'message' => 'Invalid verification code entered!',
+                    'action_require' => true
+                ];
+            }
+        }
+        else
+        {
+            return [
+                'success' => false,
+                'message' => 'User Not found',
+                'action_require' => true
+            ];
+        }
     }
   
 }
