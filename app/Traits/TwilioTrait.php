@@ -43,7 +43,7 @@ trait TwilioTrait {
             if ($verification->valid) {
 
                 // $user = tap(User::where('phone', $data['phone']))->update(['isVerified' => true]);
-                $user = User::whereHas('user_detail',function($q) use($data){
+                $user = User::with('user_detail')->whereHas('user_detail',function($q) use($data){
                     $q->where('phone',$data['phone']);
                 })->first();
 

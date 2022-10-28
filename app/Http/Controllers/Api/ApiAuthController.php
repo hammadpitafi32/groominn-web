@@ -59,7 +59,7 @@ class ApiAuthController extends Controller
             ], 401);
         }
         // dd($request->all());
-        $user = User::where('email',$request->email)
+        $user = User::with('user_detail')->where('email',$request->email)
             ->orWhereHas('user_detail',function($q) use($request){
                 $q->where('phone',$request['phone']);
             })

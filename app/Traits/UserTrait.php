@@ -162,7 +162,7 @@ trait UserTrait {
     {
         $code = rand(1000, 9999); //generate random code
         $request['code'] = $code; //add code in $request body
-        $user = User::where('email',$request['email'])->first();
+        $user = User::with('user_detail')->where('email',$request['email'])->first();
 
         $user->two_factor_code = $code;
         $user->is_verified = false;
@@ -172,7 +172,7 @@ trait UserTrait {
     }
     public function verifyEmailOtp($request)
     {
-        $user = User::where('email',$request['email'])->first();
+        $user = User::with('user_detail')->where('email',$request['email'])->first();
 
         if ($user) {
             if ($user->two_factor_code == $request['code']) 
