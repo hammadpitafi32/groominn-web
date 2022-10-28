@@ -86,7 +86,7 @@
                                     errors.first_name &&
                                     'border-danger'
                                 "
-                                v-model="firstName"
+                                v-model="user.firstName"
                             />
                             <span
                                 v-if="errors && errors.first_name"
@@ -105,7 +105,7 @@
                                     errors.last_name &&
                                     'border-danger'
                                 "
-                                v-model="lastName"
+                                v-model="user.lastName"
                             />
                             <span
                                 v-if="errors && errors.last_name"
@@ -121,7 +121,7 @@
                             type="email"
                             placeholder="Abc@abc.com"
                             :class="errors && errors.email && 'border-danger'"
-                            v-model="email"
+                            v-model="user.email"
                         />
                         <span
                             v-if="errors && errors.email"
@@ -138,7 +138,7 @@
                             type="tel"
                             :class="errors && errors.phone && 'border-danger'"
                             placeholder="0300 78678745"
-                            v-model="phoneNumber"
+                            v-model="user.phoneNumber"
                         />
                         <span
                             v-if="errors && errors.phone"
@@ -156,7 +156,7 @@
                                 :class="
                                     errors && errors.password && 'border-danger'
                                 "
-                                v-model="password"
+                                v-model="user.password"
                             />
                             <span
                                 v-if="errors && errors.password"
@@ -182,7 +182,7 @@
                                 :class="
                                     errors && errors.password && 'border-danger'
                                 "
-                                v-model="confirmPassword"
+                                v-model="user.confirmPassword"
                             />
                         </div>
                     </div>
@@ -227,18 +227,19 @@
                 </form>
             </MDBCol>
         </MDBRow>
+        <AccountVerify :show="showVerifyAccount" :user="user" type="register" />
     </MDBContainer>
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { register } from "../api";
-import BtnLoader from "../components/custom-components/BtnLoader.vue";
+import AccountVerify from "../components/modals/AccountVerify.vue";
 import { useToast } from "vue-toastification";
-import { watchEffect } from "@vue/runtime-core";
+import { onMounted, watchEffect } from "@vue/runtime-core";
 
 const store = useStore();
 const router = useRouter();
@@ -247,32 +248,35 @@ const toast = useToast();
 const serviceChoose = ref("");
 const loading = ref(false);
 const terms = ref(false);
-const firstName = ref("");
-const lastName = ref("");
-const email = ref("");
-const phoneNumber = ref("");
-const password = ref("");
-const confirmPassword = ref("");
 const confirmPasswordError = ref("");
-
+const showVerifyAccount = ref(false);
 const errors = ref(null);
+
+const user = reactive({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    confirmPassword: "",
+});
+
 const registerHandler = () => {
     loading.value = true;
     const formData = new FormData();
-    formData.append("first_name", firstName.value);
-    formData.append("last_name", lastName.value);
-    formData.append("email", email.value);
-    formData.append("password", password.value);
-    formData.append("password_confirmation", confirmPassword.value);
+    formData.append("first_name", user.firstName);
+    formData.append("last_name", user.lastName);
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+    formData.append("password_confirmation", user.confirmPassword);
     formData.append("role", serviceChoose.value);
-    formData.append("phone", phoneNumber.value);
+    formData.append("phone", user.phoneNumber);
 
     register(formData)
         .then(({ data }) => {
             errors.value = null;
-            toast.success("Registered Successfully!");
-            store.dispatch("setLogin", data);
-            store.dispatch("redirection");
+            showVerifyAccount.value = true;
+            loading.value = false;
         })
         .catch(({ response }) => {
             loading.value = false;

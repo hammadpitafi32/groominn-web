@@ -895,12 +895,27 @@ aside.gradiant-list a {
     justify-content: space-between;
     padding: 0.8rem 1.4rem;
 }
-.earning-box .dollar-img{
-    background-color: #FFD3C3;
+.earning-box .dollar-img {
+    background-color: #ffd3c3;
     border-radius: 12px;
-    padding: .8rem;
+    padding: 0.8rem;
 }
 
-.earning-box .dollar-img img{
+.earning-box .dollar-img img {
     max-width: 90%;
 }
+
+.otp-input {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #edf2f6;
+    margin: 0 10px;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    color: #fff;
+}
+.otp-input.is-complete {
+    background-color: var(--theme-orange-color);
+  }

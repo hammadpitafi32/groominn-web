@@ -103,5 +103,11 @@ export const getUserData = async () => {
 };
 
 export const saveUserData = async (data) => {
-    return await instance.post(`/update-user`, data);
+    return await instance.post("/update-user", data);
+};
+export const sendUserOtp = async (data) => {
+    return await instance.post("/send-otp", data);
+};
+export const verifyOtp = async (data) => {
+    return await instance.post("/verify", data);
 };

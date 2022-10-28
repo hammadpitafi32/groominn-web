@@ -17,12 +17,14 @@ import {
     MDBCardText,
     MDBIcon,
 } from "mdb-vue-ui-kit";
+import BtnLoader from "./components/custom-components/BtnLoader.vue";
 import "./assets/css/style.css";
 import App from "./App.vue";
 import router from "./router/router";
 import store from "./store";
 import Vue3Geolocation from "vue3-geolocation";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
+import VOtpInput from "vue3-otp-input";
 
 const app = createApp({});
 
@@ -36,6 +38,8 @@ app.component("MDBCardBody", MDBCardBody);
 app.component("MDBCardTitle", MDBCardTitle);
 app.component("MDBCardText", MDBCardText);
 app.component("MDBIcon", MDBIcon);
+app.component("BtnLoader", BtnLoader);
+app.component('v-otp-input', VOtpInput)
 
 app.use(store);
 app.use(router);

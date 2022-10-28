@@ -647,7 +647,6 @@
 import { reactive, ref } from "@vue/reactivity";
 import { MDBInput, MDBTextarea, MDBFile } from "mdb-vue-ui-kit";
 import { useRoute, useRouter } from "vue-router";
-import BtnLoader from "../custom-components/BtnLoader.vue";
 import { addShop, deleteBusinessImage, getUserBusiness } from "../../api";
 import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";

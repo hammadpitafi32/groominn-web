@@ -68,8 +68,10 @@
                         />
                     </div>
                     <div class="text-end mb-4">
-                        <router-link class="text-color-1" to="/"
-                            >Forgot password?</router-link
+                        <span
+                            class="text-color-1 cursor-pointer"
+                            @click="showVerifyAccount = true"
+                            >Forgot password?</span
                         >
                     </div>
                     <MDBBtn
@@ -84,6 +86,11 @@
                 </form>
             </MDBCol>
         </MDBRow>
+        <AccountVerify
+            :show="showVerifyAccount"
+            type="forgetPassword"
+            @closeModal="closeModal()"
+        />
     </MDBContainer>
 </template>
 
@@ -95,8 +102,8 @@ import { useCookies } from "vue3-cookies";
 import { login } from "../api";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import BtnLoader from "../components/custom-components/BtnLoader.vue";
 import { useToast } from "vue-toastification";
+import AccountVerify from "../components/modals/AccountVerify.vue";
 
 const loading = ref(false);
 const credentials = reactive({
@@ -109,6 +116,11 @@ const { cookies } = useCookies();
 const store = useStore();
 const router = useRouter();
 const toast = useToast();
+const showVerifyAccount = ref(false);
+
+const closeModal = () => {
+    showVerifyAccount.value = false;
+};
 
 const handleLogin = () => {
     loading.value = true;
@@ -119,9 +131,9 @@ const handleLogin = () => {
     login(formData)
         .then((res) => {
             apiResponse.value = res.data;
-            store.dispatch("setLogin", res.data);
             toast.success("Login Successfully!");
             loading.value = false;
+            store.dispatch("setLogin", res.data);
             store.dispatch("redirection");
         })
         .catch((error) => {

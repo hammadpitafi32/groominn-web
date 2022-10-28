@@ -171,7 +171,6 @@
 <script setup>
 import { ref } from "@vue/reactivity";
 import { computed, watch, watchEffect } from "@vue/runtime-core";
-import BtnLoader from "../../custom-components/BtnLoader.vue";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { MDBModal, MDBModalBody } from "mdb-vue-ui-kit";
 import { createBooking } from "../../../api";
