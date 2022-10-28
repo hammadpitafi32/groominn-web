@@ -22,7 +22,7 @@
                     @click="emit('closeModal')"
                 ></i>
             </div>
-            <div class="text-center" v-if="!otpScreen">
+            <div class="text-center" v-if="screen == 'chooseMethod'">
                 <h6 class="fw-light">Recieve otp through</h6>
                 <div
                     class="d-flex align-items-center justify-content-center choose-method my-4"
@@ -55,7 +55,7 @@
                     </label>
                 </div>
             </div>
-            <div v-else>
+            <div v-if="screen == 'otpVerification'">
                 <p class="text-black-50">
                     Lorem Ipsumdolorsamet Conseteturfgadipscin Elitr, Sed Diam
                     Nonumy Od Temporinvidunt La Et Dolore Magna.Ggdfg
@@ -73,11 +73,53 @@
                     />
                 </div>
             </div>
+            <div v-if="screen == 'enterCredential'" class="px-5 mt-4">
+                <label :for="method" class="mb-1"
+                    >Enter your {{ method }}</label
+                >
+                <input
+                    :id="method"
+                    :type="method"
+                    v-if="method == 'email'"
+                    class="form-control"
+                    v-model="emailForForgetPass"
+                />
+                <input
+                    :id="method"
+                    :type="method"
+                    v-else
+                    class="form-control"
+                    v-model="phoneForForgetPass"
+                />
+            </div>
+            <div v-if="screen == 'confirmPassword'" class="px-5 mt-4">
+                <label for="password" class="mb-1">New Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    class="form-control mb-3"
+                    v-model="newPassword"
+                />
+                <label for="confirm-password">Confirm New Password</label>
+                <input
+                    id="confirm-password"
+                    type="password"
+                    class="form-control mb-3"
+                    v-model="newConfirmPassword"
+                />
+            </div>
             <div class="text-end mt-5 mb-3 pe-3">
                 <MDBBtn
                     class="bg-orange text-white text-capitalize mt-3 rounded-5"
-                    @click="handleSubmittion()"
-                    :disabled="loading || (otpScreen && code.length < 4)"
+                    @click="
+                        props.type == 'register'
+                            ? handleVerification()
+                            : handleForgetPassword()
+                    "
+                    :disabled="
+                        loading ||
+                        (screen == 'otpVerification' && code.length < 4)
+                    "
                 >
                     <span v-if="!loading"> Done </span>
                     <BtnLoader v-else />
@@ -89,10 +131,11 @@
 
 <script setup>
 import { ref } from "@vue/reactivity";
+import { watch } from "@vue/runtime-core";
 import { MDBModal, MDBModalBody } from "mdb-vue-ui-kit";
 import { useToast } from "vue-toastification";
 import { useStore } from "vuex";
-import { sendUserOtp, verifyOtp } from "../../api";
+import { resetPassword, sendUserOtp, verifyOtp } from "../../api";
 
 const props = defineProps(["show", "user", "type"]);
 const emit = defineEmits(["closeModal"]);
@@ -102,6 +145,12 @@ const code = ref("");
 const otpScreen = ref(false);
 const toast = useToast();
 const store = useStore();
+const screen = ref("chooseMethod");
+const emailForForgetPass = ref("");
+const phoneForForgetPass = ref("");
+const newPassword = ref("");
+const newConfirmPassword = ref("");
+const userDataForLogin = ref(null);
 
 const handleOnChange = (val) => {
     code.value = val;
@@ -111,39 +160,97 @@ const handleOnComplete = (val) => {
     code.value = val;
 };
 
-const handleSubmittion = () => {
+watch(props, () => {
+    screen.value = "chooseMethod";
+});
+
+const OtpHandler = async (formData) => {
+    loading.value = true;
+    let result;
+    await sendUserOtp(formData)
+        .then(({ data }) => {
+            toast.success(data.message);
+            result = true;
+        })
+        .catch((error) => {
+            toast.error(error.response.data.message);
+            result = false;
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+    return result;
+};
+
+const verifyOtpHandler = async (formData) => {
+    loading.value = true;
+    let result;
+    await verifyOtp(formData)
+        .then(({ data }) => {
+            toast.success("Accont Verified Successfully");
+            userDataForLogin.value = data;
+            result = true;
+        })
+        .catch((error) => {
+            toast.error(error.response.data.message);
+            result = false;
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+    return result;
+};
+
+const handleVerification = async () => {
     loading.value = true;
     const formData = new FormData();
     formData.append("email", props.user.email);
     formData.append("phone", props.user.phoneNumber);
     formData.append("type", method.value);
-    if (!otpScreen.value) {
-        sendUserOtp(formData)
-            .then(({ data }) => {
-                toast.success(data.message);
-                otpScreen.value = true;
-            })
-            .catch((error) => {
-                toast.error(error.response.data.message);
-            })
-            .finally(() => {
-                loading.value = false;
-            });
-    } else {
+    if (screen.value == "chooseMethod") {
+        let result = await OtpHandler(formData);
+        if (result) screen.value = "otpVerification";
+    } else if (screen.value == "otpVerification") {
         formData.append("code", code.value);
-        verifyOtp(formData)
-            .then(({ data }) => {
-                toast.success("Accont Created Successfully");
+        let result = await verifyOtpHandler(formData);
+        if (result) {
+            store.dispatch("setLogin", userDataForLogin.value);
+            store.dispatch("redirection");
+            emit("closeModal");
+        }
+    }
+};
+
+const handleForgetPassword = async () => {
+    const formData = new FormData();
+    formData.append("email", emailForForgetPass.value);
+    formData.append("phone", phoneForForgetPass.value);
+    formData.append("type", method.value);
+    if (screen.value == "chooseMethod") {
+        screen.value = "enterCredential";
+    } else if (screen.value == "enterCredential") {
+        let result = await OtpHandler(formData);
+        if (result) screen.value = "otpVerification";
+    } else if (screen.value == "otpVerification") {
+        formData.append("code", code.value);
+        let result = await verifyOtpHandler(formData);
+        if (result) screen.value = "confirmPassword";
+    } else if (screen.value == "confirmPassword") {
+        if (newPassword.value && newConfirmPassword.value) {
+            if (newPassword.value != newConfirmPassword.value) {
+                toast.error("Password should be matched!");
+                return;
+            }
+            formData.append("password", newPassword.value);
+            loading.value = true;
+            resetPassword(formData).then(({ data }) => {
+                loading.value = false;
+                emit("closeModal");
                 store.dispatch("setLogin", data);
                 store.dispatch("redirection");
-                verifyModal.value = false;
-            })
-            .catch((error) => {
-                toast.error(error.response.data.message);
-            })
-            .finally(() => {
-                loading.value = false;
+                toast.success("Password has been Successfully!");
             });
+        }
     }
 };
 </script>

@@ -227,7 +227,12 @@
                 </form>
             </MDBCol>
         </MDBRow>
-        <AccountVerify :show="showVerifyAccount" :user="user" type="register" />
+        <AccountVerify
+            :show="showVerifyAccount"
+            :user="user"
+            type="register"
+            @closeModal="closeModal()"
+        />
     </MDBContainer>
 </template>
 
@@ -259,6 +264,14 @@ const user = reactive({
     phoneNumber: "",
     password: "",
     confirmPassword: "",
+});
+
+const closeModal = () => {
+    showVerifyAccount.value = false;
+};
+
+watchEffect(() => {
+    store.dispatch("redirection");
 });
 
 const registerHandler = () => {

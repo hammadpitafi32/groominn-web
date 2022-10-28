@@ -67,10 +67,18 @@
                             class="rounded-6"
                         />
                     </div>
-                    <div class="text-end mb-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="text-color-1" v-if="showVeficationText"
+                            >Need Verification?
+                            <span
+                                class="fw-bold text-orange cursor-pointer"
+                                @click="showModal('register')"
+                                >Verify</span
+                            ></span
+                        >
                         <span
-                            class="text-color-1 cursor-pointer"
-                            @click="showVerifyAccount = true"
+                            class="text-color-1 cursor-pointer ms-auto"
+                            @click="showModal('forgetPassword')"
                             >Forgot password?</span
                         >
                     </div>
@@ -88,7 +96,8 @@
         </MDBRow>
         <AccountVerify
             :show="showVerifyAccount"
-            type="forgetPassword"
+            :type="verificationType"
+            :user="userForVerify"
             @closeModal="closeModal()"
         />
     </MDBContainer>
@@ -96,7 +105,7 @@
 
 <script setup>
 import { ref, reactive } from "@vue/reactivity";
-import { watchEffect } from "@vue/runtime-core";
+import { watch, watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { useCookies } from "vue3-cookies";
 import { login } from "../api";
@@ -111,37 +120,60 @@ const credentials = reactive({
     password: "",
 });
 
+const verificationType = ref("forgetPassword");
 const apiResponse = ref(null);
 const { cookies } = useCookies();
 const store = useStore();
 const router = useRouter();
 const toast = useToast();
 const showVerifyAccount = ref(false);
+const showVeficationText = ref(false);
+const userForVerify = reactive({
+    email: "",
+    phone: "",
+});
 
 const closeModal = () => {
     showVerifyAccount.value = false;
 };
 
+const showModal = (type) => {
+    verificationType.value = type;
+    showVerifyAccount.value = true;
+};
+
+watchEffect(() => {
+    store.dispatch("redirection");
+});
+
 const handleLogin = () => {
-    loading.value = true;
     const formData = new FormData();
     formData.append("email", credentials.email);
     formData.append("password", credentials.password);
-
-    login(formData)
-        .then((res) => {
-            apiResponse.value = res.data;
-            toast.success("Login Successfully!");
-            loading.value = false;
-            store.dispatch("setLogin", res.data);
-            store.dispatch("redirection");
-        })
-        .catch((error) => {
-            toast.error(error.response.data.message, {
-                timeout: 2000,
+    if (credentials.email && credentials.password) {
+        loading.value = true;
+        login(formData)
+            .then((res) => {
+                apiResponse.value = res.data;
+                toast.success("Login Successfully!");
+                store.dispatch("setLogin", res.data);
+                store.dispatch("redirection");
+            })
+            .catch((error) => {
+                let errorData = error.response.data;
+                if (errorData.action_require) {
+                    showVeficationText.value = true;
+                    userForVerify.email = errorData.data.email;
+                    userForVerify.phone = errorData.data.user_detail.phone;
+                }
+                toast.error(error.response.data.message, {
+                    timeout: 2000,
+                });
+                apiResponse.value = error.response.data;
+            })
+            .finally(() => {
+                loading.value = false;
             });
-            loading.value = false;
-            apiResponse.value = error.response.data;
-        });
+    }
 };
 </script>

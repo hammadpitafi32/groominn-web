@@ -111,3 +111,6 @@ export const sendUserOtp = async (data) => {
 export const verifyOtp = async (data) => {
     return await instance.post("/verify", data);
 };
+export const resetPassword = async (data) => {
+    return await instance.post("/reset-password", data);
+};

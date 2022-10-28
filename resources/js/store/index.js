@@ -41,7 +41,7 @@ const store = createStore({
                 cookies.remove("token");
                 cookies.remove("user");
                 context.dispatch("setAuth");
-                router.push('/login');
+                router.push("/login");
             });
         },
         redirection(context) {
@@ -62,7 +62,13 @@ const store = createStore({
             }
         },
         providerRedirection(context) {
-            if (context.state.role === "Client") {
+            if (context.state.role === "Provider") {
+                if (context.state.shop) {
+                    router.push("/my-shop");
+                } else {
+                    router.push("/add-shop");
+                }
+            } else if (context.state.role === "Client") {
                 router.push("/my-shop");
             }
         },
