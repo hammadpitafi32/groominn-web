@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterAuthRequest;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Hash;
+
 // 3rd part packages
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -51,17 +53,28 @@ class ApiAuthController extends Controller
         $input = $request->only('email', 'password');
         $jwt_token = null;
         // dd($request->all());
-        if ($request['verified']) 
-        {
-            $user = User::where('email',$request->email)
+        $user = User::where('email',$request->email)
             ->orWhereHas('user_detail',function($q) use($request){
                 $q->where('phone',$request['phone']);
             })
             ->first();
-
+        if (!$user->is_verified) 
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please verify your account first!',
+                'action_require' => true
+            ], 401);
+        }
+        if ($request['verified']) 
+        {
+            
             if (!$jwt_token=JWTAuth::fromUser($user)) 
             {
-                return response()->json(['error' => 'invalid_credentials'], 401);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid Credentials',
+                ], 401);
             }
             Auth::login($user);
         }
@@ -207,6 +220,17 @@ class ApiAuthController extends Controller
         if ($response['success'] != true) 
         {
             return response()->json($response, 400);
+        }
+
+        if ($request->password) 
+        {
+            $user = $response['data'];
+            if($user)
+            {
+
+                $user->password = Hash::make($request->password);
+                $user->save(); 
+            }
         }
 
         $request['verified'] = true;

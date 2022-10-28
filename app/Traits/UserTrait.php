@@ -184,7 +184,7 @@ trait UserTrait {
 
                 return [
                     'success' => true,
-                    'user' => $user
+                    'data' => $user
                 ];
             }
             else{
