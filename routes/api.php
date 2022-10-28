@@ -24,6 +24,7 @@ Route::group(['namespace' => 'Api'],function()
     Route::post('register', 'ApiAuthController@register');
     Route::post('send-otp', 'ApiAuthController@sendOtp');
     Route::post('verify', 'ApiAuthController@otpVerify');
+    Route::post('reset-password', 'ApiAuthController@resetPassword');
     // Route::post('logout', 'ApiAuthController@logout');
     // Route::post('/demo','BusinessController@demo'); 
     Route::get('get-categories', 'UserBusinessController@getCategories');
