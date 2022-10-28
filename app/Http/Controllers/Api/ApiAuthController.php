@@ -69,6 +69,7 @@ class ApiAuthController extends Controller
         {
             return response()->json([
                 'success' => false,
+                'data' => $user,
                 'message' => 'Please verify your account first!',
                 'action_require' => true
             ], 401);
