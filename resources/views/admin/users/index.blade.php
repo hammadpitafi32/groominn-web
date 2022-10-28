@@ -40,7 +40,12 @@
       <tbody>
         @foreach($users as $user)
         <tr>
-          <td>--</td>
+          <td>
+            --
+            {{-- <a href="javascript:void(0);" class="btn {{($user->status?'btn-danger':'btn-success')}} btn-circle btn-sm changeStatus" data-id="{{$user->id}}" data-name="{{$user->name}}">
+                <i class="fas {{($user->status?'fa-ban':'fa-check')}}"></i>
+             </a> --}}
+          </td>
           <td>{{$user->name}}</td>
           <td>{{$user->email}}</td>
           <td>{{$user->role->name}}</td>
@@ -143,6 +148,36 @@
                     $('#'+key).after('<span><small class="text-danger">'+msg+'</small><br></span>');
                 });
             });
+
+        });
+    });
+    $(document).on('click', '.changeStatus', function() {
+        // alert('s');
+        id = $(this).data('id');
+        data = {
+            'id':id
+        }
+            
+        axios.post("{{route('change-user-status')}}",
+            data
+        ).then(function(response) {
+            // alert('dg');
+            location.reload();
+            // $('#modifyCategoryModel').modal('hide');
+            toastr.success('Success!', "updated Successfully!", {"positionClass": "toast-bottom-right"});
+        }).catch(function(error) {
+            // console.log(error.response.data);
+            // if (error && error.response) 
+            // {
+            //     $.each(error.response.data.errors, function(key, value){
+            //         // console.log(key,value);
+            //         $('#'+key).focus().addClass('border border-danger');
+            //         $.each(value, function(key1, msg){
+            //             $('#'+key).after('<span><small class="text-danger">'+msg+'</small><br></span>');
+            //         });
+            //     });
+            // }
+            
 
         });
     });

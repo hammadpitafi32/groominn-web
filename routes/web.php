@@ -16,15 +16,18 @@ use Illuminate\Support\Facades\Route;
 /*laravel router*/
 Route::get('admin-login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('admin-login', 'Auth\LoginController@login')->name('admin-login');
+Route::get('logout', 'Auth\LoginController@logout')->name('admin-logout');
 Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
     Route::get('/dashboard', 'AdminController@index')->name('admin-dashboard');
     // Route::get('users', 'AdminController@providerList');
     Route::get('users/{type}', 'UserController@list');
     Route::post('create-user', 'UserController@createOrUpdate')->name('create-user');
+    Route::post('change-user-status', 'UserController@changeUserStatus')->name('change-user-status');
     Route::group(['namespace' => 'Api'],function()
     {
-
         Route::post('create-category', 'BusinessController@CreateOrUpdateBusinessCategory')->name('create-category');
+        Route::get('user-businesses', 'UserBusinessController@getAllBusinesses')->name('user-businesses');
+        Route::post('change-business-status', 'UserBusinessController@changeBusinessStatus')->name('change-business-status');
     });
     Route::get('categories', 'AdminController@getCategories')->name('categories');
     Route::get('services', 'AdminController@getServices')->name('services');

@@ -93,4 +93,10 @@ class LoginController extends Controller
             setcookie('url', 'content', 1);
         }
     }
+
+    public function logout(Request $request) {
+        dd('df');
+        Auth::logout();
+        return redirect('/login');
+    }
 }

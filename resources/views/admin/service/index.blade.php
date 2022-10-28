@@ -35,9 +35,10 @@
         @foreach($services as $service)
         <tr>
           <td>
-            <a href="javascript:void(0);" class="btn {{($service->status?'btn-danger':'btn-success')}} btn-circle btn-sm changeStatus" data-id="{{$service->id}}" data-name="{{$service->name}}">
+            --
+            {{-- <a href="javascript:void(0);" class="btn {{($service->status?'btn-danger':'btn-success')}} btn-circle btn-sm changeStatus" data-id="{{$service->id}}" data-name="{{$service->name}}">
                <i class="fas {{($service->status?'fa-ban':'fa-check')}}"></i>
-            </a>
+            </a> --}}
           </td>
           <td>{{$service->name}}</td>
           <td>{{$service->user->name}}</td>

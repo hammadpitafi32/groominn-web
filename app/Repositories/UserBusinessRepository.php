@@ -390,7 +390,9 @@ class UserBusinessRepository implements UserBusinessInterface
 	{
 		$request = $this->request;
 		// dd($request->all());
-		$user_business = UserBusiness::whereHas('user_business_category_services')->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
+		$user_business = UserBusiness::where('status','active')
+			->whereHas('user_business_category_services')
+			->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
 		// $latitude = 33.5842344;
 		// $longitude =73.1204018;
 		/*filteration*/
@@ -452,4 +454,25 @@ class UserBusinessRepository implements UserBusinessInterface
             'message' => 'Image Deleted successfully!'
         ], 200);
 	}
+
+	public function all()
+	{
+		return $this->user_business->all();
+	}
+
+	public function changeStatus()
+    {
+		$request = $this->request;
+
+        $user_business = $this->user_business->find($request['id']);
+		// dd($user_business);
+        $user_business->status = (($user_business->status == 'active')?'inactive':'active');
+        // dd($user_business);
+        $user_business->save();
+
+        return response()->json([
+            'success' => 200,
+            'data' => $user_business
+        ]);
+    }
 }

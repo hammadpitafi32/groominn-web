@@ -139,4 +139,19 @@ class UserRepository implements UserInterface
             'message' => 'bank detail deleted successfully!'
         ], 200);
 	}
+
+	public function changeStatus()
+    {
+		$request = $this->request;
+
+        $user = $this->find($request['id']);
+        $user->status = ($user->status?0:1);
+        // dd($user);
+        $user->save();
+
+        return response()->json([
+            'success' => 200,
+            'data' => $user
+        ]);
+    }
 }
