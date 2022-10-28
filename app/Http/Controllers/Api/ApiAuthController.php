@@ -52,13 +52,20 @@ class ApiAuthController extends Controller
     {
         $input = $request->only('email', 'password');
         $jwt_token = null;
+        if (!$jwt_token = JWTAuth::attempt($input)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid Email or Password',
+            ], 401);
+        }
         // dd($request->all());
         $user = User::where('email',$request->email)
             ->orWhereHas('user_detail',function($q) use($request){
                 $q->where('phone',$request['phone']);
             })
             ->first();
-        if (!$user->is_verified) 
+        
+        if (!@$user->is_verified) 
         {
             return response()->json([
                 'success' => false,
@@ -222,19 +229,46 @@ class ApiAuthController extends Controller
             return response()->json($response, 400);
         }
 
-        if ($request->password) 
+        if ($request->method == 'forget-password') 
         {
             $user = $response['data'];
             if($user)
             {
-
-                $user->password = Hash::make($request->password);
+                $user->two_factor_code = rand(000000000,999999999);
+                // $user->password = Hash::make($request->password);
                 $user->save(); 
+                $response['token'] = $user->two_factor_code;
             }
+            return response()->json($response, 200);
+        }
+        else
+        {
+            $request['verified'] = true;
+            return $this->login($request);
         }
 
-        $request['verified'] = true;
-        return $this->login($request);
+        
 
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $user = User::where('two_factor_code',$request->code)->where('email',$request->email)
+            ->orWhereHas('user_detail',function($q) use($request){
+                $q->where('phone',$request['phone']);
+            })
+            ->first();
+        if ($user) 
+        {
+            $user->password = Hash::make($request->password);
+            $user->save(); 
+            $request['verified'] = true;
+            return $this->login($request);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid Credentials or token',
+        ], 401);
     }
 }
