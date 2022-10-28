@@ -52,12 +52,7 @@ class ApiAuthController extends Controller
     {
         $input = $request->only('email', 'password');
         $jwt_token = null;
-        if (!$jwt_token = JWTAuth::attempt($input)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid Email or Password',
-            ], 401);
-        }
+        
         // dd($request->all());
         $user = User::with('user_detail')->where('email',$request->email)
             ->orWhereHas('user_detail',function($q) use($request){
@@ -67,6 +62,12 @@ class ApiAuthController extends Controller
         
         if (!@$user->is_verified) 
         {
+            if (!$jwt_token = JWTAuth::attempt($input)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid Email or Password',
+                ], 401);
+            }
             return response()->json([
                 'success' => false,
                 'data' => $user,
