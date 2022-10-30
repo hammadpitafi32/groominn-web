@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Grooming Admin Panel</title>
+  <title>Groominn Admin Panel</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -34,7 +34,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Grooming <sup>Admin Panel</sup></div>
+        <div class="sidebar-brand-text mx-3">Groominn <sup>Admin Panel</sup></div>
       </a>
 
       <!-- Divider -->
