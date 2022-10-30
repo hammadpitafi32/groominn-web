@@ -130,15 +130,15 @@
                         >
                     </div>
                     <div class="form-group mb-4">
-                        <label for="phoneNumber" class="mb-1"
+                        <label for="phone" class="mb-1"
                             >Phone Number</label
                         >
                         <MDBInput
                             size="lg"
                             type="tel"
                             :class="errors && errors.phone && 'border-danger'"
-                            placeholder="0300 78678745"
-                            v-model="user.phoneNumber"
+                            placeholder="+923007867874"
+                            v-model="user.phone"
                         />
                         <span
                             v-if="errors && errors.phone"
@@ -261,7 +261,7 @@ const user = reactive({
     firstName: "",
     lastName: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
     password: "",
     confirmPassword: "",
 });
@@ -283,7 +283,7 @@ const registerHandler = () => {
     formData.append("password", user.password);
     formData.append("password_confirmation", user.confirmPassword);
     formData.append("role", serviceChoose.value);
-    formData.append("phone", user.phoneNumber);
+    formData.append("phone", user.phone);
 
     register(formData)
         .then(({ data }) => {
