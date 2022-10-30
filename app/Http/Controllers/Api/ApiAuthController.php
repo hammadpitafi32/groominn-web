@@ -182,8 +182,18 @@ class ApiAuthController extends Controller
 
     public function sendOtp(Request $request)
     {
+        // dd($request->all());
         if($request['type'] == 'phone')
         {
+            if (!$request['phone']) 
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Phone number is not found, please try other option!',
+                    'action_require' => true
+                ], 400);
+            
+            }
             $data['phone'] = $request['phone'];
             $data['method'] = "sms";
 
@@ -218,6 +228,7 @@ class ApiAuthController extends Controller
         // dd($request->all());
         if ($request['type'] == 'phone')
         {
+            
             $response = TwilioTrait::verifyOtp($request);
         }
 

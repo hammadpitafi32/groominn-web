@@ -205,7 +205,7 @@ const handleVerification = async () => {
     loading.value = true;
     const formData = new FormData();
     formData.append("email", props.user.email);
-    formData.append("phone", props.user.phoneNumber);
+    formData.append("phone", props.user.phone);
     formData.append("type", method.value);
     if (screen.value == "chooseMethod") {
         let result = await OtpHandler(formData);
