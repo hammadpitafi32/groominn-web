@@ -91,7 +91,7 @@ const errors = ref(null);
 const bank_detail = ref(null);
 
 watchEffect(() => {
-    store.dispatch("providerRedirection");
+    // store.dispatch("providerRedirection");
 });
 
 getUserBank().then(({ data }) => {

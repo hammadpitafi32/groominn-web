@@ -178,9 +178,9 @@ getBooking().then(({ data }) => {
     loading.value = false;
 });
 
-watchEffect(() => {
-    store.dispatch("providerRedirection");
-});
+// watchEffect(() => {
+//     store.dispatch("providerRedirection");
+// });
 
 const closeModal = () => {
     ShowModal.value = false;
