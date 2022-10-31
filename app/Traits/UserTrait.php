@@ -29,7 +29,7 @@ trait UserTrait {
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => "required|unique:users,email,{$request->id}",
-            'phone' => 'required',
+            'phone' => "required|unique:user_details,phone,{$request->id}",
         ]);
        
         if ($request->id && $request->current_password) 
@@ -46,7 +46,7 @@ trait UserTrait {
                 'last_name' => 'required|string',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:6|max:50|confirmed',
-                'phone' => 'required',
+                'phone' => 'required|unique:user_details',
                 'role' => 'required'
             ]);
 
