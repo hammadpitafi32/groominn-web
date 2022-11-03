@@ -18,12 +18,31 @@ trait TwilioTrait {
     
     public static function sentTwilioOtp($data)
     {
+        $data['phone'] = self::removeSpecialCharacterForPhone($data['phone']);
         // dd($data);
         $twilio_verify_sid = env("TWILIO_VERIFY_SID");
         $twilio = self::TwilioSetup();
-        return $twilio->verify->v2->services($twilio_verify_sid)
+
+        // $phone_number = $twilio->lookups->v2->phoneNumbers("03030100987")
+        //                             ->fetch(["type" => ["carrier"]]);
+        
+        try {
+            return $twilio->verify->v2->services($twilio_verify_sid)
             ->verifications
             ->create($data['phone'], $data['method']);
+        } catch (\Throwable $th) {
+            $msg = $th->getMessage();
+            if(str_contains($msg,"Invalid parameter `To`")){
+                $msg = 'Invalid Phone Number, Please enter correct one!';
+            }
+            return [
+                'success' => false,
+                'message' => $msg,
+                'action_require' => true
+
+            ];
+        }
+        
 
     }
 
@@ -85,6 +104,34 @@ trait TwilioTrait {
 
             ];
         }
+    }
+
+    public static function removeSpecialCharacterForPhone($string) {
+ 
+        $t = $string;
+     
+        $specChars = array(
+            ' ' => '',    '!' => '',    '"' => '',
+            '#' => '',    '$' => '',    '%' => '',
+            '&' => '',    '\'' => '',   '(' => '',
+            ')' => '',    '*' => '',     '-' => '' ,
+            ',' => '',    '₹' => '',    '.' => '',
+            '/-' => '',    ':' => '',    ';' => '',
+            '<' => '',    '=' => '',    '>' => '',
+            '?' => '',    '@' => '',    '[' => '',
+            '\\' => '',   ']' => '',    '^' => '',
+            '_' => '',    '`' => '',    '{' => '',
+            '|' => '',    '}' => '',    '~' => '',
+            '-----' => '',    '----' => '',    '---' => '',
+            '/' => '',    '--' => '',   '/_' => '',
+
+        );
+     
+        foreach ($specChars as $k => $v) {
+            $t = str_replace($k, $v, $t);
+        }
+     
+        return $t;
     }
 
     
