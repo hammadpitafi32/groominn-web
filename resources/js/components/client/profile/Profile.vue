@@ -216,11 +216,11 @@ const user_detail = ref(null);
 const errors = ref(null);
 
 watchEffect(() => {
-    store.dispatch("clientRedirection");
+    // store.dispatch("clientRedirection");
 });
 getUserData().then(({ data }) => {
     user_detail.value = data.data;
-    // console.log(user_detail.value);
+    // console.log(user_detail.value.email);
     if(user_detail.value)
     {
         firstName.value = user_detail.value.first_name;
