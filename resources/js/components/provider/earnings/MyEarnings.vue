@@ -81,7 +81,7 @@ getEarnings().then(({ data }) => {
     earnings.value = data.data;
 });
 
-watchEffect(() => {
-    store.dispatch("providerRedirection");
-});
+// watchEffect(() => {
+//     store.dispatch("providerRedirection");
+// });
 </script>

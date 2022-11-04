@@ -345,7 +345,7 @@ watchEffect(() => {
     if (store.state.auth) {
         getServices();
     }
-    store.dispatch("providerRedirection");
+    // store.dispatch("providerRedirection");
 });
 
 const editService = (service) => {

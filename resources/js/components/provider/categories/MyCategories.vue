@@ -250,7 +250,7 @@ watchEffect(() => {
     if (store.state.auth) {
         getCategories();
     }
-    store.dispatch("providerRedirection");
+    // store.dispatch("providerRedirection");
 });
 
 const submitCategory = () => {
