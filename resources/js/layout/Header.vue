@@ -118,7 +118,7 @@
                             class="py-2"
                         >
                             <MDBDropdownItem
-                                v-if="role === 'Client'"
+                                v-if="role === 'Client' || role === 'Provider'"
                                 class="cursor-pointer"
                                 to="/profile"
                                 @click="profileDropdown = false"

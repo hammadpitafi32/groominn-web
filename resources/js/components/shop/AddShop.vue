@@ -756,7 +756,7 @@ const getOwnProfile = async () => {
 };
 
 watchEffect(() => {
-    store.dispatch("providerRedirection");
+    // store.dispatch("providerRedirection");
     if (
         store.state.auth &&
         store.state.role == "Provider" &&

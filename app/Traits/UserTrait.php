@@ -24,14 +24,20 @@ trait UserTrait {
      */
     public function validation($request)
     {
-        // dd($request->all());
+        
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => "required|unique:users,email,{$request->id}",
-            'phone' => "required|unique:user_details,phone,{$request->id}",
+
+            'phone' => ['required',
+                Rule::unique('user_details')->where(function ($query) use ($request) {
+                    return $query->where('user_id','!=',$request->id)->where('phone',$request->phone);
+                })
+            ],
+
         ]);
-       
+
         if ($request->id && $request->current_password) 
         {
             $validator = Validator::make($request->all(), [
@@ -46,7 +52,13 @@ trait UserTrait {
                 'last_name' => 'required|string',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|string|min:6|max:50|confirmed',
-                'phone' => 'required|unique:user_details',
+
+                'phone' => ['required',
+                    Rule::unique('user_details')->where(function ($query) use ($request) {
+                        return $query->where('user_id','!=',$request->id)->where('phone',$request->phone);
+                    })
+                ],
+
                 'role' => 'required'
             ]);
 
