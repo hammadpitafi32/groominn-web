@@ -48,7 +48,7 @@
             </td>
             <td>{{$user_business->name}}</td>
             <td>{{$user_business->address}}</td>
-            <td>{{$user_business->user->email}}</td>
+            <td>{{@$user_business->user->email}}</td>
             <td><a href="javascript:void(0)" ><img src="{{asset($user_business->cnic_front)}}" alt="" class="img-thumbnail img-click"></a></td>
             <td><a href="javascript:void(0)" ><img src="{{asset($user_business->cnic_back)}}" alt="" class="img-thumbnail img-click"></a></td>
             <td><a href="javascript:void(0)" ><img src="{{asset($user_business->license)}}" alt="" class="img-thumbnail img-click"></a></td>

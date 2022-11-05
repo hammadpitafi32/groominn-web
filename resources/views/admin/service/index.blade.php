@@ -41,7 +41,7 @@
             </a> --}}
           </td>
           <td>{{$service->name}}</td>
-          <td>{{$service->user->name}}</td>
+          <td>{{@$service->user->name}}</td>
           <td>{{$service->status}}</td>
           <td>{{$service->created_at}}</td>
         </tr>
