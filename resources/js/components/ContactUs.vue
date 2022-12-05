@@ -7,13 +7,13 @@
       <MDBCol col="6" class="mx-auto text-center">
         <h4 class="text-orange title fw-bold">Contact us</h4>
         <p class="small text-color-2 mt-3">
-          For further questions, including partnership opportunities, please
-          email hello@creative-tim.com or contact using our contact form.
+          For further questions, or any thing you want to ask, please
+          email groominn@support.com or contact using our contact form.
         </p>
       </MDBCol>
     </MDBRow>
     <MDBRow>
-      <MDBCol col="9" class="mx-auto mt-4">
+    <MDBCol col="6" class="mt-2">
         <form action="" class="contact-form">
           <MDBRow>
             <MDBCol col="6">
@@ -68,12 +68,21 @@
           </MDBRow>
         </form>
       </MDBCol>
+      <MDBCol col="6" class="mt-2">
+        <Map :data="bookingList" />
+      </MDBCol>
     </MDBRow>
   </MDBContainer>
+  <Footer />
 </template>
 
 <script setup>
+import { ref } from "@vue/reactivity";
+import Footer from "../layout/Footer.vue";
 import { MDBInput } from "mdb-vue-ui-kit";
+import Map from "./client/booking/Map.vue";
+
+const bookingList = ref(null);
 </script>
 
 <style scoped>

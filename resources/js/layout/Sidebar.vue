@@ -2,30 +2,31 @@
     <aside class="sidebar gradiant-list">
         <ul class="list-unstyled side-menu">
             <li class="side-menu-item">
-                <router-link :to="shop ? '/my-shop' : '/add-shop'">{{
+                <router-link class="nav-link" :to="shop ? '/my-shop' : '/add-shop'"><i class="fa-solid fa-shop"></i> {{
                     shop ? "My Shop" : "Add Shop"
                 }}</router-link>
             </li>
+           
             <li class="side-menu-item" v-if="shop">
-                <router-link to="/my-earnings">My Earnings</router-link>
+                <router-link to="/my-categories" class="nav-link"><i class="fa-solid fa-chair"></i> My Categories</router-link>
             </li>
             <li class="side-menu-item" v-if="shop">
-                <router-link to="/my-categories">My Categories</router-link>
+                <router-link to="/my-services" class="nav-link"><i class="fa-solid fa-bell-concierge"></i> My Services</router-link>
             </li>
+         <!--    <li class="side-menu-item" v-if="shop">
+                <router-link to="/bank-details" class="nav-link"><i class="fa-solid fa-piggy-bank"></i> Bank Details</router-link>
+            </li> -->
             <li class="side-menu-item" v-if="shop">
-                <router-link to="/my-services">My Services</router-link>
+                <router-link to="/bookings" class="nav-link"><i class="fa fa-book nav-icon blue"></i> Bookings</router-link>
             </li>
-            <li class="side-menu-item" v-if="shop">
-                <router-link to="/bank-details">Bank Details</router-link>
-            </li>
-            <li class="side-menu-item" v-if="shop">
-                <router-link to="/bookings">Bookings</router-link>
-            </li>
+<!--             <li class="side-menu-item" v-if="shop">
+                <router-link to="/my-earnings" class="nav-link"><i class="fa fa-money-bill nav-icon"></i> My Earnings</router-link>
+            </li> -->
             <li class="side-menu-item">
-                <a
+                <a class="nav-link" 
                     href="javascript:void(0)"
                     @click="store.dispatch('setLogout')"
-                    >Logout</a
+                    ><i class="nav-icon fas fa-power-off red"></i> Logout</a
                 >
             </li>
         </ul>

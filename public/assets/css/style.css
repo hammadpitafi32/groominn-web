@@ -89,8 +89,7 @@
        }
        
        .side-menu {
-           margin-top: 60px;
-           margin-left: 68px;
+            margin-left:0px;
        }
        
        .mar-left {
@@ -98,7 +97,10 @@
        }
        
        .side-menu .side-menu-item {
-           margin-bottom: 15px;
+          margin-bottom: 15px;
+          padding-left: 15px;
+          border-bottom: 1px solid white;
+          padding-bottom: 15px;
        }
        
        .side-menu .side-menu-item a {
@@ -400,3 +402,22 @@
        .custom-file-type {
            display: none;
        }
+
+aside.gradiant-list {
+    background: white;
+    border: 1px solid #ccc;
+}
+
+aside.gradiant-list a {
+    color: #333 !important;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all .3s ease;
+}
+/*.side-menu{margin-left:0px;}
+.side-menu .side-menu-item {
+    margin-bottom: 15px;
+    padding-left: 15px;
+    border-bottom: 1px solid white;
+    padding-bottom: 15px;
+}*/

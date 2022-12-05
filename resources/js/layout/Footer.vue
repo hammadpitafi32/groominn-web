@@ -6,9 +6,7 @@
           <MDBCol col="4">
             <img src="../assets/img/logo.svg" class="img-fluid" alt="" />
             <p class="small text-color-1 mt-3">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown
+              Groominn connecting the customers with beauty salons to get bookings near the customer.On other hand customers can check the price and services of salon's what they are offering.By just one click customer can book the service and get the wait estimation time.
             </p>
           </MDBCol>
           <MDBCol col="4">
@@ -32,7 +30,7 @@
     </div>
 
     <div class="text-center py-4">
-      <p class="small text-color-1 mb-0">2022 all rights reserved by @Grooming</p>
+      <p class="small text-color-1 mb-0">2022 all rights reserved by @Groominn</p>
     </div>
   </footer>
 </template>

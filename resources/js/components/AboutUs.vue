@@ -4,11 +4,10 @@
   </section>
   <MDBContainer class="my-5 text-center pt-3 pb-5">
     <MDBRow>
-      <MDBCol col="4" class="mx-auto">
-        <h4 class="text-orange">Turn your idea into a startup</h4>
+      <MDBCol col="10" class="mx-auto">
+        <h4 class="text-orange">What is Groominn </h4>
         <p class="small text-color-1">
-          We’re constantly trying to express ourselves and actualize our dreams.
-          If you have the opportunity to play
+          Hair salon, beauty salon. With over more then hundered of salons and beauty parlers connected with us that provides great services to their customers. They have the expertise and knowledge to help you achieve the perfect look. Whether you want to add a bit of spice to your look with a touch of color or you want a classic twist on your look, They can help you.So you don't have to worry about any of your makeup getting caught on your clothes while you're waiting to check out our salons! you need to just checkin to your nearest salon and get great services with out any wait.Beacuse we save customer time.
         </p>
       </MDBCol>
     </MDBRow>
@@ -239,7 +238,10 @@
       </MDBCol>
     </MDBRow>
   </MDBContainer>
+  <Footer />
 </template>
 
 <script setup>
+import Footer from "../layout/Footer.vue";
+
 </script>

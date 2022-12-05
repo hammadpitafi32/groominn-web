@@ -198,7 +198,8 @@ class ApiAuthController extends Controller
             $data['method'] = "sms";
 
             $twilio_response = self::sentTwilioOtp($data);
-            if ($twilio_response['success'] != true) 
+
+            if (!$twilio_response) 
             {
                 return response()->json($twilio_response, 400);
             }
