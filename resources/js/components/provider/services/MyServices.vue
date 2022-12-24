@@ -54,7 +54,7 @@
                             My Services
                         </h6>
 
-                        <div v-if="!loading">
+                        <div v-if="!loading" class="table-responsive">
                             <MDBTable
                                 class="service-table"
                                 v-if="services.length > 0"

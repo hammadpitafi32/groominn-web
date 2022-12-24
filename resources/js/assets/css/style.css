@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 :root {
     --theme-orange-color: #f05922;
@@ -8,7 +8,8 @@
 }
 
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Asap', sans-serif;
+
     color: #000;
 }
 
@@ -831,7 +832,7 @@ input.border-danger,
 }
 
 .booking-table-parent .booking-table td {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Asap', sans-serif;
     vertical-align: middle;
     border-top: 1px solid #dadada;
     border-bottom: 0;
@@ -932,3 +933,305 @@ aside.gradiant-list a {
     font-weight: 500;
     transition: all .3s ease;
 }*/
+
+.mapdiv {
+    border-radius: 20px;
+}
+
+@media (max-width:576px) {
+    .myform .filter-box select {
+        font-size: 13px;
+    }
+    main {
+        padding-top: 60px;
+    }
+    .navbar-brand img {
+        width: 90px;
+    }
+    .navbar-nav {
+        width: 100%;
+        display: none;
+        background-color: white;
+    }
+    .navbar-nav li.nav-item {
+        width: 100%;
+        padding: 6px 13px;
+        border-bottom: 1px solid #ccc;
+        font-weight: normal;
+    }
+    .navbar-toggler:hover {
+        display: block;
+    }
+    .earning-box .text-orange {
+        font-size: 15px;
+    }
+    .earning-box .dollar-img img {
+        max-width: 70%;
+    }
+    .earning-box .dollar-img {
+        background-color: #ffd3c3;
+        border-radius: 12px;
+        padding: 0.25rem 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    img.img-fluid.avatar {
+        margin-left: -15px;
+        max-width: 40px;
+    }
+    .custom__margin {
+        margin-top: 50px;
+    }
+    .navbar-nav li.nav-item:last-child {
+        margin-bottom: none;
+    }
+    .navbar-toggler {
+        padding: 0.25rem 0.75rem;
+        font-size: 1.1rem;
+        margin-top: 15px;}
+    .myform .filter-box button {
+        font-size: 13px;
+        text-transform: capitalize;
+        display: flex;
+        justify-content: center;
+    }
+ .banner-section,.carousel-item,.carousel-fade .carousel-item.active, .carousel-fade .carousel-item-next.carousel-item-start, .carousel-fade .carousel-item-prev.carousel-item-end,.main-slider .slider-image {
+    height: 60vh;
+ }
+    .cards-flex {
+        flex-wrap: wrap;
+        justify-content: center !important;
+    }
+    .section-6 .boxes .white-box {
+        width: 100% !important;
+        box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px !important;
+        padding-bottom: 20px !important;
+    }
+    .main-slider {
+        width: 100%;
+        height: 60vh;
+    }
+    .main-slider .carousel-indicators {
+        right: 3%;
+    }
+    .main-slider .carousel-control-prev, .main-slider .carousel-control-next{
+       display: none;
+    }
+    .text-on-slider {
+        position: absolute;
+        left: 6%;
+        top: 30%;
+        padding-right: 12px;
+    }
+    .text-on-slider h2,.text-on-slider p {
+        color: white !important;
+        text-shadow: 2px 2px 5px #0f0f0f;
+    }
+    .mar-left {
+        padding-left: 0px;
+    }
+    .side-menu .side-menu-item a {
+        font-size: 0.7em;
+    }
+    .sidebar {
+        position: relative;
+        top: 72px;
+       margin-bottom: 70px;
+        background-color: #fff;
+        z-index: 1029;
+        height: max-content;
+        width: 100%;
+        border-right: 1px solid #dadada;
+        overflow: auto;
+    }
+    .booking-table th, .service-table th{
+        font-size: 12px !important;
+    }
+    .table>:not(caption)>*>* {
+        padding: 0.5rem .4rem !important;
+    }
+    button.btn.bg-orange.text-white.f-w-400.text-capitalize.rounded-4.shadow-0.fs-custom.ripple-surface {
+    font-size: 12px !important;
+    padding: 4px 14px !important;
+}
+    .booking-table td, .service-table td {
+        
+        font-weight: 400 !important;
+        font-size: 12px !important;
+        min-width: 90px !important;
+    }
+    .booking-table th, .service-table th {
+        
+        font-weight: 700 !important;
+        font-size: 12px !important;
+        min-width: 110px !important;
+    }
+    #shop-images-sliders button {
+        display: none;
+    }
+    .side-menu .side-menu-item {
+        margin-bottom: 0px;
+        padding: 8px 0px;
+        border-bottom: none;
+        /* padding-bottom: 15px; */
+        flex: 0 0 auto;
+        margin: 3px 12px 3px 0px;
+    }
+    .side-menu {
+        margin-bottom: 0px;
+        display: flex;
+    }
+    .img-none {
+        display: none;
+    }
+    .custom-card .card {
+        width: 93%;
+        margin: auto;
+    }
+    .bg-after-orange::after {
+        width: 93%;
+        left: 15px;
+    }
+    .second-col {
+        margin-top: 30px !important;
+    }
+    .sec-col {
+        margin-top: 20px !important;
+    }
+    .category-boxes .category-box {
+        min-width: 320px;
+    }
+    .heading2 {
+        font-size: 18px;
+    }
+    .section-5 .right-side {
+        padding: 14px;
+    }
+    .section-5 .right-side .man-image {
+        height: 50px;
+        min-width:50px;
+        max-width: 50px;
+        padding: 0.5rem;
+    }
+    .section-5 .right-side .text-orange {
+        font-size: 16px;
+    }
+    .contact-form {
+        padding: 1.7rem;
+    }
+    .heading-footer {
+        font-size: 15px;
+    }
+   
+    .margin-none {
+        margin:0px !important;
+    }
+    #app .pb-5{
+        padding-bottom: 1rem !important;
+    }
+    #app .mb-5{
+        margin-bottom: 1rem !important;
+    }
+    #app .mt-5{
+        margin-top: 1rem !important;
+    }
+    #app .my-5 {
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+    #app .my-4 {
+        margin-top: .61rem !important;
+        margin-bottom: .6rem !important;
+    }
+    #app .mx-4 {
+        margin-left: .61rem !important;
+        margin-right:.61rem !important;}
+      
+    #app .py-4 {
+        padding-top: .61rem !important;
+        padding-bottom: .6rem !important;
+    }
+    #app .px-4 {
+        padding-right: .61rem !important;
+        padding-left: .6rem !important;
+    }
+    #app .p-5 {
+        padding: 1.17rem !important;
+       
+    }
+    #app .m-5 {
+        margin: 1rem !important;
+       
+    }
+    #app .pt-5 {
+        padding-top:1rem !important;
+    }
+    #app .py-5{
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+    #app .px-5{
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    #app .pe-5{
+        padding-right: 1rem !important; 
+    }
+    #app .mx-5{
+        margin-left: 1rem !important;
+        margin-right: 1rem !important;
+    }
+    #app .ps-4 {
+        padding-left: .2rem !important;
+    }
+    #app .ms-4 {
+       margin-left: 0px !important;
+    }
+    .category-tabs .col-3,.category-tabs .col-9 {
+        width: 100% !important;
+    }
+    .girl-img {
+        left: 0px;
+    }
+    .login-home  button{
+        margin-top: 15px;
+        float: right;
+    }
+    .orange-background {
+        margin-top: 20px;
+    }
+    .section-5 .text-box {
+        left: 15%;
+    }
+    .btn-lg, .btn-group-lg>.btn {
+        padding: 0.4rem 0.8rem !important;
+    font-size: 10px !important;
+    }
+    .termss {
+        align-items: flex-start;
+        font-size: 13px;
+        line-height: 15px;
+    }
+    .form-outline .form-control.form-control-lg {
+        font-size: .81rem;}
+        label {
+            display: inline-block;
+            font-size: 14px;
+        }
+    .termss input {
+        position: absolute;
+    }
+    .footer {
+        padding: 10px;
+    }
+    .notifiction-panel{
+        min-width: 320px;
+    max-width: 300px;
+    top: 35px;
+    right: -13px;
+    }
+    .btn-loginn,.text-color-1 {
+        font-size: 14px !important;
+    }
+}

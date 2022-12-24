@@ -47,7 +47,7 @@
                             </span>
                             Bookings
                         </h6>
-
+<div class="table-responsive">
                         <MDBTable class="booking-table">
                             <thead>
                                 <tr>
@@ -142,6 +142,7 @@
                                 </tr>
                             </tbody>
                         </MDBTable>
+                        </div>
                     </div>
                 </div>
             </MDBCol>

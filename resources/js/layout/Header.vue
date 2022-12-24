@@ -1,6 +1,6 @@
 <template>
     <MDBNavbar
-        classNavbar="shadow-0 main-navbar fixed-top"
+        classNavbar="shadow-0 main-navbar navbar-expand-lg fixed-top"
         :class="[
             route.name != 'home' && 'border-bottom',
             route.meta.sidebar || (store.state.auth && 'bg-white'),
@@ -18,7 +18,7 @@
                     />
                 </router-link>
             </MDBNavbarBrand>
-            <MDBNavbarToggler target="navbarNav"></MDBNavbarToggler>
+            <MDBNavbarToggler data-toggle="collapse" target="navbarNav"></MDBNavbarToggler>
             <MDBNavbarNav
                 collapse="navbarNav"
                 class="align-items-center"
@@ -135,7 +135,7 @@
             </MDBNavbarNav>
 
             <MDBNavbarNav right v-else>
-                <router-link to="/login" class="text-white">
+                <router-link to="/login" class="text-white login-home">
                     <MDBBtn
                         color="dark"
                         class="text-lowercase fw-bold fs-6 rounded-4 shadow-2-strong login-btn"

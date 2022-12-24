@@ -69,7 +69,7 @@
                                 >
                             </div>
                             <MDBRow>
-                                <MDBCol col="3">
+                                <MDBCol col="12 col-sm-6 col-md-3 ">
                                     <div class="mb-2 fw-bold small">
                                         Upload shop Photos (Optional)
                                     </div>
@@ -208,7 +208,7 @@
                                         </div>
                                     </div>
                                 </MDBCol>
-                                <MDBCol col="3">
+                                <MDBCol col="12 col-sm-6 col-md-3 sec-col">
                                     <div class="mb-2 fw-bold small">
                                         Upload CNIC Front
                                     </div>
@@ -343,7 +343,7 @@
                                         </div>
                                     </div>
                                 </MDBCol>
-                                <MDBCol col="3">
+                                <MDBCol col="12 col-sm-6 col-md-3 sec-col">
                                     <div class="mb-2 fw-bold small">
                                         Upload CNIC Back
                                     </div>
@@ -477,7 +477,7 @@
                                         </div>
                                     </div>
                                 </MDBCol>
-                                <MDBCol col="3">
+                                <MDBCol col="12 col-sm-6 col-md-3 sec-col">
                                     <div class="mb-2 fw-bold small">
                                         Shop Liscence
                                     </div>

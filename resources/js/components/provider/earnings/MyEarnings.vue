@@ -1,5 +1,5 @@
 <template>
-    <section class="px-5 pt-4">
+    <section class="px-5 pt-4 ">
         <MDBContainer fluid>
             <MDBRow>
                 <MDBCol col="12">
@@ -7,7 +7,7 @@
                 </MDBCol>
             </MDBRow>
             <MDBRow class="mt-5">
-                <MDBCol col="4">
+                <MDBCol col="12 col-sm-4">
                     <div class="earning-box">
                         <div>
                             <span class="text-orange mb-0 fw-bold"
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </MDBCol>
-                <MDBCol col="4">
+                <MDBCol col="12 col-sm-4 sec-col">
                     <div class="earning-box">
                         <div>
                             <span class="text-orange mb-0 fw-bold"
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </MDBCol>
-                <MDBCol col="4">
+                <MDBCol col="12 col-sm-4 sec-col">
                     <div class="earning-box">
                         <div>
                             <span class="text-orange mb-0 fw-bold"
