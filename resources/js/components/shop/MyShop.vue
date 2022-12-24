@@ -16,12 +16,12 @@
                         Edit Shop
                     </MDBBtn>
                 </MDBCol>
-                <MDBCol col="5">
+                <MDBCol col="12 col-sm-5">
                     <ShopPhotos
                         :photos="apiResponse.data.user_business_images"
                     />
                 </MDBCol>
-                <MDBCol col="7">
+                <MDBCol col="12 col-sm-7">
                     <ShopDetails :data="apiResponse.data" />
                 </MDBCol>
             </MDBRow>

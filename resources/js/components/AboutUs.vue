@@ -4,7 +4,7 @@
   </section>
   <MDBContainer class="my-5 text-center pt-3 pb-5">
     <MDBRow>
-      <MDBCol col="10" class="mx-auto">
+      <MDBCol col="12 col-sm-10" class="mx-auto">
         <h4 class="text-orange">What is Groominn </h4>
         <p class="small text-color-1">
           Hair salon, beauty salon. With over more then hundered of salons and beauty parlers connected with us that provides great services to their customers. They have the expertise and knowledge to help you achieve the perfect look. Whether you want to add a bit of spice to your look with a touch of color or you want a classic twist on your look, They can help you.So you don't have to worry about any of your makeup getting caught on your clothes while you're waiting to check out our salons! you need to just checkin to your nearest salon and get great services with out any wait.Beacuse we save customer time.
@@ -12,9 +12,9 @@
       </MDBCol>
     </MDBRow>
     <MDBRow>
-      <MDBCol col="9" class="mx-auto pt-5">
+      <MDBCol col="12 col-sm-9" class="mx-auto pt-5">
         <MDBRow>
-          <MDBCol col="4">
+          <MDBCol col="12 col-sm-6 col-md-4">
             <div class="about-box">
               <!-- About icon 1 -->
               <svg
@@ -91,7 +91,7 @@
               </p>
             </div>
           </MDBCol>
-          <MDBCol col="4">
+          <MDBCol col="12 col-sm-6 col-md-4">
             <div class="about-box">
               <!-- About icon 2 -->
               <svg
@@ -157,7 +157,7 @@
               </p>
             </div>
           </MDBCol>
-          <MDBCol col="4">
+          <MDBCol col="12 col-sm-6 col-md-4">
             <div class="about-box">
               <!-- About icon 3 -->
               <svg

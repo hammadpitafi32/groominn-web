@@ -4,7 +4,7 @@
   </section>
   <MDBContainer class="my-5 pt-3 pb-5">
     <MDBRow>
-      <MDBCol col="6" class="mx-auto text-center">
+      <MDBCol col="col-12 col-sm-6" class="mx-auto text-center">
         <h4 class="text-orange title fw-bold">Contact us</h4>
         <p class="small text-color-2 mt-3">
           For further questions, or any thing you want to ask, please
@@ -13,11 +13,11 @@
       </MDBCol>
     </MDBRow>
     <MDBRow>
-    <MDBCol col="6" class="mt-2">
+    <MDBCol col="col-12 col-md-6" class="mt-2">
         <form action="" class="contact-form">
           <MDBRow>
-            <MDBCol col="6">
-              <div class="form-group">
+            <MDBCol col="col-12 col-md-6 ">
+              <div class="form-group ">
                 <label for="name" class="small mb-1 fw-500">Name</label>
                 <input
                   type="text"
@@ -27,7 +27,7 @@
                 />
               </div>
             </MDBCol>
-            <MDBCol col="6">
+            <MDBCol col="col-12 col-md-6 second-col">
               <div class="form-group">
                 <label for="email" class="small mb-1 fw-500">Email</label>
                 <input
@@ -68,7 +68,7 @@
           </MDBRow>
         </form>
       </MDBCol>
-      <MDBCol col="6" class="mt-2">
+      <MDBCol col="col-12 col-md-6 second-col" class="mt-2">
         <Map :data="bookingList" />
       </MDBCol>
     </MDBRow>

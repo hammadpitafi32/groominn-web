@@ -1,15 +1,15 @@
 <template>
     <MDBContainer class="py-5 my-5">
         <MDBRow class="align-items-center">
-            <MDBCol :col="!serviceChoose ? '8' : '7'">
+            <MDBCol :col="!serviceChoose ? '12 col-sm-8' : '12 col-sm-7'">
                 <img
                     src="../assets/img/login-img.jpg"
                     class="img-fluid"
                     alt=""
                 />
             </MDBCol>
-            <MDBCol col="4" class="pt-5" v-if="!serviceChoose">
-                <h2 class="fw-bold mb-1">Sign Up as a</h2>
+            <MDBCol col="12 col-sm-4" class="pt-5" v-if="!serviceChoose">
+                <h2 class="fw-bold mb-1 heading2">Sign Up as a</h2>
                 <div class="mt-5 pt-4">
                     <MDBBtn
                         class="rounded-5 shadow-1-strong text-capitalize py-3 bg-orange fs-6 text-white w-100"
@@ -33,8 +33,8 @@
                     </MDBBtn>
                 </div>
             </MDBCol>
-            <MDBCol col="5" class="pt-5" v-else>
-                <h2 class="fw-bold mb-1">Get Started</h2>
+            <MDBCol col="12 col-sm-5" class="pt-5" v-else>
+                <h2 class="fw-bold mb-1 heading2">Get Started</h2>
                 <p class="small text-color-1">
                     Already have an accoun?
                     <router-link to="/login" class="text-orange"
@@ -193,7 +193,7 @@
                     <div class="mt-5 mb-3">
                         <label
                             for="terms"
-                            class="d-flex align-items-end text-color-1"
+                            class="d-flex termss text-color-1"
                         >
                             <div class="position-relative">
                                 <input
@@ -205,13 +205,14 @@
                                 <span class="geekmark me-2"></span>
                             </div>
 
-                            I agree to Platform’s<span class="text-orange mx-1"
+                         <p>   I agree to Platform’s<span class="text-orange mx-1"
                                 >terms or services
                             </span>
                             And
                             <span class="text-orange ms-1"
                                 >Privacy Policy
                             </span>
+                            </p>
                         </label>
                     </div>
 

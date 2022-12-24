@@ -1,6 +1,6 @@
 <template>
     <aside class="sidebar gradiant-list">
-        <ul class="list-unstyled side-menu">
+        <ul  class="list-unstyled side-menu">
             <li class="side-menu-item">
                 <router-link class="nav-link" :to="shop ? '/my-shop' : '/add-shop'"><i class="fa-solid fa-shop"></i> {{
                     shop ? "My Shop" : "Add Shop"

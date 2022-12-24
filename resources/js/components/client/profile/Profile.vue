@@ -1,7 +1,7 @@
 <template>
     <MDBContainer class="mt-5 pt-5">
         <MDBRow>
-            <MDBCol col="10" class="mx-auto mt-5">
+            <MDBCol col="12 col-sm-10" class="mx-auto mt-5">
                 <div class="user-profile p-3">
                     <div class="d-flex align-items-center">
                         <svg

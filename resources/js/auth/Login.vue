@@ -1,15 +1,15 @@
 <template>
-    <MDBContainer class="pt-5 mt-5">
+    <MDBContainer class="pt-5 mt-5 px-5">
         <MDBRow>
-            <MDBCol col="7">
+            <MDBCol col="col-12 col-sm-7">
                 <img
                     src="../assets/img/login-img.jpg"
                     class="img-fluid"
                     alt=""
                 />
             </MDBCol>
-            <MDBCol col="5" class="py-5">
-                <h2 class="fw-bold mb-1">Get Started</h2>
+            <MDBCol col="col-12 col-sm-5" class="py-5">
+                <h2 class="fw-bold mb-1 heading2">Get Started</h2>
                 <p class="small text-color-1">
                     Dont have an account?
                     <router-link to="/register" class="text-orange"
@@ -83,7 +83,7 @@
                         >
                     </div>
                     <MDBBtn
-                        class="bg-orange text-white text-capitalize shadow-4-strong w-100 mt-3 rounded-5 fw-bold"
+                        class="bg-orange btn-loginn text-white text-capitalize shadow-4-strong w-100 mt-3 rounded-5 fw-bold"
                         :disabled="loading"
                         size="lg"
                         @click="handleLogin()"

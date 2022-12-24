@@ -3,7 +3,7 @@
         <MDBRow>
             <MDBCol col="12">
                 <div
-                    class="d-flex align-items-center justify-content-between px-5"
+                    class="d-flex align-items-center my-categories justify-content-between px-5"
                 >
                     <h6 class="text-orange fw-bold mb-0 fs-custom">
                         My Categories

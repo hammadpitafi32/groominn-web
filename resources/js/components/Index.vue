@@ -25,7 +25,7 @@
     <section class="filter-section pb-5">
         <MDBContainer>
             <MDBRow>
-                <MDBCol col="8" class="mx-auto">
+                <MDBCol col="12 col-sm-10 col-md-8" class="mx-auto myform">
                     <Filters />
                 </MDBCol>
             </MDBRow>
@@ -36,13 +36,13 @@
     <section class="section-3 pt-5">
         <MDBContainer fluid>
             <MDBRow>
-                <MDBCol col="2 text-center">
+                <MDBCol col="12  col-md-2 text-center img-none">
                     <img src="../assets/img/pnik-grooming.svg" class="img-fluid" alt="" :style="{ height: imageHeight + 'px' }" />
                 </MDBCol>
-                <MDBCol col="10">
+                <MDBCol col="12  col-md-10">
                     <div ref="rightSide">
                         <MDBRow>
-                            <MDBCol col="10" class="mx-auto text-center">
+                            <MDBCol col="12 col-sm-6 col-md-10" class="mx-auto text-center">
                                 <h2 class="text-orange fw-bold mb-3">Why choose Groominn?</h2>
                                 <p class="text-color-1 small">
                                     At Groominn, we care about the well-being of our customers and stylists. Explore hair salon franchising opportunities with Great groominn app.
@@ -50,8 +50,8 @@
                                 </p>
                             </MDBCol>
                         </MDBRow>
-                        <MDBRow class="mt-5">
-                            <MDBCol col="4">
+                        <MDBRow class="mt-5 custom-card">
+                            <MDBCol col="12 col-sm-6 col-md-4">
                                 <div class="text-center h-100">
                                     <MDBCard class="shadow-2 features-card h-100 pt-4">
                                         <img src="../assets/img/fast-easy-booking.svg" alt="..." class="img-fluid" />
@@ -64,7 +64,7 @@
                                     </MDBCard>
                                 </div>
                             </MDBCol>
-                            <MDBCol col="4">
+                            <MDBCol col="12 col-sm-6 col-md-4 second-col">
                                 <div class="text-center h-100 bg-after-orange">
                                     <MDBCard class="shadow-4-strong features-card h-100 pt-4">
                                         <img src="../assets/img/save-time.svg" alt="..." class="img-fluid" />
@@ -77,7 +77,7 @@
                                     </MDBCard>
                                 </div>
                             </MDBCol>
-                            <MDBCol col="4">
+                            <MDBCol col="12 col-sm-6 col-md-4 second-col">
                                 <div class="text-center h-100">
                                     <div class="text-center h-100">
                                         <MDBCard class="shadow-2 features-card h-100 pt-4">
@@ -101,7 +101,7 @@
                                         <h2 class="fw-bold text-color-2">Find the best</h2>
                                         <h4 class="text-orange">Services in the town</h4>
                                     </MDBCol>
-                                    <MDBCol col="4" offset="8">
+                                    <MDBCol col="12 col-sm-4" offset="0 offset-md-8">
                                         <MDBBtn class="btn-custom-white shadow-0 text-capitalize" @click="showAll = !showAll">
                                             {{
                                             showAll ? "Show Less catagories" : "Show All catagories"
@@ -140,7 +140,7 @@
     <section class="section-5">
         <MDBContainer fluid class="ps-0">
             <MDBRow>
-                <MDBCol col="6" class="position-relative">
+                <MDBCol col="12 col-sm-6" class="position-relative">
                     <div class="
               orange-background
               d-flex
@@ -156,9 +156,9 @@
                         <small class="text-dark d-block mt-3">Groominn is here to book an Appointment without making a call</small>
                     </div>
                 </MDBCol>
-                <MDBCol col="6">
+                <MDBCol col="12 col-sm-6 second-col">
                     <div class="right-side position-relative pt-5">
-                        <h2 class="fw-bold">Hundreds of hair styles, one great service.</h2>
+                        <h2 class="fw-bold heading2">Hundreds of hair styles, one great service.</h2>
                         <p class="text-color-2 small">
                             We look forward to giving you the best services you want. Lets have a look what we and our salons are offering.
                         </p>
@@ -202,17 +202,17 @@
     </section>
     <!-- section 5 end -->
     <!-- section 6 -->
-    <section style="padding-left:10%" class="section-6 py-5">
+    <section  class="section-6 py-5">
         <MDBContainer>
             <MDBRow class="align-items-center">
-                <MDBCol col="6">
-                    <div class="d-flex justify-content-end py-5">
+                <MDBCol col="12 col-sm-8 col-md-6">
+                    <div class="d-flex cards-flex justify-content-end py-5">
                         <div class="boxes">
                             <div class="bg-white rounded-6 p-4 text-center white-box">
                                 <div class="man-image mx-auto mb-4">
                                     <img src="../assets/img/salon.svg" class="img-fluid" alt="" />
                                 </div>
-                                <h4 class="fw-bold">Facial</h4>
+                                <h4 class="fw-bold heading2">Facial</h4>
                                 <p class="small text-color-1">
                                     A facial is a family of skin care treatments for the face, including steam, exfoliation (physical and chemical), extraction, creams and lotions.
                                 </p>
@@ -221,7 +221,7 @@
                                 <div class="man-image mx-auto mb-4">
                                     <img src="../assets/img/spa.svg" class="img-fluid" alt="" />
                                 </div>
-                                <h4 class="fw-bold">SPA</h4>
+                                <h4 class="fw-bold heading2">SPA</h4>
                                 <p class="small text-color-1">
                                     Spa treatments often include a combination of deep cleansing, massages and moisturisation.
                                 </p>
@@ -232,7 +232,7 @@
                                 <div class="man-image mx-auto mb-4">
                                     <img src="../assets/img/man.svg" class="img-fluid" alt="" />
                                 </div>
-                                <h4 class="fw-bold">Men's Hair Cut</h4>
+                                <h4 class="fw-bold heading2">Men's Hair Cut</h4>
                                 <p class="small text-color-1">
                                     These are the coolest and most stylish men's haircuts. Show your barber one of these fresh new looks today.
                                 </p>
@@ -241,7 +241,7 @@
                                 <div class="man-image mx-auto mb-4">
                                     <img src="../assets/img/skincare.svg" class="img-fluid" alt="" />
                                 </div>
-                                <h4 class="fw-bold">Skin Care</h4>
+                                <h4 class="fw-bold heading2">Skin Care</h4>
                                 <p class="small text-color-1">
                                     No matter what your skin type is, a daily skin care routine can help you maintain overall skin health and improve specific concerns like acne and dark spots
                                 </p>
@@ -249,9 +249,9 @@
                         </div>
                     </div>
                 </MDBCol>
-                <MDBCol col="4">
+                <MDBCol col="12 col-sm-4 col-md-6 second-col">
                     <div class="ps-4">
-                        <h2 class="fw-bold">Top Categories</h2>
+                        <h2 class="fw-bold heading2">Top Categories</h2>
                         <p class="small text-color-1">
                             Right now we have four top service categories.These are according to customer feedback and their services.You can checkin these services and get to know more about these services and the salons. 
                         </p>
@@ -265,8 +265,8 @@
     <section class="section-7 pt-5">
         <MDBContainer>
             <MDBRow class="align-items-center">
-                <MDBCol col="4">
-                    <h2 class="fw-bold">Groominn Applications</h2>
+                <MDBCol col="12 col-sm-6 col-md-4">
+                    <h2 class="fw-bold heading2">Groominn Applications</h2>
                     <p class="small text-color-1 mb-4">
                         You can download groominn application from your play store and book your require service any time you want. 
                     </p>
@@ -277,7 +277,7 @@
                         <MDBIcon iconStyle="fab" icon="android" size="2xl" class="me-2"></MDBIcon>Play store
                     </MDBBtn>
                 </MDBCol>
-                <MDBCol col="8" class="text-center">
+                <MDBCol col="12 col-sm-6 col-md-8" class="text-center second-col">
                     <img src="../assets/img/mobile.svg" class="img-fluid" alt="" />
                 </MDBCol>
             </MDBRow>
