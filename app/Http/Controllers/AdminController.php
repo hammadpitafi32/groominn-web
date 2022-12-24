@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Traits\CategoryTrait;
 use App\Models\Category;
 use App\Models\UserService;
+use App\Models\UserBusinessCategoryService;
 
 class AdminController extends Controller
 {
@@ -31,9 +32,10 @@ class AdminController extends Controller
 
     public function getServices()
     {
-        $services = UserService::orderBy('id')->get();
-        // dd($services);
-        return view('admin.service.index',compact('services'));
+        $services = UserService::with('business_service.user_category','user')->orderBy('id')->get();
+        $categories = Category::all();
+
+        return view('admin.service.index',compact('services','categories'));
 
     }
 
@@ -41,12 +43,24 @@ class AdminController extends Controller
     {
         $service = UserService::find($request['id']);
         $service->status = ($service->status?0:1);
-        // dd($service);
+        
         $service->save();
-
+        
+        
         return response()->json([
             'success' => 200,
             'data' => $service
         ]);
+    }
+    public function updateService(Request $request){
+
+        $service = UserService::find($request['id']);
+        $service->name =$request->name;
+        $service->save();
+        $catServices=UserBusinessCategoryService::where('user_service_id',$request['id'])->update(['charges'=>$request->charges,'duration'=>$request->duration]);
+
+        $services = UserService::with('business_service.user_category','user')->orderBy('id')->get();
+        $categories = Category::all();
+        return view('admin.service.index',compact('services','categories'));
     }
 }

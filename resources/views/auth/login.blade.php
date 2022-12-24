@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>GR Admin - Login</title>
+  <title>Groominn Admin - Login</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -70,10 +70,10 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
+                    <!-- <a class="small" href="forgot-password.html">Forgot Password?</a> -->
                   </div>
                   <div class="text-center">
-                    <a class="small" href="register.html">Create an Account!</a>
+                    <!-- <a class="small" href="register.html">Create an Account!</a> -->
                   </div>
                 </div>
               </div>

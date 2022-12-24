@@ -216,5 +216,27 @@ trait UserTrait {
             ];
         }
     }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+       
+        if ($user) 
+        {
+            $user->delete();
+        }
+        else
+        {
+ 
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found!'
+            ], 400);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully!'
+        ], 200);
+    }
   
 }

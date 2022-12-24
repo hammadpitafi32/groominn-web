@@ -22,16 +22,36 @@ Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
     // Route::get('users', 'AdminController@providerList');
     Route::get('users/{type}', 'UserController@list');
     Route::post('create-user', 'UserController@createOrUpdate')->name('create-user');
+    Route::post('update-user', 'UserController@updateUser')->name('update-user');
+    Route::post('delete-user', 'UserController@UserDelete')->name('delete-user');
     Route::post('change-user-status', 'UserController@changeUserStatus')->name('change-user-status');
+    Route::post('profile/update', 'UserController@updateProfile')->name('profile.update');
+    Route::get('profile', 'UserController@getProfile');
+    Route::get('settings', 'SettingController@index');
+    Route::post('settings/update', 'SettingController@updateSetting')->name('settings.update');
+
+    // Email Templates
+    Route::get('email-templates', 'SettingController@getEmailTemplates')->name('email-templates');
+    Route::post('delete-template', 'SettingController@templateDelete')->name('delete-template');
+
+    Route::post('create-template', 'SettingController@createTemplate')->name('create-template');
+    Route::post('update-template', 'SettingController@editTemplate')->name('update-template');
+
     Route::group(['namespace' => 'Api'],function()
     {
         Route::post('create-category', 'BusinessController@CreateOrUpdateBusinessCategory')->name('create-category');
         Route::get('user-businesses', 'UserBusinessController@getAllBusinesses')->name('user-businesses');
         Route::post('change-business-status', 'UserBusinessController@changeBusinessStatus')->name('change-business-status');
+
+        Route::post('delete-category', 'UserBusinessController@deleteCategory')->name('delete-category');
+
+        Route::post('delete-service', 'UserBusinessController@ServiceDelete')->name('delete-service');
     });
     Route::get('categories', 'AdminController@getCategories')->name('categories');
     Route::get('services', 'AdminController@getServices')->name('services');
     Route::post('change-service-status', 'AdminController@changeServiceStatus')->name('change-service-status');
+
+    Route::post('update-service', 'AdminController@updateService')->name('update-service');
 
 });
 

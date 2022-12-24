@@ -20,4 +20,8 @@ class UserService extends Model
     {
         return $this->belongsTo('App\Models\User','user_id', 'id');
     }
+    public function business_service()
+    {
+        return $this->belongsTo(UserBusinessCategoryService::class,'id','user_service_id');  
+    }
 }

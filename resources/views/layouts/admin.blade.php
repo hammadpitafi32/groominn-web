@@ -18,6 +18,10 @@
   <!-- Custom styles for this template-->
   <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
   <link href="{{asset('admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css.map" />
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.css" rel="stylesheet">
+  
 
 </head>
 
@@ -58,7 +62,7 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
+          <i class="fas fa-fw fa-users"></i>
           <span>Users</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -89,12 +93,12 @@
       </li>
 
       <!-- Divider -->
-      <hr class="sidebar-divider">
+      <!-- <hr class="sidebar-divider"> -->
 
       <!-- Heading -->
-      <div class="sidebar-heading">
+     <!--  <div class="sidebar-heading">
         Addons
-      </div>
+      </div> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item ">
@@ -122,6 +126,12 @@
         <a class="nav-link" href="{{route('user-businesses')}}">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>User Businesses</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('email-templates')}}">
+          <i class="fas fa-fw fa-envelope"></i>
+          <span>Email Templates</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
@@ -301,16 +311,16 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth()->user()->name}}</span>
+                <img class="img-profile rounded-circle" src="{{ asset('storage/'.auth()->user()->avatar_path) }}">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{{url('admin/profile')}}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{{url('admin/settings')}}">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   Settings
                 </a>
@@ -348,7 +358,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
+            <span>Copyright &copy; Groominn 2022</span>
           </div>
         </div>
       </footer>
@@ -402,6 +412,8 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('admin/js/demo/datatables-demo.js')}}"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
   @stack('javascripts');
 </body>
 

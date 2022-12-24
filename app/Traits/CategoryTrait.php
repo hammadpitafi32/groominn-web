@@ -149,5 +149,27 @@ trait CategoryTrait {
     {
         return Category::all();
     }
+    // delete category
+    public function delCategory($id)
+    {
+        $category = Category::find($id);
+       
+        if ($category) 
+        {
+            $category->delete();
+        }
+        else
+        {
+ 
+            return response()->json([
+                'success' => false,
+                'message' => 'category not found!'
+            ], 400);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'category deleted successfully!'
+        ], 200);
+    }
   
 }

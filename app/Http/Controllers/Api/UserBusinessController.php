@@ -122,4 +122,15 @@ class UserBusinessController extends Controller
         return $this->user_business->changeStatus();
 
     }
+    public function deleteCategory(Request $request)
+    {
+
+        return $this->delCategory($request->id);
+
+    }
+    public function ServiceDelete(Request $request){
+      
+        return $this->deleteService($request->id);
+    }
+    
 }
