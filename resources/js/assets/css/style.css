@@ -950,7 +950,7 @@ aside.gradiant-list a {
     }
     .navbar-nav {
         width: 100%;
-        display: none;
+     
         background-color: white;
     }
     .navbar-nav li.nav-item {
@@ -959,9 +959,7 @@ aside.gradiant-list a {
         border-bottom: 1px solid #ccc;
         font-weight: normal;
     }
-    .navbar-toggler:hover {
-        display: block;
-    }
+   
     .earning-box .text-orange {
         font-size: 15px;
     }
@@ -996,7 +994,7 @@ aside.gradiant-list a {
         display: flex;
         justify-content: center;
     }
- .banner-section,.carousel-item,.carousel-fade .carousel-item.active, .carousel-fade .carousel-item-next.carousel-item-start, .carousel-fade .carousel-item-prev.carousel-item-end,.main-slider .slider-image {
+ .home-bannner,.home-bannner .carousel-item,.home-bannner .carousel-fade .carousel-item.active,.home-bannner .carousel-fade .carousel-item-next.carousel-item-start,.home-bannner .carousel-fade .carousel-item-prev.carousel-item-end,.home-bannner .main-slider .slider-image {
     height: 60vh;
  }
     .cards-flex {
@@ -1008,7 +1006,7 @@ aside.gradiant-list a {
         box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px !important;
         padding-bottom: 20px !important;
     }
-    .main-slider {
+   .home-bannner .main-slider {
         width: 100%;
         height: 60vh;
     }
@@ -1182,6 +1180,25 @@ aside.gradiant-list a {
         margin-left: 1rem !important;
         margin-right: 1rem !important;
     }
+    #app .mt-4{
+        margin-top: .4rem !important;
+       
+    }
+    #app .pt-4{
+        padding-top: .4rem !important;
+       
+    }
+    #app .my-4{
+        margin-top: .4rem !important;
+        margin-bottom: .4rem !important;
+       
+    }
+    #app .py-4{
+        padding-top: .4rem !important;
+        padding-bottom: .4rem !important;
+       
+    }
+    
     #app .ps-4 {
         padding-left: .2rem !important;
     }
@@ -1190,6 +1207,21 @@ aside.gradiant-list a {
     }
     .category-tabs .col-3,.category-tabs .col-9 {
         width: 100% !important;
+    }
+    .booking-profiles {
+        height: auto !important;
+        margin-bottom: 30px;
+        padding-left: 0px !important;
+    }
+    .main-booking-img {
+        height: 100% ;
+   
+        object-fit: cover;
+        max-height: 150px !important;
+        border-radius: 15px !important;
+    }
+    .flex-wrappp {
+        flex-wrap: wrap !important;
     }
     .girl-img {
         left: 0px;

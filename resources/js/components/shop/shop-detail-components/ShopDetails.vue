@@ -1,6 +1,6 @@
 <template>
     <div class="shop-detials pe-5">
-        <div class="d-flex align-items-start justify-content-between">
+        <div class="d-flex align-items-start justify-content-between flex-wrappp">
             <div class="left">
                 <h3 class="heading-color fw-bold">{{ props.data.name }}</h3>
                 <div class="d-flex align-items-center stars">
@@ -30,7 +30,7 @@
                     }}</small>
                 </div>
             </div>
-            <div class="right ms-4 flex-shrink-0" v-if="role == 'Client'">
+            <div class="right ms-4 flex-shrink-0 sec-col" v-if="role == 'Client'">
                 <div class="select-parent position-relative">
                     <input
                         type="date"

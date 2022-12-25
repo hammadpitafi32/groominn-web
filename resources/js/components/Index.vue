@@ -1,6 +1,6 @@
 <template>
     <!-- section 1 -->
-    <section class="banner-section">
+    <section class="banner-section home-bannner">
         <MDBContainer fluid class="p-0 position-relative">
             <MDBCarousel v-model="carousel" fade :items="items" :pause="false" :interval="false" itemsClass="slider-image img-fluid" class="main-slider" />
             <div class="text-on-slider">
