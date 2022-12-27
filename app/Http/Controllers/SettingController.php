@@ -33,9 +33,7 @@ class SettingController extends Controller
 
         // Validate the request data
         $request->validate([
-            // 'name' => 'required|max:255',
-            // 'email' => 'required|email|unique:users,email,' . $request->user()->id,
-            // 'password' => 'nullable|confirmed|min:6',
+  
             'site_logo' => 'nullable|image|max:2048'
         ]);
 

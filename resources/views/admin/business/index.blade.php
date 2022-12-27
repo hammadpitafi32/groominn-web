@@ -22,6 +22,7 @@
             <th>CNIC Front Image</th>
             <th>CNIC Back Image</th>
             <th>License Image</th>
+            <th>Total Employees</th>
             <th>Created At</th>
           </tr>
         </thead>
@@ -34,6 +35,7 @@
             <th>CNIC Front Image</th>
             <th>CNIC Back Image</th>
             <th>License Image</th>
+            <th>Total Employees</th>
             <th>Created At</th>
           </tr>
         </tfoot>
@@ -44,7 +46,12 @@
              
               <a href="javascript:void(0);" class="btn {{(($user_business->status == 'active')?'btn-danger':'btn-success')}} btn-circle btn-sm changeStatus" data-id="{{$user_business->id}}" data-name="{{$user_business->name}}">
                   <i class="fas {{(($user_business->status == 'active')?'fa-ban':'fa-check')}}"></i>
-               </a>
+               </a> 
+
+               | 
+                <a href="javascript:void(0);" class="btn btn-danger btn-circle btn-sm deleteShop" data-id="{{$user_business->id}}">
+                    <i class="fas fa-trash"></i>
+                </a>
             </td>
             <td>{{$user_business->name}}</td>
             <td>{{$user_business->address}}</td>
@@ -52,6 +59,7 @@
             <td><a href="javascript:void(0)" ><img src="{{asset($user_business->cnic_front)}}" alt="" class="img-thumbnail img-click"></a></td>
             <td><a href="javascript:void(0)" ><img src="{{asset($user_business->cnic_back)}}" alt="" class="img-thumbnail img-click"></a></td>
             <td><a href="javascript:void(0)" ><img src="{{asset($user_business->license)}}" alt="" class="img-thumbnail img-click"></a></td>
+            <td>{{$user_business->no_of_employees}}</td>
             <td>{{$user_business->created_at}}</td>
           </tr>
           @endforeach
@@ -123,7 +131,7 @@
 
 <script type="text/javascript">
     $(document).on('click', '.changeStatus', function() {
-        // alert('s');
+       
         id = $(this).data('id');
         data = {
             'id':id
@@ -137,20 +145,52 @@
             // $('#modifyCategoryModel').modal('hide');
             toastr.success('Success!', "updated Successfully!", {"positionClass": "toast-bottom-right"});
         }).catch(function(error) {
-            // console.log(error.response.data);
-            // if (error && error.response) 
-            // {
-            //     $.each(error.response.data.errors, function(key, value){
-            //         // console.log(key,value);
-            //         $('#'+key).focus().addClass('border border-danger');
-            //         $.each(value, function(key1, msg){
-            //             $('#'+key).after('<span><small class="text-danger">'+msg+'</small><br></span>');
-            //         });
-            //     });
-            // }
-            
-
+        
         });
+    });
+
+    $(document).on('click', '.deleteShop', function() {
+        
+
+        id = $(this).data('id');
+        data = {
+            'id':id
+        }
+       swal({
+          title: "Are you sure?",
+          text: "You will not be able to recover this data!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: '#DD6B55',
+          confirmButtonText: 'Yes, I am sure!',
+          cancelButtonText: "No, cancel it!",
+          closeOnConfirm: false,
+          closeOnCancel: false
+       },
+       function(isConfirm){
+
+        if (isConfirm){
+          axios.post("{{route('delete-business')}}",
+              data
+          ).then(function(response) {
+              location.reload();
+              toastr.success('Success!', "updated Successfully!", {"positionClass": "toast-bottom-right"});
+
+
+
+          }).catch(function(error) {
+
+            toastr.error('Error!', "some thing went wrong!", {"positionClass": "toast-bottom-right"});
+          });
+           // swal("Shortlisted!", "Candidates are successfully shortlisted!", "success");
+
+          } else {
+            swal("Cancelled", "Your data is safe :)", "error");
+               
+          }
+       });
+            
+ 
     });
 
     $(".img-click").on("click", function() {

@@ -36,6 +36,12 @@ Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
 
     Route::post('create-template', 'SettingController@createTemplate')->name('create-template');
     Route::post('update-template', 'SettingController@editTemplate')->name('update-template');
+    // Bookings
+    Route::get('bookings', 'BookingController@index')->name('bookings');
+    Route::post('delete-booking', 'BookingController@BookingDelete')->name('delete-booking');
+    Route::post('update-booking-status', 'BookingController@updateBookingStatus')->name('update-booking-status');
+
+    Route::post('delete-business', 'AdminController@businessDelete')->name('delete-business');
 
     Route::group(['namespace' => 'Api'],function()
     {
@@ -59,19 +65,5 @@ Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
 Route::any('/{any}', function () {
     return view('welcome');
 })->where(['any' => '.*']);
-
-
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-// Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
-//     Route::get('/', 'AdminController@index');
-//     // Route::get('users', 'AdminController@providerList');
-//     Route::get('users/{type}', 'UserController@list');
-//     Route::post('create-user', 'UserController@createOrUpdate')->name('create-user');
-// });
-
 
 

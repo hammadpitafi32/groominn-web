@@ -7,6 +7,7 @@ use App\Traits\CategoryTrait;
 use App\Models\Category;
 use App\Models\UserService;
 use App\Models\UserBusinessCategoryService;
+use App\Models\UserBusiness;
 
 class AdminController extends Controller
 {
@@ -62,5 +63,25 @@ class AdminController extends Controller
         $services = UserService::with('business_service.user_category','user')->orderBy('id')->get();
         $categories = Category::all();
         return view('admin.service.index',compact('services','categories'));
+    }
+
+    public function businessDelete(Request $request){
+
+        $business = UserBusiness::find($request['id']);
+        
+        if($business){
+            $business->delete();
+            
+            return response()->json([
+                'success' => 200,
+                'data' => $business
+            ]);
+        }
+        return response()->json([
+            'success' => 400,
+            'data' => $business
+        ]);
+        
+        
     }
 }

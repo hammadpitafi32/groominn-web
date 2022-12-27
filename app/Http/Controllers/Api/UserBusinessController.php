@@ -22,11 +22,7 @@ class UserBusinessController extends Controller
     public function createOrUpdate(Request $request)
     {
         return $this->user_business->createOrUpdate();
-        
-        // return response()->json([
-        //     'success' => $response['success'],
-        //     'data' => $response['data']
-        // ]);
+
     }
 
     public function getUserBusiness($id=null)
@@ -53,7 +49,7 @@ class UserBusinessController extends Controller
 
     public function getUserCategories(Request $request)
     {
-        // dd($request->all());
+        
         $categories = $this->userCategories($request);
 
         return response()->json([
@@ -64,7 +60,7 @@ class UserBusinessController extends Controller
 
     public function getUserServices(Request $request)
     {
-        // dd($this->userServices());
+        
         $services = $this->userServices($request);
 
         return response()->json([
@@ -96,7 +92,7 @@ class UserBusinessController extends Controller
 
     public function deleteBusinessImage(Request $request)
     {
-        // dd($request->all());
+       
         return $this->user_business->deleteBusinessImage();
     }
 
@@ -106,12 +102,12 @@ class UserBusinessController extends Controller
             'success' => true,
             'data' => $this->getAllCategories()
         ], 200);
-        // dd($this->getAllCategories());
+       
     }
 
     public function getAllBusinesses(Request $request)
     {
-        // dd($this->user_business->all());
+       
         $user_businesses = $this->user_business->all();
 
         return view('admin.business.index',compact('user_businesses'));

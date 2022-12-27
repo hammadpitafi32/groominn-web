@@ -22,6 +22,7 @@ use App\Traits\UserTrait;
 use App\Traits\TwilioTrait;
 // notication
 use App\Notifications\OtpNotification;
+use App\Services\PushNotificationService;
 
 class ApiAuthController extends Controller
 {
@@ -41,8 +42,13 @@ class ApiAuthController extends Controller
         if ($response && $response->getStatusCode() == 201 ) {
             return $response;
         }
-        // dd(json_decode($response->getContent(), true));
+      
         if ($this->loginAfterSignUp ) {
+            
+            // $pushNotificationService = new PushNotificationService();
+
+            // $pushNotificationService->send('My Notification', 'This is the body of my notification', 'my_device_token');
+
             return $this->login($request);
         }
         return $response;

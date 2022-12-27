@@ -106,7 +106,7 @@ class UserController extends Controller
         $user->email = $request->input('email');
 
         // Update the user's password, if provided
-        if ($request->has('password')) {
+        if ($request->has('password') && $request->password !='') {
             $user->password = bcrypt($request->input('password'));
         }
 
