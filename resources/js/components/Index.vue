@@ -1,6 +1,6 @@
 <template>
     <!-- section 1 -->
-    <section class="banner-section">
+    <section class="banner-section home-bannner">
         <MDBContainer fluid class="p-0 position-relative">
             <MDBCarousel v-model="carousel" fade :items="items" :pause="false" :interval="false" itemsClass="slider-image img-fluid" class="main-slider" />
             <div class="text-on-slider">
@@ -286,7 +286,9 @@
     <NoAuthModal :show="modalShow" @closeModal="modalShow = false" />
     <!-- section 7 end -->
 </template>
+
 <script setup>
+
 import { ref } from "@vue/reactivity";
 import { computed, onMounted, watchEffect } from "@vue/runtime-core";
 import { MDBCarousel, MDBIcon } from "mdb-vue-ui-kit";
@@ -410,5 +412,6 @@ const categories = ref([{
         color: "#0517BD",
     },
 ]);
+
 
 </script>

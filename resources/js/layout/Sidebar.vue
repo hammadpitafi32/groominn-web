@@ -6,11 +6,16 @@
                     shop ? "My Shop" : "Add Shop"
                 }}</router-link>
             </li>
-           
             <li class="side-menu-item" v-if="shop">
+                <router-link class="nav-link" :to="shop ? '/my-shop-hours' : '/my-shop-hours'"><i class="fa-solid fa fa-calendar"></i> {{
+                    shop ? "Business Hours" : "Add Business Hours"
+                }}</router-link>
+            </li>
+           
+            <li class="side-menu-item" v-if="shopeTime">
                 <router-link to="/my-categories" class="nav-link"><i class="fa-solid fa-chair"></i> My Categories</router-link>
             </li>
-            <li class="side-menu-item" v-if="shop">
+            <li class="side-menu-item" v-if="shopeTime">
                 <router-link to="/my-services" class="nav-link"><i class="fa-solid fa-bell-concierge"></i> My Services</router-link>
             </li>
          <!--    <li class="side-menu-item" v-if="shop">
@@ -19,9 +24,9 @@
             <li class="side-menu-item" v-if="shop">
                 <router-link to="/bookings" class="nav-link"><i class="fa fa-book nav-icon blue"></i> Bookings</router-link>
             </li>
-<!--             <li class="side-menu-item" v-if="shop">
+            <li class="side-menu-item" v-if="shop">
                 <router-link to="/my-earnings" class="nav-link"><i class="fa fa-money-bill nav-icon"></i> My Earnings</router-link>
-            </li> -->
+            </li>
             <li class="side-menu-item">
                 <a class="nav-link" 
                     href="javascript:void(0)"
@@ -41,9 +46,11 @@ import { useRoute } from "vue-router";
 const store = useStore();
 const shop = ref(false);
 const route = useRoute();
+const shopeTime = ref(false);
 
 watchEffect(() => {
     shop.value = store.state.shop;
+    shopeTime.value = store.state.isTimeAdded;
 });
 </script>
 

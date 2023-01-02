@@ -17,6 +17,7 @@ import Home from "../components/Index.vue";
 import AboutUs from "../components/AboutUs.vue";
 import ContactUs from "../components/ContactUs.vue";
 import store from "../store";
+import MyShopHours from "../components/provider/business-hours/BusinessHours.vue";
 
 const routes = [
     {
@@ -95,6 +96,15 @@ const routes = [
         path: "/my-shop",
         name: "myShop",
         component: MyShop,
+        meta: {
+            sidebar: true,
+            auth: true,
+        },
+    },
+    {
+        path: "/my-shop-hours",
+        name: "myShopHours",
+        component: MyShopHours,
         meta: {
             sidebar: true,
             auth: true,

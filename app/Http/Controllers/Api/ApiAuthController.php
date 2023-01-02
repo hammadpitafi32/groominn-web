@@ -23,6 +23,10 @@ use App\Traits\TwilioTrait;
 // notication
 use App\Notifications\OtpNotification;
 use App\Services\PushNotificationService;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Storage;
+use File;
+
 
 class ApiAuthController extends Controller
 {
@@ -102,14 +106,22 @@ class ApiAuthController extends Controller
                 ], 401);
             }
         }
-        
-        // dd(Auth::user());
+        $isTimeAdded=false;
         $user = Auth::user();
+        
+        if($user){
+            $business=BusinessHour::where('user_businesses_id',$user->user_business->id)->first();
+            if($business){
+                $isTimeAdded=true;
+            }
+        }
+        
         $data['name'] = $user->name;
         $data['email'] = $user->email;
         $data['role'] = $user->role->name;
         $data['is_shop'] = ($user->user_business && $user->user_business->id?true:false);
-        
+        $data['avatar'] = $user->avatar_path;
+        $data['isTimeAdded'] = $isTimeAdded;
         return response()->json([
             'success' => true,
             'token' => $jwt_token,
@@ -294,5 +306,143 @@ class ApiAuthController extends Controller
             'success' => false,
             'message' => 'Invalid Credentials or token',
         ], 401);
+    }
+
+    public function redirectToFacebook(){
+
+        try {
+            return Socialite::driver('facebook')->stateless()->redirect();
+        } catch (Exception $e) {
+           return $e->getMessage();
+            
+        }
+    }
+    public function redirectToGoogle(){
+
+        try {
+            return Socialite::driver('google')->stateless()->redirect();
+        } catch (Exception $e) {
+           return $e->getMessage();
+            
+        }
+    }
+    public function getSocialLoginUserInfo(Request $request){
+       
+        if($request->plateform == 'facebook'){
+            $user = Socialite::driver('facebook')->userFromToken($request->token);
+        }else{
+            $user = Socialite::driver('google')->userFromToken($request->token);
+        }
+
+        $name = $user->name;
+        $email = $user->email;
+        $social_platform = 'Google';
+        $social_platform_id = $user->id;
+        $device_type = 'web';
+        $device_token = $request->token;
+        $avatar=$user->avatar;
+       
+        if (User::where('social_platform_id', $social_platform_id)->where('social_platform', $social_platform)->exists()) {
+      
+                User::where('social_platform_id', $social_platform_id)->where('social_platform', $social_platform)
+                    ->update([
+                        'name' => $name,
+                        'device_type' => $device_type,
+                        // 'device_token' => $device_token,
+                        'social_platform' => $social_platform,
+                        'social_platform_id' => $social_platform_id,
+                    ]);
+
+                $user = User::where('social_platform_id', $social_platform_id)->where('social_platform', $social_platform)->first();
+                $isNew =false;
+            } else {
+   
+                $isNew =false;
+                if (User::where('email', $email)->exists()) {
+                   
+                    $user = User::where('email', $email)->update([
+                        'name' => $name,
+                        'device_type' => $device_type,
+                        // 'device_token' => $device_token,
+                        'social_platform' => $social_platform,
+                        'social_platform_id' => $social_platform_id,
+                    ]);
+                    $user = User::where('email', $email)->first();
+                } else {
+                   
+                    $contents = file_get_contents($avatar);
+                    // $Image_name = substr($avatar, strrpos($avatar, '/') + 1);
+                    $Image_name =$name.'-'.$social_platform.'-avatar';
+                    $full_name=$Image_name.'.jpg';
+                  
+                    Storage::disk('uploads')->put($full_name, $contents);
+                  
+                    $isNew =true;
+                    $user = User::Create([
+                        'name' => $name,
+                        'email' => $email,
+                        'device_type' => $device_type,
+                        // 'device_token' => $device_token,
+                        'social_platform' => $social_platform,
+                        'social_platform_id' => $social_platform_id,
+                        'role_id' => 3,
+                        // 'switchProfile' => 0,
+                        'avatar_path' => $full_name,
+                        'is_verified' => 1,
+                        'status' => 1,
+                    ]);
+                }
+            }
+            if ($user) {
+
+
+                $jwt_token=JWTAuth::fromUser($user);
+    
+                $token = $jwt_token;
+
+                $data['name'] = $user->name;
+                $data['email'] = $user->email;
+                $data['role'] = $user->role->name;
+                $data['is_shop'] = false;
+                $data['avatar'] = $user->avatar_path;
+                
+                return response()->json([
+                    'success' => true,
+                    'token' => $jwt_token,
+                    'data' => $data,
+                ]);
+
+            }
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid Credentials or token',
+            ], 401);
+           
+
+    }
+    public function handleGoogleCallback()
+    {
+        try {
+           
+            $user = Socialite::driver('google')->stateless()->user();
+
+            return redirect(\config('app.FRONT_END_BASE_PATH').'/auth/?plateform=google&token='.$user->token);
+      
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+    public function handleFacebookCallback()
+    {
+        try {
+           
+            $user = Socialite::driver('facebook')->stateless()->user();
+
+            return redirect(\config('app.FRONT_END_BASE_PATH').'/auth/?plateform=facebook&token='.$user->token);
+      
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
     }
 }

@@ -12,23 +12,29 @@ const store = createStore({
         name: "",
         role: "",
         shop: "",
+        avatar:"",
         allCategories: null,
+        isTimeAdded:false,
     },
     actions: {
         setAuth(context) {
             let token = cookies.get("token");
             let user = cookies.get("user");
-
+          
             if (token && user) {
                 context.state.auth = true;
                 context.state.name = user.name;
                 context.state.role = user.role;
                 context.state.shop = user.is_shop;
+                context.state.avatar = user.avatar;
+                context.state.isTimeAdded = user.isTimeAdded;
             } else {
                 context.state.auth = false;
                 context.state.name = "";
                 context.state.role = "";
                 context.state.shop = "";
+                context.state.avatar = "";
+                context.state.isTimeAdded =false;
             }
         },
         setLogin(context, data) {

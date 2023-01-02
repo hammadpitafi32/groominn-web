@@ -16,5 +16,22 @@
             <my-app></my-app>
         </div>
     </body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ mix('js/app.js') }}"></script>
+    <script type="text/javascript">
+        
+        $(".togle").click(function(){
+            $(".custom-nav").toggle();
+            
+        });
+        var but = document.querySelector(".carousel-control-prev");
+        
+        setInterval(function () {
+            // console.log(window.location.pathname)
+            if(window.location.pathname == '/'){
+                but.click();
+            }
+            
+        },10000);
+    </script>
 </html>

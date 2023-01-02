@@ -18,10 +18,10 @@
                     />
                 </router-link>
             </MDBNavbarBrand>
-            <MDBNavbarToggler data-toggle="collapse" target="navbarNav"></MDBNavbarToggler>
+            <MDBNavbarToggler  v-if="route.name != 'home' || store.state.auth" class='togle'></MDBNavbarToggler>
             <MDBNavbarNav
                 collapse="navbarNav"
-                class="align-items-center"
+                class="align-items-center custom-nav"
                 right
                 v-if="route.name != 'home' || store.state.auth"
             >
@@ -101,7 +101,7 @@
                             @click="profileDropdown = !profileDropdown"
                         >
                             <img
-                                src="../assets/img/avatar.png"
+                                :src="avatar"
                                 class="img-fluid avatar"
                                 alt=""
                             />
@@ -151,6 +151,8 @@
 </template>
 
 <script setup>
+
+
 import { onMounted, ref, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import {
@@ -177,6 +179,7 @@ const role = ref("");
 const { cookies } = useCookies();
 const profileDropdown = ref(false);
 const notification = ref(false);
+const avatar = ref("");
 
 onMounted(() => {
     window.addEventListener("scroll", () => {
@@ -189,6 +192,12 @@ onMounted(() => {
 });
 
 watchEffect(() => {
+    // console.log(store.state.avatar)
+    if(store.state.avatar !=''){
+        // console.log('sss')
+         avatar.value = 'storage/' +store.state.avatar;
+    }
+   
     role.value = store.state.role;
 });
 
@@ -200,6 +209,7 @@ const logout = () => {
     profileDropdown.value = false;
     store.dispatch("setLogout");
 };
+
 </script>
 
 <style scoped>

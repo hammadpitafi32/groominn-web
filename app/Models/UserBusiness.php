@@ -15,6 +15,7 @@ class UserBusiness extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable =['is_open'];
 
     /*accessors*/
     public function getCnicFrontPathAttribute()       

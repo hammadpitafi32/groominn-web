@@ -42,7 +42,7 @@
                         </span>
                         Bookings
                     </h6>
-
+<div  class="table-responsive">
                     <table
                         class="table booking-table"
                         aria-describedby="booking-table"
@@ -114,6 +114,7 @@
                             </tr>
                         </tbody>
                     </table>
+</div>
                 </div>
             </MDBCol>
         </MDBRow>

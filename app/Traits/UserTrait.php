@@ -90,12 +90,13 @@ trait UserTrait {
     }
     public function createOrUpdateUser(Request $request)
     {
+
         $response = $this->validation($request);
-        // dd($response);
+        
         if ($response && $response->getStatusCode() == 400) {
             return $response;
         }
-        // dd('gg');
+      
         $user = ($request->id ?  User::find($request->id) : new User);
         if(!$request->id)
         {
@@ -116,21 +117,14 @@ trait UserTrait {
         if (@$request->password) {
             $user->password = Hash::make($request->password);
         }
+
+        // Update the user's avatar, if provided
+        if ($request->hasFile('avatar_path')) {
+            $avatar = $request->file('avatar_path');
+            $avatar_path = $avatar->store('avatars', 'public');
+            $user->avatar_path = $avatar_path;
+        }
         $user->save();
-
-
-        // $user = $user->updateOrCreate(
-        //     [
-        //         'email' => $request->email,
-        //     ],
-        //     [
-        //         'name' => $request->name,
-        //         // 'password' => Hash::make($request->password),
-        //         'role_id' => $request->role_id,
-        //         'added_by' => $request->added_by,
-        //     ]
-        // );
-
 
         $user->user_detail()->updateOrCreate(
             [
@@ -152,7 +146,7 @@ trait UserTrait {
 
         if(!$request->id)
         {
-            // $user->notify(new RegisterNotification());
+            $user->notify(new RegisterNotification());
         }
         if (!$user->is_verified) 
         {

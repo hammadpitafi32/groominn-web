@@ -20,6 +20,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api'],function()
 {
+    // google social login
+    Route::any('auth/google', 'ApiAuthController@redirectToGoogle');
+    Route::get('auth/google/callback','ApiAuthController@handleGoogleCallback');
+
+    // facebook social login
+    Route::any('auth/facebook', 'ApiAuthController@redirectToFacebook');
+    Route::get('auth/facebook/callback','ApiAuthController@handleFacebookCallback');
+
+    Route::post('auth/social/getUserInfo','ApiAuthController@getSocialLoginUserInfo');
+
     Route::post('login', 'ApiAuthController@login');
     Route::post('register', 'ApiAuthController@register');
     Route::post('send-otp', 'ApiAuthController@sendOtp');
@@ -59,6 +69,7 @@ Route::group(['namespace' => 'Api'],function()
 
             /*user*/
             Route::post('create-user-business', 'UserBusinessController@createOrUpdate');
+            Route::post('save-shop-schedule', 'UserBusinessController@addShopSchedule');
             
             Route::delete('delete-user-business', 'UserBusinessController@deleteUserBusiness');
             Route::post('create-business-schedule', 'UserBusinessController@createOrUpdateSchedule');

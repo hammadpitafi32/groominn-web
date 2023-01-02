@@ -2,7 +2,7 @@
   <div class="mt-5 pt-5">
     <div class="container">
       <div class="row">
-        <div class="col-5">
+        <div class="col-12 col-sm-5">
           <div class="booking-list-filters mb-3">
             <form action="">
               <div class="d-flex">
@@ -69,7 +69,7 @@
                             ? imgUrl + booking.user_business_images[0].name
                             : 'http://127.0.0.1:8000/images/no-img.webp?2a1649c3403bc7fe3caf888a0bf327e6'
                         "
-                        class="img-fluid rounded-5 booking-img"
+                        class="img-fluid rounded-5 booking-img main-booking-img"
                         alt=""
                       />
                     </div>
@@ -151,7 +151,7 @@
             <ShopsLoader v-else />
           </div>
         </div>
-        <div class="col-7">
+        <div class="col-12 col-sm-7">
           <Map :data="bookingList" :activeShop="activeShop" />
         </div>
       </div>

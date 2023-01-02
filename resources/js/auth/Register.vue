@@ -3,7 +3,7 @@
         <MDBRow class="align-items-center">
             <MDBCol :col="!serviceChoose ? '12 col-sm-8' : '12 col-sm-7'">
                 <img
-                    src="../assets/img/login-img.jpg"
+                    src="../assets/img/signin-img.png"
                     class="img-fluid"
                     alt=""
                 />
@@ -45,6 +45,7 @@
                     <MDBBtn
                         class="shadow-1-strong me-3 text-capitalize flex-grow-1 py-3"
                         size="lg"
+                        @click="handleGoogleLogin()"
                     >
                         <img
                             src="../assets/img/google.svg"
@@ -56,6 +57,7 @@
                     <MDBBtn
                         class="shadow-2-strong ms-3 facebook-btn text-capitalize text-white f-w-400 flex-grow-1"
                         size="lg"
+                        @click="handleFacebookLogin()"
                     >
                         <MDBIcon
                             iconStyle="fab"
@@ -274,6 +276,17 @@ const closeModal = () => {
 watchEffect(() => {
     store.dispatch("redirection");
 });
+
+const handleGoogleLogin = () => {
+    let baseUrl=process.env.MIX_APP_API_URL+'/auth/google';
+
+    window.open(baseUrl);
+};
+const handleFacebookLogin = () => {
+    let baseUrl=process.env.MIX_APP_API_URL+'/auth/facebook';
+ 
+    window.open(baseUrl);
+};
 
 const registerHandler = () => {
     loading.value = true;

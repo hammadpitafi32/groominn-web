@@ -57,8 +57,7 @@
             </div>
             <div v-if="screen == 'otpVerification'">
                 <p class="text-black-50">
-                    Lorem Ipsumdolorsamet Conseteturfgadipscin Elitr, Sed Diam
-                    Nonumy Od Temporinvidunt La Et Dolore Magna.Ggdfg
+                    Please Enter your 4 digits code here.
                 </p>
                 <div class="d-flex justify-content-center mt-3">
                     <v-otp-input
