@@ -42,11 +42,11 @@
                 <div
                     class="est-time fw-500 mt-1 text-orange small d-flex align-items-center justify-content-end"
                 >
-                    <small> Estimated time </small>
+                    <small class="custom-pad">Shop No  <i class="fa fa-phone" aria-hidden="true"></i> </small>
                     <small
                         class="fw-normal text-color-1 d-flex align-items-center"
                     >
-                        <svg
+<!--                         <svg
                             class="mx-2"
                             width="11"
                             height="11"
@@ -62,8 +62,8 @@
                                 d="M11.1198 10.2609L8.57335 8.4198V4.00016C8.57335 3.92159 8.50907 3.8573 8.4305 3.8573H7.57157C7.493 3.8573 7.42871 3.92159 7.42871 4.00016V8.91801C7.42871 8.96444 7.45014 9.0073 7.48764 9.03409L10.4412 11.1877C10.5055 11.2341 10.5948 11.2198 10.6412 11.1573L11.1519 10.4609C11.1984 10.3948 11.1841 10.3055 11.1198 10.2609Z"
                                 fill="#B7B7B7"
                             />
-                        </svg>
-                        2h 30 mints
+                        </svg> -->
+                        {{ props.data.user.user_detail.phone }}
                     </small>
                 </div>
             </div>
@@ -162,7 +162,7 @@
                                         </svg>
                                     </small>
                                     <small class="text-orange fw-bold price"
-                                        >{{ subcategory.charges + " $" }}
+                                        >{{ subcategory.charges + " Rs" }}
                                     </small>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
             <div class="text-end mt-4" v-if="role == 'Client'">
                 <router-link
                     :to="{
-                        name: 'payment',
+                        name: 'checkin',
                         params: {
                             data: JSON.stringify({
                                 user_business_id: route.params.id,
@@ -204,7 +204,7 @@
                         :disabled="selectedCategories.length === 0"
                         class="text-white bg-orange fw-500 text-capitalize rounded-4 shadow-0 book-btn"
                     >
-                        Book now
+                        Check in
                     </MDBBtn>
                 </router-link>
             </div>
@@ -229,7 +229,7 @@ import { useRoute } from "vue-router";
 const props = defineProps({
     data: Object,
 });
-
+// console.log(props.data)
 const categtoriesArray = ref(props.data.user_categories);
 const route = useRoute();
 const store = useStore();
@@ -267,6 +267,7 @@ const setCategories = (event, val) => {
 watchEffect(() => {
     // Setting items in selectedCategories from localStorage
     let categoriesInLocalStorage = localStorage.getItem("data");
+
     if (categoriesInLocalStorage) {
         let array = JSON.parse(JSON.parse(categoriesInLocalStorage).items);
 
@@ -298,6 +299,9 @@ const handleCheckbox = (id) => {
 </script>
 
 <style scoped>
+.custom-pad{
+    padding-right: 14px !important;
+}
 .rating {
     color: #616161;
 }

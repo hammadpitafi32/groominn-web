@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Api'],function()
         Route::get('logout', 'ApiAuthController@logout');
 
         Route::get('get-user-business/{id?}', 'UserBusinessController@getUserBusiness');
+        Route::post('get-shop-info', 'UserBusinessController@getShopInfo');
         Route::get('get-bookings', 'BookingController@getBookings');
         Route::get('booking-detail', 'BookingController@bookingDetail');
         Route::get('booking-cancelation', 'BookingController@bookingCancel');
@@ -92,6 +93,9 @@ Route::group(['namespace' => 'Api'],function()
 
             Route::post('create-booking', 'BookingController@create');
             Route::post('get-estimated-time', 'BookingController@getEstimatedTime');
+            Route::post('shop-current-bookings', 'BookingController@shopCurrentBooking');
+
+            Route::post('cancel-booking', 'BookingController@cancelBooking');
 
         });
     });

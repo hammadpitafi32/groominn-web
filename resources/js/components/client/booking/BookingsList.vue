@@ -6,7 +6,8 @@
           <div class="booking-list-filters mb-3">
             <form action="">
               <div class="d-flex">
-                <select
+                <GMapAutocomplete class="form-select border-0 me-7" style='background:#efefef' id="googleAutoComplete" placeholder="Search services in your area" @place_changed="setPlace" />
+<!--                 <select
                   name="sort"
                   id=""
                   v-model="sort"
@@ -19,8 +20,8 @@
                   <option value="star-3">3 Star</option>
                   <option value="star-4">4 Star</option>
                   <option value="star-5">5 Star</option>
-                </select>
-                <select
+                </select> -->
+ <!--                <select
                   name="category"
                   id=""
                   v-model="category"
@@ -34,8 +35,8 @@
                   >
                     {{ category.name }}
                   </option>
-                </select>
-                <MDBBtn
+                </select> -->
+<!--                 <MDBBtn
                   class="
                     bg-orange
                     text-white
@@ -47,7 +48,15 @@
                   "
                 >
                   <span class="mx-3">Search</span>
-                </MDBBtn>
+                </MDBBtn> -->
+                 <MDBBtn
+                  style='margin-top: 10px;'
+                  class="text-white bg-orange w-25"
+                  :disabled="!address.place"
+                  @click="paramsHandle()"
+                  >
+                  Search
+                  </MDBBtn>
               </div>
             </form>
           </div>
@@ -83,6 +92,15 @@
                       <p class="mt-2 text-color-1 small description">
                         {{ booking.description }}
                       </p>
+                      <div class="d-flex align-items-center stars">
+                        <em class="fa fa-star me-2"></em>
+                        <em class="fa fa-star me-2"></em>
+                        <em class="fa fa-star me-2"></em>
+                        <em class="fa fa-star me-2"></em>
+                        <em class="fa fa-star me-2"></em>
+
+                        <span class="rating ms-3">5.0(10)</span>
+                      </div>
                       <div class="mt-3">
                         <span class="d-block fw-500 categories"
                           >Categories</span
@@ -100,7 +118,7 @@
                               justify-content-center
                               fw-500
                             "
-                            :title="category.name"
+                            :title="category.category.name"
                             v-for="category in booking.user_categories"
                             :key="category.id"
                           >
@@ -144,7 +162,7 @@
                 style="direction: ltr"
                 v-else
               >
-                <h3 class="fw-bold">NO Match Found!</h3>
+                <h3 class="fw-bold">Sorry no service found in this area!</h3>
                 <!-- Currently no shops are available in your area -->
               </div>
             </div>
@@ -160,7 +178,7 @@
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
+import { reactive,ref } from "@vue/reactivity";
 import { computed, watchEffect } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { getAllShops } from "../../../api";
@@ -182,7 +200,11 @@ const bookingList = ref(null);
 
 const categoriesFromAdmin = computed(() => store.state.allCategories);
 const activeShop = ref(null);
-
+const address = reactive({
+    place: "",
+    lat: "",
+    lng: "",
+});
 const activeBooking = (booking) => {
   activeId.value = booking.id;
   activeShop.value = {
@@ -190,14 +212,52 @@ const activeBooking = (booking) => {
     lng: booking.longitude,
   };
 };
-
-getAllShops().then(({ data }) => {
+const setPlace = (data) => {
+    address.lat = data.geometry.location.lat();
+    address.lng = data.geometry.location.lng();
+    address.place = data.formatted_address;
+};
+const formData = new FormData();
+    
+    formData.append("latitude", route.query.latitude);
+   
+    formData.append("longitude", route.query.longitude);
+    
+    
+getAllShops(formData).then(({ data }) => {
   bookingList.value = data.data.data;
   // if (data.data.data.length) {
   //   activeId.value = bookingList.value[0].id;
   // }
   loading.value = false;
 });
+
+const paramsHandle = () => {
+  // console.log(address.place)
+  if (store.state.auth) {
+      var frmData = new FormData();
+    
+      frmData.append("latitude", address.lat);
+   
+      frmData.append("longitude", address.lng);
+      // console.log(formData)
+      getAllShops(frmData).then(({ data }) => {
+        bookingList.value = data.data.data;
+  
+        loading.value = false;
+      });
+    // const queries = {};
+    // router.push({
+    //   path: "/booking-list",
+    //   query: {
+    //     ...(address.place && { latitude: address.lat,longitude:address.lng }),
+       
+    //   },
+    // });
+  } else {
+    router.push("/register");
+  }
+};
 
 watchEffect(() => {
   store.dispatch("clientRedirection");
@@ -221,6 +281,12 @@ watchEffect(() => {
 </script>
 
 <style scoped>
+.rating {
+    color: #616161;
+}
+.stars em {
+    color: #f2c94c;
+}
 .text-light-color {
   color: #b4b4b4;
   font-size: 0.8rem;

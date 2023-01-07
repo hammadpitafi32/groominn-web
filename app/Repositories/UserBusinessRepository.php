@@ -315,10 +315,11 @@ class UserBusinessRepository implements UserBusinessInterface
 	/*get business detail*/
 	public function getUserBusiness($id)
 	{
+
 		$id =  $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
 		// dd($id ,Auth::user()->user_business);
 		$business = $this->user_business
-        ->with('user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
+        ->with('user.user_detail','user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
   			      ->with(['user_categories' => function ($query) {
 			        // $query->select('id','user_id', 'name');
 			    }]
@@ -403,7 +404,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	            cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude))
 	        )) AS distance", 
 	        [$request->latitude, $request->longitude, $request->latitude])
-		    ->having("distance", "<", $request->radius?:10);
+		    ->having("distance", "<", $request->radius?:20);
 		}
 
 		if ($request->category_id) 

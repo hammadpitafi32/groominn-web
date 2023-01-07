@@ -1,8 +1,12 @@
 <template>
-  <div class="payment-detail ps-4">
-    <h5>Choose payment method</h5>
-    <div class="d-flex payment-methods mt-1">
-      <label
+    <div class="payment-detail ps-4">
+        <!-- <h5 class="fw-bold mb-4">Shop Bookings</h5>
+        <div v-if='isShopBookings' class="d-flex payment-methods mt-1"> -->
+        <!--          <div v-for='booking in shopBookings'>
+                <h3>{{booking.user.name}}</h3>
+                <small>{{booking.status}}</small>
+            </div> -->
+        <!--       <label
         class="cursor-pointer me-5"
         :class="paymentMethod === 'master' && 'active'"
       >
@@ -67,16 +71,32 @@
           v-model="paymentMethod"
           class="custom-check-input"
         />
-      </label>
+      </label> -->
+        <!--       </div>
+        <div class="col-md-12" v-else>
+            <div class="alert alert-dark" role="alert">
+                There is no booking yet!
+            </div>
+        </div> -->
     </div>
-  </div>
-
-  <!-- Payment Preview -->
-
-  <div class="payment-preview">
-    <div class="p-4">
-      <!-- Master Card Payment -->
-      <div class="master-card p-3" v-if="paymentMethod === 'master'">
+    <!-- Payment Preview -->
+    <div class="payment-preview">
+        <div class="p-4">
+            <h5 class="fw-bold mb-4">Shop Bookings</h5>
+            <div v-if='isShopBookings'>
+                <ul>
+                    <li v-for='booking in shopBookings' style="color:orange">
+                        <p>{{booking.user.name}}</p>
+                    </li>
+                </ul>
+            </div>
+            <div v-else>
+                <div class="alert alert-info" role="alert">
+                    There is no booking yet!
+                </div>
+            </div>
+            <!-- Master Card Payment -->
+            <!-- <div class="master-card p-3" v-if="paymentMethod === 'master'">
         <svg
           width="40"
           height="27"
@@ -206,84 +226,95 @@
             <small class="fw-500 d-block">mastercard</small>
           </div>
         </div>
-      </div>
-      <!-- Master Card Payment End -->
-
-      <div class="mt-4">
-        <small class="d-block fw-500">Booking Summary</small>
-        <div class="carted-items mt-2" v-if="items">
-          <div class="item rounded-pill" v-for="item in items" :key="item.id">
-            {{ item.name }}
-          </div>
+      </div> -->
+            <!-- Master Card Payment End -->
+            <div class="mt-4">
+                <small class="d-block fw-500">Booking Summary</small>
+                <div class="carted-items mt-2" v-if="items">
+                    <div class="item rounded-pill" v-for="item in items" :key="item.id">
+                        {{ item.name }}
+                    </div>
+                </div>
+                <div class="mt-2" v-else>
+                    No items selected
+                    <router-link to="/booking-list" class="text-orange fw-500 ms-1 text-decoration-underline">Go to the shop list</router-link>
+                </div>
+                <div class="position-relative hr-parent">
+                    <hr class="booking-hr mt-5 mx-n1" />
+                </div>
+                <div class="price-tag pt-2">
+                    <small class="d-block text-color-1">You have to Pay</small>
+                    <div class="fw-bold fs-2">
+                        {{ totalPrice ? totalPrice.split(".")[0] : "0" }}.<span class="cents fs-5">{{ totalPrice ? totalPrice.split(".")[1] : "00" }}</span>
+                        <span class="currency ms-1">RS</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="mt-2" v-else>
-          No items selected
-          <router-link
-            to="/booking-list"
-            class="text-orange fw-500 ms-1 text-decoration-underline"
-            >Go to the shop list</router-link
-          >
-        </div>
-        <div class="position-relative hr-parent">
-          <hr class="booking-hr mt-5 mx-n1" />
-        </div>
-        <div class="price-tag pt-2">
-          <small class="d-block text-color-1">You have to Pay</small>
-          <div class="fw-bold fs-2">
-            {{ totalPrice ? totalPrice.split(".")[0] : "0" }}.<span
-              class="cents fs-5"
-              >{{ totalPrice ? totalPrice.split(".")[1] : "00" }}</span
-            >
-            <span class="currency ms-1">USD</span>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </template>
-
 <script setup>
 import { ref } from "@vue/reactivity";
 import { computed, watchEffect } from "@vue/runtime-core";
 import { MDBRadio } from "mdb-vue-ui-kit";
+import { getShopBookingsById } from "../../../api";
 
 const paymentMethod = ref("master");
 const items = ref(null);
-
+const shopBookings = ref(null);
+const isShopBookings = ref(false);
 const props = defineProps({
-  data: Object,
+    data: Object,
 });
 
 const totalPrice = computed(() => props.data.charges);
 
 watchEffect(() => {
-  items.value = props.data.item_in_cart;
-});
-</script>
+    items.value = props.data.item_in_cart;
 
+    const shopBook = new FormData();
+
+    shopBook.append("user_business_id", props.data.business_id);
+
+    getShopBookingsById(shopBook)
+        .then((response) => {
+
+            shopBookings.value = response.data.data
+            console.log(shopBookings.value)
+            if (shopBookings.value.length > 0) {
+                isShopBookings.value = true
+            }
+
+        });
+
+});
+
+</script>
 <style scoped>
 .booking-hr {
-  border-top: 2px dashed #c4c4c4;
-  background-color: transparent;
-  opacity: 1;
-  position: relative;
+    border-top: 2px dashed #c4c4c4;
+    background-color: transparent;
+    opacity: 1;
+    position: relative;
 }
 
 .hr-parent::before,
 .hr-parent::after {
-  height: 50px;
-  width: 50px;
-  background-color: #fff;
-  border-radius: 50%;
-  content: "";
-  position: absolute;
-  left: -47px;
-  top: -23px;
-  right: auto;
-  z-index: 1000;
+    height: 50px;
+    width: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+    content: "";
+    position: absolute;
+    left: -47px;
+    top: -23px;
+    right: auto;
+    z-index: 1000;
 }
+
 .hr-parent::after {
-  right: -47px;
-  left: auto;
+    right: -47px;
+    left: auto;
 }
+
 </style>

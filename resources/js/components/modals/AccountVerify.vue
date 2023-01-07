@@ -1,56 +1,26 @@
 <template>
-    <MDBModal
-        id="exampleModalCenter"
-        tabindex="-1"
-        labelledby="exampleModalCenterTitle"
-        v-model="props.show"
-        centered
-        staticBackdrop
-    >
+    <MDBModal id="exampleModalCenter" tabindex="-1" labelledby="exampleModalCenterTitle" v-model="props.show" centered staticBackdrop>
         <MDBModalBody>
             <div class="px-4 text-center position-relative">
                 <h3 class="fw-bold my-3">
                     {{
-                        props.type === "register"
-                            ? "Verify Your Account"
-                            : "Forgot  your password"
+                    props.type === "register"
+                    ? "Verify Your Account"
+                    : "Forgot your password"
                     }}
                 </h3>
-                <i
-                    class="fas fa-times cursor-pointer position-absolute"
-                    v-if="props.type === 'forgetPassword'"
-                    @click="emit('closeModal')"
-                ></i>
+                <i class="fas fa-times cursor-pointer position-absolute" v-if="props.type === 'forgetPassword'" @click="emit('closeModal')"></i>
             </div>
             <div class="text-center" v-if="screen == 'chooseMethod'">
                 <h6 class="fw-light">Recieve otp through</h6>
-                <div
-                    class="d-flex align-items-center justify-content-center choose-method my-4"
-                >
-                    <label
-                        for="phoneNumber"
-                        :class="{ active: method == 'phone' }"
-                    >
-                        <input
-                            type="radio"
-                            class="custom-file-type"
-                            id="phoneNumber"
-                            value="phone"
-                            name="chooseMethod"
-                            v-model="method"
-                        />
+                <div class="d-flex align-items-center justify-content-center choose-method my-4">
+                    <label for="phoneNumber" :class="{ active: method == 'phone' }">
+                        <input type="radio" class="custom-file-type" id="phoneNumber" value="phone" name="chooseMethod" v-model="method" />
                         <span>Phone number</span>
                     </label>
                     <span class="mx-4">or</span>
                     <label for="email" :class="{ active: method == 'email' }">
-                        <input
-                            type="radio"
-                            class="custom-file-type"
-                            id="email"
-                            value="email"
-                            name="chooseMethod"
-                            v-model="method"
-                        />
+                        <input type="radio" class="custom-file-type" id="email" value="email" name="chooseMethod" v-model="method" />
                         <span>Email</span>
                     </label>
                 </div>
@@ -60,66 +30,29 @@
                     Please Enter your 4 digits code here.
                 </p>
                 <div class="d-flex justify-content-center mt-3">
-                    <v-otp-input
-                        input-classes="otp-input form-control"
-                        :num-inputs="4"
-                        :should-auto-focus="true"
-                        :is-input-num="true"
-                        :conditionalClass="['one', 'two', 'three', 'four']"
-                        separator=" "
-                        @on-change="handleOnChange"
-                        @on-complete="handleOnComplete"
-                    />
+                    <v-otp-input input-classes="otp-input form-control" :num-inputs="4" :should-auto-focus="true" :is-input-num="true" :conditionalClass="['one', 'two', 'three', 'four']" separator=" " @on-change="handleOnChange" @on-complete="handleOnComplete" />
                 </div>
             </div>
             <div v-if="screen == 'enterCredential'" class="px-5 mt-4">
-                <label :for="method" class="mb-1"
-                    >Enter your {{ method }}</label
-                >
-                <input
-                    :id="method"
-                    :type="method"
-                    v-if="method == 'email'"
-                    class="form-control"
-                    v-model="emailForForgetPass"
-                />
-                <input
-                    :id="method"
-                    :type="method"
-                    v-else
-                    class="form-control"
-                    v-model="phoneForForgetPass"
-                />
+                <label :for="method" class="mb-1">Enter your {{ method }}</label>
+                <input :id="method" :type="method" v-if="method == 'email'" class="form-control" v-model="emailForForgetPass" />
+                <input :id="method" :type="method" v-else class="form-control" v-model="phoneForForgetPass" />
             </div>
             <div v-if="screen == 'confirmPassword'" class="px-5 mt-4">
                 <label for="password" class="mb-1">New Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    class="form-control mb-3"
-                    v-model="newPassword"
-                />
+                <input id="password" type="password" class="form-control mb-3" v-model="newPassword" />
                 <label for="confirm-password">Confirm New Password</label>
-                <input
-                    id="confirm-password"
-                    type="password"
-                    class="form-control mb-3"
-                    v-model="newConfirmPassword"
-                />
+                <input id="confirm-password" type="password" class="form-control mb-3" v-model="newConfirmPassword" />
             </div>
             <div class="text-end mt-5 mb-3 pe-3">
-                <MDBBtn
-                    class="bg-orange text-white text-capitalize mt-3 rounded-5"
-                    @click="
+                <MDBBtn class="bg-orange text-white text-capitalize mt-3 rounded-5" @click="
                         props.type == 'register'
                             ? handleVerification()
                             : handleForgetPassword()
-                    "
-                    :disabled="
+                    " :disabled="
                         loading ||
                         (screen == 'otpVerification' && code.length < 4)
-                    "
-                >
+                    ">
                     <span v-if="!loading"> Done </span>
                     <BtnLoader v-else />
                 </MDBBtn>
@@ -127,7 +60,6 @@
         </MDBModalBody>
     </MDBModal>
 </template>
-
 <script setup>
 import { ref } from "@vue/reactivity";
 import { watch } from "@vue/runtime-core";
@@ -252,8 +184,8 @@ const handleForgetPassword = async () => {
         }
     }
 };
-</script>
 
+</script>
 <style scoped>
 .choose-method label {
     border: 1px solid var(--theme-orange-color);
@@ -263,16 +195,20 @@ const handleForgetPassword = async () => {
     font-size: 13px;
     position: relative;
 }
+
 .choose-method label.active {
     background-color: var(--theme-orange-color);
     color: #fff;
 }
+
 .choose-method input {
     cursor: pointer;
 }
+
 .fa-times {
     right: 7px;
     top: -13px;
     font-size: 20px;
 }
+
 </style>

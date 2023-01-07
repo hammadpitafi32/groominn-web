@@ -10,7 +10,6 @@
         </MDBRow>
     </MDBContainer>
 </template>
-
 <script setup>
 import { ref, watchEffect, computed } from "@vue/runtime-core";
 import PaymentDetail from "./PaymentDetail.vue";
@@ -18,17 +17,20 @@ import PaymentMethod from "./PaymentMethod.vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
+
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const itemsInCart = ref(null);
 const business_id = ref(null);
 const booking_date = ref(null);
+const shopData = ref(null);
 const data = ref({});
 
 watchEffect(() => {
     store.dispatch("client");
     if (route.params.data) {
+
         // setting Data in localStorage in real time
         let dataForPayment = JSON.parse(route.params.data);
         let jsondata = dataForPayment.items.map((item) => JSON.parse(item));
@@ -58,6 +60,7 @@ watchEffect(() => {
     }
 });
 
+
 const itemsPrice = computed(() => {
     if (itemsInCart.value) {
         let price = itemsInCart.value.reduce(
@@ -67,7 +70,7 @@ const itemsPrice = computed(() => {
         return price.toFixed(2);
     }
 });
-
+// console.log(shopData.value)
 const sendData = (val) => {
     data.value = {
         ...val,
@@ -75,6 +78,8 @@ const sendData = (val) => {
         business_id: business_id.value,
         booking_date: booking_date.value,
         charges: itemsPrice.value,
+        // shopData:getOwnProfile.value,
     };
 };
+
 </script>

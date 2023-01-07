@@ -1,7 +1,8 @@
 <template>
   <div class="bg-white shadow-6-strong p-3 rounded-5 filter-box">
     <div class="d-flex align-items-center">
-      <select
+      <GMapAutocomplete class="form-select border-0 me-7" style='background:#efefef' id="googleAutoComplete" placeholder="Search services in your area" @place_changed="setPlace" />
+<!--       <select
         name="sort"
         id=""
         v-model="sort"
@@ -14,9 +15,9 @@
         <option value="star-3">3 Star</option>
         <option value="star-4">4 Star</option>
         <option value="star-5">5 Star</option>
-      </select>
+      </select> -->
 
-      <select
+<!--       <select
         name="category"
         id="category"
         v-model="category"
@@ -30,11 +31,12 @@
         >
           {{ category.name }}
         </option>
-      </select>
+      </select> -->
 
       <MDBBtn
+        style='margin-top: 10px;'
         class="text-white bg-orange w-25"
-        :disabled="!sort && !category"
+        :disabled="!address.place"
         @click="paramsHandle()"
         >Search</MDBBtn
       >
@@ -44,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
 import { computed } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -56,17 +58,28 @@ const store = useStore();
 const sort = ref("");
 const category = ref("");
 const modalShow = ref(false);
-
+const address = reactive({
+    place: "",
+    lat: "",
+    lng: "",
+});
 const categoriesFromAdmin = computed(() => store.state.allCategories);
 
+const setPlace = (data) => {
+    address.lat = data.geometry.location.lat();
+    address.lng = data.geometry.location.lng();
+    address.place = data.formatted_address;
+};
 const paramsHandle = () => {
+  // console.log(address.place)
   if (store.state.auth) {
     const queries = {};
     router.push({
       path: "/booking-list",
       query: {
-        ...(sort.value && { rating: sort.value }),
-        ...(category.value && { category: category.value.toLowerCase() }),
+        ...(address.place && { latitude: address.lat,longitude:address.lng }),
+        // ...(sort.value && { rating: sort.value }),
+        // ...(category.value && { category: category.value.toLowerCase() }),
       },
     });
   } else {

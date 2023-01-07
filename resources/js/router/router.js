@@ -183,8 +183,8 @@ const routes = [
         },
     },
     {
-        path: "/payment",
-        name: "payment",
+        path: "/checkin",
+        name: "checkin",
         component: Payment,
         meta: {
             sidebar: false,

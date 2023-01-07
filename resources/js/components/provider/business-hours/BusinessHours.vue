@@ -79,6 +79,30 @@
             </div>
         </div>
     </div>
+     <!-- Confirmation Modal -->
+   
+    <div class="modal fade" id="modifyemailModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                    <div class="modal-body">
+                        <div class="py-4 text-center">
+                          <h4 class="fw-bold mt-3">Do you want to Close Shop?</h4>
+                          <small>
+                              <b class="text-orange">Note:</b> Your Shop will show as closed to customers and cannot get the bookings.
+                          </small>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mt-4">
+                         
+                          <button type="button" @click="hideModelHandler()" class="ok-btn text-capitalize shadow-0 border" data-dismiss="modal">Close</button>
+                          <button type="button"  @click="handleDelete()" class="bg-orange text-white ok-btn text-capitalize">ok</button>
+                        </div>
+
+                    </div>
+
+            </div>
+        </div>
+    </div>
 </template>
 <script setup>
 import { ref, watchEffect } from "@vue/runtime-core";
@@ -87,6 +111,7 @@ import { useStore } from "vuex";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { useToast } from "vue-toastification";
 import { reactive } from "@vue/reactivity";
+// import ConfirmationModal from "../../modals/ShopCloseConfirmation.vue";
 
 import { addShopSchedule, getUserBank } from "../../../api";
 
@@ -104,27 +129,39 @@ const from_time = ref('09:00');
 const to_time_span = ref("PM");
 const to_time = ref('09:00');
 
-// const credentials = reactive({
-//     business_days_from: "",
-//     business_days_to: "",
-//     form_time_span: "",
-//     from_time: "",
-//     to_time_span: "",
-//     to_time: "",
-// });
 
 watchEffect(() => {
     // store.dispatch("providerRedirection");
 });
 
-// getUserBank().then(({ data }) => {
-//     bank_detail.value = data.data;
-//     if (bank_detail.value) {
-//         bankName.value = bank_detail.value.bank_name;
-//         bankNumber.value = bank_detail.value.account_number;
-//     }
-// });
 
+const hideModelHandler = () => {
+    $('#modifyemailModel').modal('hide');
+};
+const handleDelete = () => {
+    const formData = new FormData();
+   
+    formData.append("is_open", is_open.value);
+    // formData.append("business_days_to", business_days_to.value);
+    // formData.append("form_time_span", form_time_span.value);
+    formData.append("from_time", from_time.value+' '+form_time_span.value);
+    // formData.append("to_time_span", to_time_span.value);
+    formData.append("to_time", to_time.value+' '+to_time_span.value);
+    
+    addShopSchedule(formData)
+        .then((response) => {
+            $('#modifyemailModel').modal('hide');
+            errors.value = null;
+            if (response.data.success == true) {
+                store.state.isTimeAdded=true
+            }
+            toast.success("Changes Saved Successfully!");
+        })
+        .catch((err) => {
+            $('#modifyemailModel').modal('hide');
+            errors.value = err.response.data.errors;
+        });
+};
 const addScheduleHandler = () => {
     
     const formData = new FormData();
@@ -135,7 +172,11 @@ const addScheduleHandler = () => {
     formData.append("from_time", from_time.value+' '+form_time_span.value);
     // formData.append("to_time_span", to_time_span.value);
     formData.append("to_time", to_time.value+' '+to_time_span.value);
-
+    if(is_open.value==0){
+       
+        $('#modifyemailModel').modal('show');
+        return
+    }
     addShopSchedule(formData)
         .then((response) => {
             errors.value = null;
@@ -150,3 +191,8 @@ const addScheduleHandler = () => {
 };
 
 </script>
+<style scoped>
+.ok-btn {
+  padding: 0.3rem 2rem;
+}
+</style>

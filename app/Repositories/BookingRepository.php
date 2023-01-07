@@ -29,11 +29,13 @@ class BookingRepository implements BookingInterface
 
 	protected $booking;
 	protected $request;
+    protected $bookingStatus;
 
 	public function __construct(Booking $booking,Request $request)
 	{
 		$this->booking = $booking;
 		$this->request = $request;
+        $this->bookingStatus = [0=>'pending',1=>'accepted',2=>'rejected',3=>'completed',4=>'cancel',5=>'drop'];
 	}
 	public function find($id)
     {
@@ -48,16 +50,17 @@ class BookingRepository implements BookingInterface
 	public function create()
 	{
 		$request = $this->request;
+
         // dd($request->all());
 		$validator = Validator::make($request->all(), [
             'service_ids' => 'required',
             'date' => 'required',
             'user_business_id' => 'required',
             // 'charges' => 'required',
-            'card_no' => 'required',
-            'exp_month' => 'required',
-            'exp_year' => 'required',
-            'cvc' => 'required',
+            // 'card_no' => 'required',
+            // 'exp_month' => 'required',
+            // 'exp_year' => 'required',
+            // 'cvc' => 'required',
         ]);
         //Send failed response if request is not valid
         if ($validator->fails()) {
@@ -76,44 +79,44 @@ class BookingRepository implements BookingInterface
         	{
         		$request['total'] = $total_charges;
         		/*second step of 3d authenication after confirmation*/
-	            if (@$request->payment_confrim_action && @$request->payment_intent_id)
-	            {
-	                // dd('dsf');
-	                $stripe = StripeTrait::obj();
-	                $payment_intent = $stripe->paymentIntents->retrieve($request['payment_intent_id']);
-	            }
-	            else
-	            {
-	                $payment_result = $this->stripePaymentProcess($request);
+	            // if (@$request->payment_confrim_action && @$request->payment_intent_id)
+	            // {
+	            //     // dd('dsf');
+	            //     $stripe = StripeTrait::obj();
+	            //     $payment_intent = $stripe->paymentIntents->retrieve($request['payment_intent_id']);
+	            // }
+	            // else
+	            // {
+	            //     $payment_result = $this->stripePaymentProcess($request);
 
-	                if ($payment_result['success'] == true && $payment_result['requires_action'] == false) 
-	                {
-	                    try {
-	                        $payment_intent = $payment_result['intent'];
-	                    } catch (Exception $e) {
-	                        return response()->json([
-	                            'success' => false,
-	                            'msg' => $e->getMessage(),
-	                        ]);
-	                    }
+	            //     if ($payment_result['success'] == true && $payment_result['requires_action'] == false) 
+	            //     {
+	            //         try {
+	            //             $payment_intent = $payment_result['intent'];
+	            //         } catch (Exception $e) {
+	            //             return response()->json([
+	            //                 'success' => false,
+	            //                 'msg' => $e->getMessage(),
+	            //             ]);
+	            //         }
 	                    
-	                }
-	                else
-	                {
-	                	/*for 3d confirmation*/
-	                    return response()->json($payment_result);
+	            //     }
+	            //     else
+	            //     {
+	            //     	/*for 3d confirmation*/
+	            //         return response()->json($payment_result);
 
-	                }
-	            }
-	            if (@$payment_intent) 
-	            {
-                    $billing = $payment_intent['charges']['data'][0];
-	                $request['payment_intent_id'] = $payment_intent['id'];
-	                $request['billing_id'] = $billing['id'];
-	                $request['balance_transaction'] = $billing['balance_transaction'];
-	                $request['billing_status'] = $billing['status'];
-	                $request['receipt_url'] = $billing['receipt_url'];
-	            }
+	            //     }
+	            // }
+	            // if (@$payment_intent) 
+	            // {
+             //        $billing = $payment_intent['charges']['data'][0];
+	            //     $request['payment_intent_id'] = $payment_intent['id'];
+	            //     $request['billing_id'] = $billing['id'];
+	            //     $request['balance_transaction'] = $billing['balance_transaction'];
+	            //     $request['billing_status'] = $billing['status'];
+	            //     $request['receipt_url'] = $billing['receipt_url'];
+	            // }
                 // dd($request);
 
         	}
@@ -145,12 +148,17 @@ class BookingRepository implements BookingInterface
 			'estimated_time' => $estimated_time,
 			'charges' => $total_charges,
 			/*billing*/
-			'payment_type' => 'stripe',
-            'payment_intent_id' => @$request->payment_intent_id,
-            'billing_id' => @$request->billing_id,
-            'balance_transaction' => @$request->balance_transaction,
-            'billing_status' => @$request->billing_status,
-            'receipt_url' => @$request->receipt_url,
+			'payment_type' => 'COD',
+            'payment_intent_id' =>'',
+            'billing_id' => '',
+            'balance_transaction' => '',
+            'billing_status' =>'',
+            'receipt_url' => '',
+            // 'payment_intent_id' => @$request->payment_intent_id,
+            // 'billing_id' => @$request->billing_id,
+            // 'balance_transaction' => @$request->balance_transaction,
+            // 'billing_status' => @$request->billing_status,
+            // 'receipt_url' => @$request->receipt_url,
 		]);
         // dd($category_services);
 		foreach ($category_services as $category_service) 
@@ -435,18 +443,21 @@ class BookingRepository implements BookingInterface
 	public function getEstimatedTime()
 	{
 		$request = $this->request;
-		$date = date('Y-m-d H:i:s',strtotime($request->date));
+		$date = date('Y-m-d H:i:s',strtotime(date("Y-m-d")));
 		$day = date('l',strtotime($date));
 
 		$current_time = date('H:i:s');
-		$estimated_time = 0;
+		$estimated_time = 600;
 		$user_business = UserBusiness::with('user_business_schedules')->find($request->user_business_id);
 		$no_of_employees = ($user_business->no_of_employees?:1);
-        // dd($no_of_employees);
+     
 		$bookings = $this->booking->where('user_business_id',$user_business->id)->whereDate('date',$date)->where('status','pending')->get();
-        $total_time_left = date('H:i:s');
+
+        $total_time_left = date('H:i:s',$estimated_time);
+        
         if ($bookings->count() > $no_of_employees) 
         {
+
             foreach ($bookings as $booking) 
             {
                 $created_duration = date('H:i:s',strtotime($booking->created_at));
@@ -456,8 +467,9 @@ class BookingRepository implements BookingInterface
                 $total_time_left = date('H:i:s', strtotime($total_time_left) + strtotime($time_left));
             }
         }
-        
-        return date('Y-m-d H:i:s', strtotime($total_time_left));
+
+        // return date('Y-m-d H:i:s', strtotime($total_time_left));
+        return $total_time_left;
     
 	}
 	public function getEstimatedTimeold()
@@ -569,7 +581,17 @@ class BookingRepository implements BookingInterface
         return $booking_query;
     }
 
+    public function currentBookings(){
+        
+        $request = $this->request;
+        $status=['pending','accepted'];
+        $bookings=$this->booking::with('user')->where('user_business_id',$request->user_business_id)->whereIn('status',$status)->get();
 
+        return response()->json([
+            'success' => true,
+            'data' => $bookings
+        ], 200);
+    }
     public function getBookings()
     {
         
@@ -639,6 +661,22 @@ class BookingRepository implements BookingInterface
         return response()->json([
             'success' => true,
             'data' => $data
+        ], 200);
+
+    }
+    
+    public function cancelUserBooking(){
+
+        $request = $this->request;
+
+        $booking =  $this->booking::find($request->id);
+        $booking->status='cancel';
+        $booking->cancel_by=auth()->user()->id;
+        $booking->save();
+       
+        return response()->json([
+            'success' => true,
+            'data' => $booking
         ], 200);
 
     }

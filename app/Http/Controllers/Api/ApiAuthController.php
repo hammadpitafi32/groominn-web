@@ -17,6 +17,7 @@ use Twilio\Rest\Client;
 // models
 use App\Models\User;
 use App\Models\Role;
+use App\Models\BusinessHour;
 // traits
 use App\Traits\UserTrait;
 use App\Traits\TwilioTrait;
@@ -108,8 +109,10 @@ class ApiAuthController extends Controller
         }
         $isTimeAdded=false;
         $user = Auth::user();
-        
-        if($user){
+        // echo "<pre>";
+        // print_r($user->user_business);
+        // die();
+        if($user && $user->user_business){
             $business=BusinessHour::where('user_businesses_id',$user->user_business->id)->first();
             if($business){
                 $isTimeAdded=true;
@@ -119,7 +122,10 @@ class ApiAuthController extends Controller
         $data['name'] = $user->name;
         $data['email'] = $user->email;
         $data['role'] = $user->role->name;
-        $data['is_shop'] = ($user->user_business && $user->user_business->id?true:false);
+        $data['is_shop']=false;
+        if($user && $user->user_business){
+            $data['is_shop'] = ($user->user_business && $user->user_business->id?true:false);
+        }
         $data['avatar'] = $user->avatar_path;
         $data['isTimeAdded'] = $isTimeAdded;
         return response()->json([

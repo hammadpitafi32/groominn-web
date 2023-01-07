@@ -1,99 +1,58 @@
 <template>
-    <div class="payment-detail">
-        <h5 class="fw-bold mb-4">Payment Detail</h5>
+    <div v-if="isData" class="payment-detail">
+        <h5 class="fw-bold mb-4">Booking Summary</h5>
         <form action="" class="payment-form mt-4">
             <div class="card-details mb-4">
-                <label for="name" class="fw-500">Card Number</label>
+                <label for="name" class="fw-500">{{shopData.name}}</label>
                 <small class="text-color-1 mb-3 d-block"
-                    >Enter the 16 digit card number on the card</small
-                >
+                    >{{shopData.address}}
+                </small>
                 <div class="number-field position-relative">
-                    <input
-                        type="tel"
-                        autocomplete="cc-number"
-                        maxlength="31"
-                        class="form-control card-number py-3"
-                        placeholder="xxxx  -  xxxx  -  xxxx  -  xxxx"
-                        v-model="cardNumber"
-                        :class="errors && errors.card_no && 'border-danger'"
-                    />
-                    <span class="card-image position-absolute">
-                        <svg
-                            width="48"
-                            height="32"
-                            viewBox="0 0 48 32"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <ellipse
-                                cx="32.1045"
-                                cy="16"
-                                rx="15.8467"
-                                ry="16"
-                                fill="#FFA51E"
-                            />
-                            <ellipse
-                                cx="16.7334"
-                                cy="16"
-                                rx="15.8467"
-                                ry="16"
-                                fill="#C90000"
-                                fill-opacity="0.73"
-                            />
-                        </svg>
-                    </span>
+                    
+                    
                 </div>
-                <small class="text-danger" v-if="errors && errors.card_no">{{
-                    errors.card_no[0]
-                }}</small>
+        
             </div>
             <div class="form-group mb-4">
-                <label for="name" class="fw-500 mb-3">Card Holder Number</label>
-                <input
-                    type="text"
-                    v-model="name"
-                    class="form-control py-3 fw-500"
-                />
+                <label for="name" class="fw-500 mb-3">Service</label>
+                <div class="carted-items mt-2" v-if="itemsForBooking">
+                  
+                    
+                    <ul>
+                        <li v-for="item in itemsForBooking" :key="item.id">
+                            <small class="text-color-1 mb-3 d-block">
+                                {{ item.name }}
+                        </small>
+                        </li>
+                    </ul>
+                   
+                    
+                </div>
             </div>
-            <div class="row mb-3 align-items-center">
-                <div class="col-6">
-                    <label for="cvv-number" class="fw-500">CVV Number</label>
-                    <small class="fw-light d-block"
-                        >Enter the 3 or 4 digit number on the card</small
-                    >
-                </div>
-                <div class="col-6">
-                    <input
-                        type="text"
-                        v-model="cvv"
-                        maxlength="3"
-                        class="py-3 text-center fw-500 form-control"
-                        :class="errors && errors.cvc && 'border-danger'"
-                    />
-                    <small class="text-danger" v-if="errors && errors.cvc">{{
-                        errors.cvc[0]
-                    }}</small>
-                </div>
+            <div class="price-tag pt-2">
+              <small class="d-block text-color-1">You have to Pay</small>
+              <div class="fw-bold fs-2">
+                {{ totalPrice ? totalPrice.split(".")[0] : "0" }}.<span
+                  class="cents fs-5"
+                  >{{ totalPrice ? totalPrice.split(".")[1] : "00" }}</span
+                >
+                <span class="currency ms-1">RS</span>
+              </div>
             </div>
             <div class="row align-items-center mb-4">
                 <div class="col-6">
-                    <label for="exp-date" class="fw-500">Expiry Date</label>
+                    <label for="exp-date" class="fw-500">Your Wait Estimation Time</label>
                 </div>
                 <div class="col-6">
-                    <div class="d-flex align-items-center">
+                    <div v-if='isWaitTime' class="d-flex align-items-center">
                         <input
                             type="text"
-                            v-model="expMonth"
+                            readonly
+                            v-model="waitTime"
                             maxlength="2"
                             class="py-3 text-center fw-500 form-control"
                         />
-                        <span class="mx-4">/</span>
-                        <input
-                            type="text"
-                            v-model="expYear"
-                            maxlength="2"
-                            class="py-3 text-center fw-500 form-control"
-                        />
+
                     </div>
                 </div>
             </div>
@@ -102,7 +61,7 @@
                 :disabled="!itemsForBooking || loading"
                 @click="handlePayment()"
             >
-                <span v-if="!loading"> Pay Now </span>
+                <span v-if="!loading"> Confirm Book </span>
                 <BtnLoader v-else />
             </MDBBtn>
         </form>
@@ -148,7 +107,7 @@
                                 fill="#B7B7B7"
                             ></path>
                         </svg>
-                        2h 30 mints
+                        {{bookingData.estimated_time}}
                     </small>
                 </div>
             </div>
@@ -169,6 +128,7 @@
 </template>
 
 <script setup>
+import { useRoute, useRouter } from "vue-router";
 import { ref } from "@vue/reactivity";
 import { computed, watch, watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
@@ -176,6 +136,10 @@ import { MDBModal, MDBModalBody } from "mdb-vue-ui-kit";
 import { createBooking } from "../../../api";
 import { useToast } from "vue-toastification";
 import router from "../../../router/router";
+import { getShopInfo , getWaitEstimationTime} from "../../../api";
+
+const route = useRoute();
+// const router = useRouter();
 
 const emit = defineEmits(["sendData"]);
 
@@ -183,9 +147,15 @@ const props = defineProps({
     data: Object,
 });
 
+let shopId = JSON.parse(route.params.data);
+// console.log(shopId.user_business_id)
 const itemsForBooking = computed(() => props.data.item_in_cart);
+const shopInfo = computed(() => props.data.shopData);
+const totalPrice = computed(() => props.data.charges);
+// console.log(shopInfo.value)
 const toast = useToast();
-
+const isData=ref(false);
+const isWaitTime=ref(false);
 const name = ref("");
 const cvv = ref("");
 const expMonth = ref("");
@@ -195,6 +165,36 @@ const cardNumberForRequest = ref("");
 const errors = ref(null);
 const loading = ref(false);
 const bookingSuccess = ref(false);
+const bookingData = ref(null);
+const shopData=ref(null);
+const waitTime=ref(null);
+// const getOwnerProfile = computed(() => {
+    const formData = new FormData();
+ 
+    formData.append("id", shopId.user_business_id);
+    
+    getShopInfo(formData)
+        .then((response) => {
+             
+             shopData.value=response.data.data
+             isData.value=true
+            // return response.data;
+            // console.log(shopData.value.name)
+    });
+
+    const estimateData = new FormData();
+ 
+    estimateData.append("user_business_id", shopId.user_business_id);
+    estimateData.append("date", new Date());
+    getWaitEstimationTime(estimateData)
+        .then((response) => {
+             
+             waitTime.value=response.data.data
+             isWaitTime.value=true
+            // return response.data;
+            console.log(waitTime.value)
+    });
+   
 
 watch(cvv, (newValue, oldValue) => {
     let regix = /^[0-9]*$/;
@@ -271,10 +271,10 @@ watch(expYear, (newValue, oldValue) => {
 const handlePayment = () => {
     loading.value = true;
     const formData = new FormData();
-    formData.append("card_no", cardNumberForRequest.value);
-    formData.append("exp_month", expMonth.value);
-    formData.append("exp_year", expYear.value);
-    formData.append("cvc", cvv.value);
+    // formData.append("card_no", cardNumberForRequest.value);
+    // formData.append("exp_month", expMonth.value);
+    // formData.append("exp_year", expYear.value);
+    // formData.append("cvc", cvv.value);
     formData.append("user_business_id", props.data.business_id);
 
     // formData.append("charges", props.data.charges);
@@ -284,7 +284,10 @@ const handlePayment = () => {
 
     createBooking(formData)
         .then((response) => {
+            // console.log(response.data.data)
+            bookingData.value=response.data.data
             bookingSuccess.value = true;
+
         })
         .catch((error) => {
             errors.value = error.response.data.errors;

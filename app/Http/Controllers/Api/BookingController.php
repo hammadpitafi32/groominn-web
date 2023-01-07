@@ -16,6 +16,7 @@ class BookingController extends Controller
 
     public function create(Request $request)
     {
+
         return $this->booking->create();
     }
 
@@ -26,6 +27,13 @@ class BookingController extends Controller
             'success' => true,
             'data' => $data
         ], 200);
+    }
+
+    public function shopCurrentBooking(Request $request)
+    {
+
+        return $this->booking->currentBookings();
+
     }
 
     public function getBookings(Request $request)
@@ -46,5 +54,10 @@ class BookingController extends Controller
     public function getUserEarning(Request $request)
     {
         return $this->booking->getUserEarning();
+    }
+    public function cancelBooking(Request $request)
+    {
+        return $this->booking->cancelUserBooking();
+        // return $request->all();
     }
 }

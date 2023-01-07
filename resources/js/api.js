@@ -37,8 +37,17 @@ export const addShop = async (data) => {
 export const createCategory = async (data) => {
     return await instance.post(`/bind-categories`, data);
 };
+export const getShopInfo = async (data) => {
+     
+    return await instance.post(`/get-shop-info`, data);
+};
+export const getWaitEstimationTime = async (data) => {
+     
+    return await instance.post(`/get-estimated-time`, data);
+};
 
 export const getUserBusiness = async (id) => {
+   
     return id
         ? await instance.get(`/get-user-business/${id}`)
         : await instance.get(`/get-user-business`);
@@ -72,8 +81,8 @@ export const deleteUserService = async (id) => {
     return await instance.delete(`/delete-user-service/${id}`);
 };
 
-export const getAllShops = async () => {
-    return await instance.post(`/get-businesses-list`);
+export const getAllShops = async (data) => {
+    return await instance.post(`/get-businesses-list`,data);
 };
 
 export const createBooking = async (data) => {
@@ -119,4 +128,10 @@ export const verifyOtp = async (data) => {
 };
 export const resetPassword = async (data) => {
     return await instance.post("/reset-password", data);
+};
+export const getShopBookingsById = async (data) => {
+    return await instance.post("/shop-current-bookings", data);
+};
+export const cancelBooking = async (data) => {
+    return await instance.post("/cancel-booking", data);
 };

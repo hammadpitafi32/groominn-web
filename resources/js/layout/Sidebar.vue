@@ -13,10 +13,10 @@
             </li>
            
             <li class="side-menu-item" v-if="shopeTime">
-                <router-link to="/my-categories" class="nav-link"><i class="fa-solid fa-chair"></i> My Categories</router-link>
+                <router-link to="/my-categories" class="nav-link"><i class="fas fa-boxes"></i> My Categories</router-link>
             </li>
             <li class="side-menu-item" v-if="shopeTime">
-                <router-link to="/my-services" class="nav-link"><i class="fa-solid fa-bell-concierge"></i> My Services</router-link>
+                <router-link to="/my-services" class="nav-link"><i class="fas fa-hands"></i> My Services</router-link>
             </li>
          <!--    <li class="side-menu-item" v-if="shop">
                 <router-link to="/bank-details" class="nav-link"><i class="fa-solid fa-piggy-bank"></i> Bank Details</router-link>

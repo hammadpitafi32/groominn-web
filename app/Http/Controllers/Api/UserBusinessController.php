@@ -36,6 +36,13 @@ class UserBusinessController extends Controller
 
     }
 
+    public function getShopInfo(Request $request)
+    {
+     
+        return $this->user_business->getUserBusiness($request->id);
+
+    }
+
     public function createOrUpdateSchedule(Request $request)
     {
         
