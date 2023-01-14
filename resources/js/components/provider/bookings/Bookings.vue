@@ -31,7 +31,7 @@
                                         <th scope="col">Services</th>
                                         <th scope="col">Charges</th>
                                         <th scope="col">Duration</th>
-                                        <!-- <th scope="col">Type</th> -->
+                                        <th scope="col">Status</th>
                                         <th scope="col">View</th>
                                     </tr>
                                 </thead>
@@ -66,9 +66,14 @@
                                             .join(", ")
                                             }}
                                         </td>
-                                        <td>{{ booking.charges }} $</td>
+                                        <td>{{ booking.charges }} Rs</td>
                                         <td>{{ booking.total_duration }}</td>
-                                        <!-- <td>{{ booking.type }}</td> -->
+                                         <td v-if='booking.status=="droped"'><span style="color:red">Droped</span></td>
+                                        <td v-if='booking.status=="pending"'><span style="color:blue">Pending</span></td>
+                                        <td v-if='booking.status=="completed"'><span style="color:green">Completed</span></td>
+                                        <td v-if='booking.status=="rejected"'><span style="color:orange">Rejected</span></td>
+                                        <td v-if='booking.status=="accepted"'><span style="color:green">Accepted</span></td>
+                                        <td v-if='booking.status=="cancel"'><span style="color:gray">Cancelled</span></td>
                                         <td>
                                             <a href="javascript:void(0)" @click="
                                                 (ShowModal = true),

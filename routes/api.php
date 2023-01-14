@@ -51,6 +51,11 @@ Route::group(['namespace' => 'Api'],function()
         Route::get('get-auth-user', 'ApiAuthController@getAuthUser');
         Route::post('update-user', 'ApiUserController@createOrUpdate');
 
+        // notifications
+        Route::get('get-notifications', 'NotificationController@getNotifications');
+        Route::get('get-notifications-count', 'NotificationController@getNotificationsCount');
+        Route::post('seen-notification', 'NotificationController@seenNotification');
+        
         /*service provider start*/
         Route::group(['middleware' => 'provider.jwt'], function () {
 
@@ -84,11 +89,15 @@ Route::group(['namespace' => 'Api'],function()
             Route::get('get-bank-detail', 'ApiUserController@getBankDetail');
             Route::delete('delete-bank-detail', 'ApiUserController@deleteBankDetail');
 
+            Route::post('reject-booking', 'BookingController@rejectBooking');
+            Route::post('accept-booking', 'BookingController@acceptBooking');
+
             
         });
         /*service provider end*/
         /*client*/
         Route::group(['middleware' => 'client.jwt'], function () {
+
             Route::post('get-businesses-list', 'UserBusinessController@getBusinesseslist');
 
             Route::post('create-booking', 'BookingController@create');
@@ -96,6 +105,7 @@ Route::group(['namespace' => 'Api'],function()
             Route::post('shop-current-bookings', 'BookingController@shopCurrentBooking');
 
             Route::post('cancel-booking', 'BookingController@cancelBooking');
+            Route::post('save-feedback', 'BookingController@postFeedback');
 
         });
     });

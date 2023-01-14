@@ -319,7 +319,7 @@ class UserBusinessRepository implements UserBusinessInterface
 		$id =  $id?:((Auth::user()->user_business && Auth::user()->user_business->id)?Auth::user()->user_business->id:null);
 		// dd($id ,Auth::user()->user_business);
 		$business = $this->user_business
-        ->with('user.user_detail','user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
+        ->with('reviews','user.user_detail','user_business_images','user_business_schedules','user_categories','user_categories.category','user_categories.user_business_category_services','user_categories.user_business_category_services.user_service')
   			      ->with(['user_categories' => function ($query) {
 			        // $query->select('id','user_id', 'name');
 			    }]
@@ -391,9 +391,9 @@ class UserBusinessRepository implements UserBusinessInterface
 	{
 		$request = $this->request;
 		// dd($request->all());
-		$user_business = UserBusiness::where('status','active')
+		$user_business = UserBusiness::where('is_open',1)->where('status','active')
 			->whereHas('user_business_category_services')
-			->with('user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
+			->with('reviews','user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
 		// $latitude = 33.5842344;
 		// $longitude =73.1204018;
 		/*filteration*/

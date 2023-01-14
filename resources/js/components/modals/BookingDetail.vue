@@ -1,5 +1,6 @@
 <template>
     <MDBModal id="booking-detail" tabindex="-1" v-model="props.bookingModal" centered scrollable class="modal-width" staticBackdrop>
+        <button @click="emit('closeModal')" type="button" class="btn-close" aria-label="Close"></button>
         <MDBModalHeader class="justify-content-center border-0 p-4 pb-3" :close="false">
             <MDBModalTitle class="fw-bold fs-4">Booking Detail </MDBModalTitle>
         </MDBModalHeader>
@@ -32,24 +33,43 @@
                         <td>{{props.data.charges}} Rs</td>
                     </tr>
                     <tr>
-                        <td class="fw-bold">Booking time:</td>
+                        <td class="fw-bold">Estimated time:</td>
                         <td class="d-flex align-items-center">
                             <svg class="me-1" width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8 0C3.58214 0 0 3.58214 0 8C0 12.4179 3.58214 16 8 16C12.4179 16 16 12.4179 16 8C16 3.58214 12.4179 0 8 0ZM8 14.6429C4.33214 14.6429 1.35714 11.6679 1.35714 8C1.35714 4.33214 4.33214 1.35714 8 1.35714C11.6679 1.35714 14.6429 4.33214 14.6429 8C14.6429 11.6679 11.6679 14.6429 8 14.6429Z" fill="#6B6A6A" />
                                 <path d="M11.1198 10.2609L8.57335 8.4198V4.00016C8.57335 3.92159 8.50907 3.8573 8.4305 3.8573H7.57157C7.493 3.8573 7.42871 3.92159 7.42871 4.00016V8.91801C7.42871 8.96444 7.45014 9.0073 7.48764 9.03409L10.4412 11.1877C10.5055 11.2341 10.5948 11.2198 10.6412 11.1573L11.1519 10.4609C11.1984 10.3948 11.1841 10.3055 11.1198 10.2609Z" fill="#6B6A6A" />
                             </svg>
-                            10:00pm
+                            {{
+                            setEstimatedTime(props.data.estimated_time)
+                            }}
                         </td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Status:</td>
+                        <td v-if='props.data.status=="droped"'><span style="color:red">Droped</span></td>
+                        <td v-if='props.data.status=="pending"'><span style="color:blue">Pending</span></td>
+                        <td v-if='props.data.status=="completed"'><span style="color:green">Completed</span></td>
+                         <td v-if='props.data.status=="rejected"'><span style="color:orange">Rejected</span></td>
+                        <td v-if='props.data.status=="accepted"'><span style="color:green">Accepted</span></td>
+                        <td v-if='props.data.status=="cancel"'><span style="color:gray">Cancelled</span></td>
                     </tr>
                 </tbody>
             </MDBTable>
-            <div class="text-end mt-3">
-                <MDBBtn @click="emit('closeModal')" class="bg-orange text-white rounded-4 fw-bold ok-btn shadow-0">Ok</MDBBtn>
+            <div v-if='props.data.status !="pending"' class="text-end mt-3">
+                <MDBBtn  @click="emit('closeModal')" class="bg-orange text-white rounded-4 fw-bold ok-btn shadow-0">Ok</MDBBtn>
+
+            </div>
+            <div v-if='props.data.status =="pending"' class="d-flex align-items-center justify-content-between mt-4">
+
+                <button type="button" @click='rejectBooking(props.data.id)' class="ok-btn text-capitalize shadow-0 border" >Reject</button>
+                
+                <button  type="button" @click="acceptBooking(props.data.id)" class="bg-orange text-white ok-btn text-capitalize">Accept</button>
             </div>
         </MDBModalBody>
     </MDBModal>
 </template>
 <script setup>
+import moment from 'moment-timezone'
 import { ref } from "@vue/reactivity";
 import { computed, watchEffect } from "@vue/runtime-core";
 import {
@@ -59,6 +79,7 @@ import {
     MDBModalTitle,
     MDBModalBody,
 } from "mdb-vue-ui-kit";
+import { acceptBook,rejectBook } from "../../api";
 
 const props = defineProps({
     bookingModal: Boolean,
@@ -73,7 +94,42 @@ const address = computed(() => {
         props.data.user.user_detail.address_line_2 :
         "N/A";
 });
-
+const setEstimatedTime = (time) => {
+    if (time) {
+        return moment.tz(time, "Asia/Karachi").format('MMMM Do YYYY, HH:mm:ss a')
+    }
+}
+const acceptBooking = (id) => {
+    const formData = new FormData();
+    
+    formData.append("id", id);
+    acceptBook(formData).then(({ data }) => {
+        $('#booking-detail').modal('hide')
+ 
+    });
+}
+const rejectBooking = (id) => {
+    const formData = new FormData();
+    
+    formData.append("id", id);
+    rejectBook(formData).then(({ data }) => {
+        $('#booking-detail').modal('hide')
+ 
+    });
+}
+// const getStatus=(status)=>{
+//     console.log(status)
+//     if(status=='droped'){
+//         return '<span class="red">Droped</span>'
+//     }
+//     if(status=='pending'){
+//          return '<span class="blue">Pending</span>'
+//     }
+//     if(status=='completed'){
+        
+//          return '<span class="green">Completed</span>'
+//     }
+// }
 const services = computed(() => {
     return props.data.booking_services.map((service) => {
         return service.service_name;

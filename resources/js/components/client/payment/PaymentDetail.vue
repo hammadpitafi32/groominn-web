@@ -41,7 +41,7 @@
             </div>
             <div class="row align-items-center mb-4">
                 <div class="col-6">
-                    <label for="exp-date" class="fw-500">Your Wait Estimation Time</label>
+                    <label for="exp-date" class="fw-500">Your Estimation Time</label>
                 </div>
                 <div class="col-6">
                     <div v-if='isWaitTime' class="d-flex align-items-center">
@@ -107,7 +107,7 @@
                                 fill="#B7B7B7"
                             ></path>
                         </svg>
-                        {{bookingData.estimated_time}}
+                        {{ handleEstimationTime(bookingData.estimated_time)}}
                     </small>
                 </div>
             </div>
@@ -137,6 +137,7 @@ import { createBooking } from "../../../api";
 import { useToast } from "vue-toastification";
 import router from "../../../router/router";
 import { getShopInfo , getWaitEstimationTime} from "../../../api";
+import moment from 'moment-timezone'
 
 const route = useRoute();
 // const router = useRouter();
@@ -189,10 +190,11 @@ const waitTime=ref(null);
     getWaitEstimationTime(estimateData)
         .then((response) => {
              
-             waitTime.value=response.data.data
+             // waitTime.value=response.data.data
+             waitTime.value=handleEstimationTime(response.data.data);
              isWaitTime.value=true
             // return response.data;
-            console.log(waitTime.value)
+            // console.log(waitTime.value)
     });
    
 
@@ -266,7 +268,11 @@ watch(expYear, (newValue, oldValue) => {
         expYear.value = oldValue;
     }
 });
-
+const handleEstimationTime = (date) => {
+   
+    return  moment.tz(date, "Asia/Karachi").format('MMMM Do YYYY, HH:mm:ss a')
+    
+}
 // Payment function
 const handlePayment = () => {
     loading.value = true;

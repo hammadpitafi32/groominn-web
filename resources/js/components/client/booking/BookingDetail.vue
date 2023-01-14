@@ -55,12 +55,18 @@
                                         }}
                                     </td>
                                     <td>{{ booking.date }}</td>
-                                    <td class="text-capitalize">
-                                        {{ booking.status }}
-                                    </td>
+                                    <td v-if='booking.status=="droped"'><span style="color:red">Droped</span></td>
+                                    <td v-if='booking.status=="pending"'><span style="color:blue">Pending</span></td>
+                                    <td v-if='booking.status=="completed"'><span style="color:green">Completed</span></td>
+                                    <td v-if='booking.status=="rejected"'><span style="color:orange">Rejected</span></td>
+                                    <td v-if='booking.status=="accepted"'><span style="color:green">Accepted</span></td>
+                                    <td v-if='booking.status=="cancel"'><span style="color:gray">Cancelled</span></td>
                                     <td class="text-end">
-                                        <MDBBtn v-if='booking.status !="cancel"' @click='handleCancelBtn(booking.id)' class="bg-orange text-white text-capitalize rounded-5 shadow-0 px-3">
-                                           Cancel Booking
+                                        <MDBBtn v-if='booking.status =="pending"' @click='handleCancelBtn(booking.id)' class="bg-orange text-white text-capitalize rounded-5 shadow-0 px-3">
+                                            Cancel Booking
+                                        </MDBBtn>
+                                        <MDBBtn v-if='booking.status =="completed"' @click='handleFeedback(booking)' class="bg-orange text-white text-capitalize rounded-5 shadow-0 px-3">
+                                            Feed Back
                                         </MDBBtn>
                                     </td>
                                 </tr>
@@ -78,69 +84,163 @@
             </MDBCol>
         </MDBRow>
     </MDBContainer>
-    <!-- Confirmation Modal -->
-   
-    <div class="modal fade" id="cancelBookingModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <!-- Feedback Modal -->
+    <div class="modal fade" id="feedbackBookingModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
-
-                    <div class="modal-body">
-                        <div class="py-4 text-center">
-                          <h4 class="fw-bold mt-3">Do you want to Cancel?</h4>
-                          <small>
-                              <b class="text-orange">Note:</b>Your booking will cancel on accept.
-                          </small>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between mt-4">
-                         
-                          <button type="button" @click="hideModelHandler()" class="ok-btn text-capitalize shadow-0 border" data-dismiss="modal">Close</button>
-                          <button type="button"  @click="handleCancel()" class="bg-orange text-white ok-btn text-capitalize">ok</button>
-                        </div>
-
+                <div class="modal-body">
+                    <div class="py-4 text-center">
+                        <h4 class="fw-bold mt-3">Give Feedback</h4>
+                        <small>
+                            <b class="text-orange">Note:</b>Please share your experience.
+                        </small>
                     </div>
-
+                    <div class="py-4 text-center">
+                        <vue3-star-ratings :disableClick='stardisable' :showControl='false' controlBg='#f05922' v-model="rating" />
+                        <!-- <textarea v-model="reviewText"></textarea> -->
+                        <div class="form-group">
+                            <label for="textarea">Review:</label>
+                            <textarea required class="form-control" rows="5" id="textarea" v-model="reviewText"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-4">
+                        <button type="button" @click='closeFeedbackModel()' class="ok-btn text-capitalize shadow-0 border" data-dismiss="modal">Close</button>
+                        <button v-if='!isFeedbackGiven' type="button" @click="submitReview()" class="bg-orange text-white ok-btn text-capitalize">submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="cancelBookingModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="py-4 text-center">
+                        <h4 class="fw-bold mt-3">Do you want to Cancel?</h4>
+                        <small>
+                            <b class="text-orange">Note:</b>Please tell us the reason to cancel the booking.
+                        </small>
+                        <div class="form-group">
+                            <label for="textarea">Reason:</label>
+                            <textarea required class="form-control" rows="5" id="textarea" v-model="cancelReason"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-4">
+                        <button type="button" @click="hideModelHandler()" class="ok-btn text-capitalize shadow-0 border" data-dismiss="modal">Close</button>
+                        <button type="button" @click="handleCancel()" class="bg-orange text-white ok-btn text-capitalize">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script setup>
+
 import { ref } from "@vue/reactivity";
-import { watchEffect } from "@vue/runtime-core";
-import { getBooking,cancelBooking } from "../../../api";
+import { watch,watchEffect } from "@vue/runtime-core";
+import { getBooking, cancelBooking, postFeedback } from "../../../api";
 import { useStore } from "vuex";
 import { useToast } from "vue-toastification";
+import moment from 'moment-timezone'
+
 
 const toast = useToast();
 const bookings = ref([]);
 const store = useStore();
 const loading = ref(true);
-const bookingId=ref(null);
+const bookingId = ref(null);
+const rating = ref(null);
+const reviewText = ref(null);
+const user_business_id = ref(0);
+const user_business_service_id = ref(0);
+const isFeedbackGiven = ref(false);
+const stardisable=ref(false);
+const cancelReason=ref(null);
 
 getBooking().then(({ data }) => {
     bookings.value = data.data;
     loading.value = false;
 });
-const handleCancelBtn= (id)=>{
-    bookingId.value=id
-    console.log(id)
+const handleCancelBtn = (id) => {
+    bookingId.value = id
+   
     $('#cancelBookingModel').modal('show');
+}
+const closeFeedbackModel = () => {
+    $('#feedbackBookingModel').modal('hide');
+}
+const handleFeedback = (booking) => {
+    
+    if(booking.feedback.length >0){
+
+        isFeedbackGiven.value=true
+        stardisable.value=true
+        rating.value=booking.feedback[0].rating
+        
+        reviewText.value=booking.feedback[0].detail
+    }
+    bookingId.value = booking.id
+    user_business_id.value = booking.user_business_id
+    user_business_service_id.value=booking.booking_services[0].user_business_category_service_id
+    $('#feedbackBookingModel').modal('show');
+};
+// watch(rating, (newValue, oldValue) => {
+//     console.log(newValue)
+//     console.log(oldValue)
+// });
+const submitReview = () => {
+
+    const formData = new FormData();
+
+    formData.append("id", bookingId.value);
+    formData.append("rating", rating.value);
+    formData.append("detail", reviewText.value);
+    formData.append("user_business_id", user_business_id.value);
+    formData.append("user_business_category_service_id", user_business_service_id.value);
+    // console.log(rating.value)
+    // console.log(reviewText.value)
+    postFeedback(formData)
+        .then((response) => {
+            toast.success("Your Feedback submited.Thanks!");
+
+            $('#feedbackBookingModel').modal('hide');
+
+
+        })
+        .catch((err) => {
+
+            $('#cancelBookingModel').modal('hide');
+            // errors.value = err.response.data.errors;
+        });
 }
 const handleCancel = () => {
 
+    if(cancelReason.value==null){
+        toast.error('Please enter the reason', {
+            timeout: 2000,
+        });
+        return;
+    }
     const formData = new FormData();
-   
+
     formData.append("id", bookingId.value);
+    formData.append("detail", cancelReason.value);
 
     cancelBooking(formData)
         .then((response) => {
             toast.success("Booking Cancel!");
-           
+
             $('#cancelBookingModel').modal('hide');
-           
             
+            getBooking().then(({ data }) => {
+                bookings.value = data.data;
+                loading.value = false;
+            });
+
         })
         .catch((err) => {
-             
+
             $('#cancelBookingModel').modal('hide');
             // errors.value = err.response.data.errors;
         });
@@ -150,17 +250,18 @@ const hideModelHandler = () => {
 };
 const setEstimatedTime = (time) => {
     if (time) {
-        let newTime = time.split(" ")[1];
-        let hours = newTime.split(":")[0];
-        let mins = newTime.split(":")[1];
-        let ampm = hours >= 12 ? 'PM' : 'AM';
-        // console.log(hours)
-        //  console.log(mins)
-        hours %= 12;
-        hours = hours || 12;
-        mins = mins < 10 ? `0${mins}` : mins;
-        // return hours + ":" + mins + " " + ampm;
-        return  mins + ":00";
+        return moment.tz(time, "Asia/Karachi").format('MMMM Do YYYY, HH:mm:ss a')
+        // let newTime = time.split(" ")[1];
+        // let hours = newTime.split(":")[0];
+        // let mins = newTime.split(":")[1];
+        // let ampm = hours >= 12 ? 'PM' : 'AM';
+        // // console.log(hours)
+        // //  console.log(mins)
+        // hours %= 12;
+        // hours = hours || 12;
+        // mins = mins < 10 ? `0${mins}` : mins;
+        // // return hours + ":" + mins + " " + ampm;
+        // return  mins + ":00";
     } else {
         return "N/A";
     }
@@ -179,7 +280,9 @@ watchEffect(() => {
 .skelton {
     height: 26px;
 }
+
 .ok-btn {
-  padding: 0.3rem 2rem;
+    padding: 0.3rem 2rem;
 }
+
 </style>

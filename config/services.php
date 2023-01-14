@@ -43,5 +43,15 @@ return [
             'client_secret' => env('GOOGLE_CLIENT_SECRET'),
             'redirect'      => env('GOOGLE_URL'),
     ],
+    'firebase' => [
+        'api_key' =>  env('FIREBASE_API_KEY'), // Required
+        'auth_domain' =>  env('FIREBASE_AUTH_DOMAIN'), // Required
+        // 'database_url' =>  env('FACEBOOK_CLIENT_ID'), // Required
+        'storage_bucket' =>  env('FIREBASE_STORAGE_BUCKET'), // Required
+        'project_id' =>  env('FIREBASE_PROJECT_ID'), // Required
+        'messaging_sender_id' =>  env('FIREBASE_MESSAGING_SENDER_ID'), // Required
+        'app_id' =>  env('FIREBASE_APP_ID'), // Required
+        'measurement_id' =>  env('FIREBASE_MEASUREMENT_ID'), // Optional
+    ],
 
 ];

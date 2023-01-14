@@ -83,7 +83,7 @@
                             class="bg-orange text-white cus-pad"
                             pill
                             notification
-                            >5</MDBBadge
+                            >{{notificationsCount}}</MDBBadge
                         >
                     </span>
                     <Notifications
@@ -171,6 +171,7 @@ import { useRoute } from "vue-router";
 import Notifications from "./Notifications.vue";
 import { useCookies } from "vue3-cookies";
 import router from "../router/router";
+import { getNotificationsCount } from "../api";
 
 const navbar = ref(null);
 const store = useStore();
@@ -180,6 +181,8 @@ const { cookies } = useCookies();
 const profileDropdown = ref(false);
 const notification = ref(false);
 const avatar = ref("");
+const loading = ref(false);
+const notificationsCount = ref([]);
 
 onMounted(() => {
     window.addEventListener("scroll", () => {
@@ -188,6 +191,12 @@ onMounted(() => {
         } else {
             navbar.value.navbar.classList.remove("bg-color-show");
         }
+    });
+    getNotificationsCount().then(({ data }) => {
+
+        notificationsCount.value = data.data;
+        // console.log(notificationsCount.value)
+        loading.value = true;
     });
 });
 
@@ -204,6 +213,7 @@ watchEffect(() => {
 const closeNotification = () => {
     notification.value = false;
 };
+
 
 const logout = () => {
     profileDropdown.value = false;

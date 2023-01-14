@@ -27,7 +27,8 @@ class User extends Authenticatable implements JWTSubject
         'is_verified',
         'social_platform_id',
         'social_platform',
-        'device_type'
+        'device_type',
+        'device_token',
     ];
 
     /**

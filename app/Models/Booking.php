@@ -29,4 +29,17 @@ class Booking extends Model
     {
         return $this->belongsTo(UserBusiness::class);  
     }
+    public function getCreatedAtAttribute($value) {
+            
+        return $date=\Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
+
+    }
+    public function feedback()
+    {
+        return $this->hasMany(Review::class,'booking_id','id');  
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class,'booking_id','id');  
+    }
 }

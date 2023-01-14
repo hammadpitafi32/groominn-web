@@ -135,3 +135,21 @@ export const getShopBookingsById = async (data) => {
 export const cancelBooking = async (data) => {
     return await instance.post("/cancel-booking", data);
 };
+export const getNotifications = async () => {
+    return await instance.get("/get-notifications");
+};
+export const getNotificationsCount = async () => {
+    return await instance.get("/get-notifications-count");
+};
+export const seenNotification = async (data) => {
+    return await instance.post("/seen-notification", data);
+};
+export const postFeedback = async (data) => {
+    return await instance.post("/save-feedback", data);
+};
+export const acceptBook = async (data) => {
+    return await instance.post("/accept-booking", data);
+};
+export const rejectBook = async (data) => {
+    return await instance.post("/reject-booking", data);
+};

@@ -56,6 +56,10 @@ class UserBusiness extends Model
     {
         return $this->hasMany(Booking::class);
     }
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class,'user_business_id','id');
+    }
 
     /**
    * Override parent boot and Call deleting event

@@ -5,6 +5,7 @@ import VueTimepicker from "vue3-timepicker";
 import "vue3-timepicker/dist/VueTimepicker.css";
 import "vue-toastification/dist/index.css";
 import "mdb-vue-ui-kit/css/mdb.min.css";
+import vue3StarRatings from "vue3-star-ratings";
 import {
     MDBContainer,
     MDBBtn,
@@ -40,10 +41,11 @@ app.component("MDBCardText", MDBCardText);
 app.component("MDBIcon", MDBIcon);
 app.component("BtnLoader", BtnLoader);
 app.component('v-otp-input', VOtpInput)
+app.component("vue3-star-ratings", vue3StarRatings);
 
 app.use(store);
 app.use(router);
-
+// app.use(VueStarRating);
 app.use(VueTimepicker);
 app.use(Vue3Geolocation);
 app.use(Toast, {

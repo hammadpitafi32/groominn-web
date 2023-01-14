@@ -4,13 +4,15 @@
             <div class="left">
                 <h3 class="heading-color fw-bold">{{ props.data.name }}</h3>
                 <div class="d-flex align-items-center stars">
+                    
+                    <vue3-star-ratings :disableClick='stardisable' :starSize='20' :showControl='false' controlBg='#f05922' v-model="rating" />
+                    <!-- <em class="fa fa-star me-2"></em>
                     <em class="fa fa-star me-2"></em>
                     <em class="fa fa-star me-2"></em>
                     <em class="fa fa-star me-2"></em>
-                    <em class="fa fa-star me-2"></em>
-                    <em class="fa fa-star me-2"></em>
+                    <em class="fa fa-star me-2"></em> -->
 
-                    <span class="rating ms-3">5.0(122)</span>
+                    <span class="rating ms-3">5.0 ({{totalReviews}})</span>
                 </div>
                 <div class="d-flex align-items-center mt-1">
                     <svg
@@ -226,11 +228,26 @@ import { useStore } from "vuex";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { useRoute } from "vue-router";
 
+const stardisable=ref(true);
+
 const props = defineProps({
     data: Object,
 });
 // console.log(props.data)
+
+    const rating = computed(() => {
+        var sum =0;
+        props.data.reviews.forEach(function(element) {
+            sum+=element.rating
+        });
+        // console.log(props.data.reviews.length)
+        return sum  / props.data.reviews.length;
+       
+        // return / props.data.reviews.lenght;
+    });
+
 const categtoriesArray = ref(props.data.user_categories);
+const totalReviews=ref(props.data.reviews.length);
 const route = useRoute();
 const store = useStore();
 const todayDate = computed(() => {
@@ -324,5 +341,9 @@ const handleCheckbox = (id) => {
 .book-btn {
     padding: 0.7rem 2.4rem;
     font-size: 0.75rem;
+}
+.vue3-star-ratings__wrapper{
+  padding:15px !important;
+  margin: 3px !important;
 }
 </style>

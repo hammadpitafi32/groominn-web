@@ -71,7 +71,7 @@
                   @click="activeBooking(booking)"
                 >
                   <div class="row">
-                    <div class="col-5">
+                    <div class="col-6">
                       <img
                         :src="
                           booking.user_business_images.length > 0
@@ -82,7 +82,7 @@
                         alt=""
                       />
                     </div>
-                    <div class="col-7">
+                    <div class="col-6">
                       <h5 class="fw-bold mb-0">{{ booking.name }}</h5>
                       <small
                         v-if="booking.id === activeId"
@@ -93,13 +93,9 @@
                         {{ booking.description }}
                       </p>
                       <div class="d-flex align-items-center stars">
-                        <em class="fa fa-star me-2"></em>
-                        <em class="fa fa-star me-2"></em>
-                        <em class="fa fa-star me-2"></em>
-                        <em class="fa fa-star me-2"></em>
-                        <em class="fa fa-star me-2"></em>
+                        <vue3-star-ratings :disableClick='stardisable' :starSize='15' :showControl='false' controlBg='#f05922' v-model="rating" />
 
-                        <span class="rating ms-3">5.0(10)</span>
+                        <span class="rating ms-3">5.0 ({{gettotalReviews(booking)}})</span>
                       </div>
                       <div class="mt-3">
                         <span class="d-block fw-500 categories"
@@ -205,6 +201,8 @@ const address = reactive({
     lat: "",
     lng: "",
 });
+const stardisable=ref(true);
+// const totalReviews=ref(props.data.reviews.length);
 const activeBooking = (booking) => {
   activeId.value = booking.id;
   activeShop.value = {
@@ -212,18 +210,50 @@ const activeBooking = (booking) => {
     lng: booking.longitude,
   };
 };
+// const rating =ref(2);
+// const rating = (booking) => {
+        // var sum =0;
+        // booking.reviews.forEach(function(element) {
+        //     sum+=element.rating
+        // });
+        // console.log(props.data.reviews.length)
+        // return sum  / booking.reviews.reviews.length;
+       
+//         // return / props.data.reviews.lenght;
+//     };
 const setPlace = (data) => {
     address.lat = data.geometry.location.lat();
     address.lng = data.geometry.location.lng();
     address.place = data.formatted_address;
 };
-const formData = new FormData();
+    const formData = new FormData();
     
     formData.append("latitude", route.query.latitude);
    
     formData.append("longitude", route.query.longitude);
-    
-    
+    const checkRate=ref(null);
+
+    const rating = computed(() =>{
+      return checkRate.value
+    // console.log(checkRate.value)
+    });
+
+const gettotalReviews=(booking)=>{
+  // console.log(booking.reviews)
+    if(booking.reviews.length==0){
+      checkRate.value=0
+    }else{
+
+        var sum =0;
+        booking.reviews.forEach(function(element) {
+        sum+=element.rating
+        });
+        checkRate.value= sum  / booking.reviews.length
+
+    }
+
+  return booking.reviews.length
+}
 getAllShops(formData).then(({ data }) => {
   bookingList.value = data.data.data;
   // if (data.data.data.length) {
@@ -308,6 +338,10 @@ watchEffect(() => {
 }
 .description {
   -webkit-line-clamp: 2;
+}
+.vue3-star-ratings__wrapper{
+  padding:15px !important;
+  margin: 3px !important;
 }
 
 select,

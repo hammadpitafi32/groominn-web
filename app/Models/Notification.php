@@ -12,7 +12,18 @@ class Notification extends Model
     protected $table = 'notifications';
 
     protected $fillable = [
-        'type','notifiable','data','read_at','notifiable_id'
+        'type','data','read_at','title','from_user','to_user','seen','status'
     ];
+
+    public function from_user()
+    {
+        return $this->belongsTo(User::class,'from_user');
+    }
+
+    public function getCreatedAtAttribute($value) {
+            
+        return $date=\Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
+
+    }
 
 }

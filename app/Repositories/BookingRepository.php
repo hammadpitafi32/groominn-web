@@ -6,21 +6,19 @@ use App\Models\Booking;
 use App\Models\BookingService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-
+use App\Services\PushNotificationService;
 use Auth;
 use App\Models\UserBusiness;
+use App\Models\User;
 use App\Models\UserBusinessCategoryService;
 use Carbon\Carbon;
 use DateTime;
 use DateInterval;
 use DatePeriod;
-
 use Label84\HoursHelper\Facades\HoursHelper;
-
 // use Cartalyst\Stripe\Stripe;
 use App\Models\UserStripeInfo;
 use App\Models\UserStripeCard;
-
 use App\Traits\StripeTrait;
 
 class BookingRepository implements BookingInterface
@@ -28,14 +26,16 @@ class BookingRepository implements BookingInterface
 	use StripeTrait;
 
 	protected $booking;
+    protected $notify;
 	protected $request;
     protected $bookingStatus;
 
-	public function __construct(Booking $booking,Request $request)
+	public function __construct(Booking $booking,Request $request ,PushNotificationService $notify)
 	{
 		$this->booking = $booking;
 		$this->request = $request;
-        $this->bookingStatus = [0=>'pending',1=>'accepted',2=>'rejected',3=>'completed',4=>'cancel',5=>'drop'];
+        $this->bookingStatus = [0=>'pending',1=>'accepted',2=>'rejected',3=>'completed',4=>'cancel',5=>'droped'];
+        $this->notify = $notify;
 	}
 	public function find($id)
     {
@@ -69,6 +69,7 @@ class BookingRepository implements BookingInterface
                 'success' => false
             ], 400);
         }
+        $userBusiness=UserBusiness::find($request->user_business_id);
         $service_ids = explode(',',$request->service_ids);
         $category_services = UserBusinessCategoryService::find($service_ids);
 
@@ -138,7 +139,7 @@ class BookingRepository implements BookingInterface
         } catch (\Throwable $th) {
             $estimated_time = date('Y-m-d H:i:s');
         }
-
+        $provider=User::find($userBusiness->user_id);
 		$booking = Booking::create([
 			'booking_no' => 'G-BK-'.date('ym').$total_booking,
 			'user_id' => Auth::id(),
@@ -160,7 +161,21 @@ class BookingRepository implements BookingInterface
             // 'billing_status' => @$request->billing_status,
             // 'receipt_url' => @$request->receipt_url,
 		]);
-        // dd($category_services);
+        $title='New Booking';
+        $body='Congratulations! You have new booking of Thai Massag.';
+        $token=$provider->device_token;
+        $from_user=auth()->user()->id;
+        $to_user=$provider->id;
+        $type='BOOKING';
+        // To Provider
+        $this->notify->send($title, $body,$token,$from_user,$to_user,$type);
+        // To Client
+        $body='Congratulations! Your booking has been done';
+        $token=auth()->user()->device_token;
+        $from_user=$provider->id;
+        $to_user=auth()->user()->id;
+        $this->notify->send($title, $body,$token,$from_user,$to_user,$type);
+
 		foreach ($category_services as $category_service) 
 		{
 			$duration = $category_service->duration;
@@ -453,23 +468,33 @@ class BookingRepository implements BookingInterface
      
 		$bookings = $this->booking->where('user_business_id',$user_business->id)->whereDate('date',$date)->where('status','pending')->get();
 
-        $total_time_left = date('H:i:s',$estimated_time);
-        
+        $total_time_left = $estimated_time;
+     
+        $currentDateTime = Carbon::now();
+
         if ($bookings->count() > $no_of_employees) 
         {
 
             foreach ($bookings as $booking) 
             {
+                
                 $created_duration = date('H:i:s',strtotime($booking->created_at));
                 $total_duration = $booking->total_duration;
                 $left = date('H:i:s', strtotime($current_time) - strtotime($created_duration));
                 $time_left = date('H:i:s', strtotime($total_duration) - strtotime($left));
                 $total_time_left = date('H:i:s', strtotime($total_time_left) + strtotime($time_left));
+                $timeExpl=explode(':', $total_time_left);
+                $total_time_left=$timeExpl[1];
             }
         }
-
+        
+  
+        return $newTime = $currentDateTime->addSeconds($total_time_left);
+        // echo "<pre>";
+        // print_r($total_time_left);
+        // die();
         // return date('Y-m-d H:i:s', strtotime($total_time_left));
-        return $total_time_left;
+        // return $total_time_left;
     
 	}
 	public function getEstimatedTimeold()
@@ -567,9 +592,12 @@ class BookingRepository implements BookingInterface
         ->with(['user_business.user' => function ($q) {
             $q->select('id','name','email');
         }])
-        ->with(['user_business' => function ($q) {
+        ->with(['feedback'=> function ($q) {
+            $q->where('user_id',auth()->user()->id);
+        },'reviews','user_business' => function ($q) {
             $q->select('id','user_id','name','address','city');
         }])
+
         
         // ->with(['booking_services.category_services.user_category' => function ($q) {
         //     // $q->select('booking_id','user_business_category_service_id','type','duration','charges','type');
@@ -670,9 +698,78 @@ class BookingRepository implements BookingInterface
         $request = $this->request;
 
         $booking =  $this->booking::find($request->id);
-        $booking->status='cancel';
+        $booking->status=$this->bookingStatus[4];
+        $booking->cancel_by=auth()->user()->id;
+        $booking->cancel_detail = $request['detail'];
+        $booking->save();
+
+        $business=UserBusiness::find($booking->user_business_id);
+        $user=User::find($business->user_id);
+        $title='Cancel Booking';
+        $body='Sorry! Client has cancelled the booking!';
+        $token=$user->device_token;
+        $from_user=auth()->user()->id;
+        $to_user=$user->id;
+        $type='BOOKING';
+        
+        $this->notify->send($title, $body,$token,$from_user,$to_user,$type);
+       
+        return response()->json([
+            'success' => true,
+            'data' => $booking
+        ], 200);
+
+    }
+    public function updateBookingsStatus(){
+
+        $bookings=$this->booking::where('status','pending')->where('estimated_time','<',\Carbon::today())->get();
+        \Log::debug('here');
+        foreach ($bookings as $key => $booking) {
+            $booking->status='droped';
+            $booking->save();
+             \Log::debug('wao');
+        }
+    }
+
+    public function acceptBookingByProvider(){
+
+        $request = $this->request;
+
+        $booking =  $this->booking::find($request->id);
+        $booking->status=$this->bookingStatus[1];
         $booking->cancel_by=auth()->user()->id;
         $booking->save();
+       
+        return response()->json([
+            'success' => true,
+            'data' => $booking
+        ], 200);
+
+    }
+    public function rejectBookingByProvider(){
+
+        $request = $this->request;
+
+        $booking =  $this->booking::find($request->id);
+        $booking->status=$this->bookingStatus[2];
+        $booking->cancel_by=auth()->user()->id;
+        $booking->save();
+
+        $user=User::find($booking->user_id);
+        $title='Cancel Booking';
+        $body='Sorry! Your Booking has been cancelled';
+        $token=$user->device_token;
+        $from_user=auth()->user()->id;
+        $to_user=$booking->user_id;
+        $type='BOOKING';
+        
+        $this->notify->send($title, $body,$token,$from_user,$to_user,$type);
+        // // To Client
+        // $body='Congratulations! Your booking has been done';
+        // $token=auth()->user()->device_token;
+        // $from_user=$provider->id;
+        // $to_user=auth()->user()->id;
+        // $this->notify->send($title, $body,$token,$from_user,$to_user,$type);
        
         return response()->json([
             'success' => true,
