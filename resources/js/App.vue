@@ -4,7 +4,8 @@
     <main :class="route.meta.sidebar && 'pt-5 mt-5 mar-left'">
         <router-view />
     </main>
-    <Footer v-if="route.name == 'home' || store.state.role == 'Client'" />
+    <!-- <Footer v-if="route.name == 'home' || store.state.role == 'Client'" /> -->
+    <Footer v-if="route.name == 'home'" /> 
 </template>
 
 <script setup>

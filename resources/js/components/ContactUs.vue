@@ -73,12 +73,12 @@
       </MDBCol>
     </MDBRow>
   </MDBContainer>
-  <!-- <Footer /> -->
+  <Footer />
 </template>
 
 <script setup>
 import { ref } from "@vue/reactivity";
-// import Footer from "../layout/Footer.vue";
+import Footer from "../layout/Footer.vue";
 import { MDBInput } from "mdb-vue-ui-kit";
 import Map from "./client/booking/Map.vue";
 

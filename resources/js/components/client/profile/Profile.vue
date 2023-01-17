@@ -86,8 +86,10 @@
             </form>
         </MDBRow>
     </MDBContainer>
+    <Footer />
 </template>
 <script setup>
+import Footer from "../../../layout/Footer.vue";
 import { ref, watchEffect, watch } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { useStore } from "vuex";

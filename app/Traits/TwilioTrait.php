@@ -9,8 +9,8 @@ trait TwilioTrait {
 
     public static function TwilioSetup()
     {
-        $token = env("TWILIO_AUTH_TOKEN");
-        $twilio_sid = env("TWILIO_SID");
+        $token = env("TWILIO_AUTH_TOKEN","69abf8858fa5c1d41f5828c7b483244a");
+        $twilio_sid = env("TWILIO_SID","AC58dee5e35c67a2d59ea31f46eddd478a");
         // $twilio_verify_sid = env("TWILIO_VERIFY_SID");
 
         return new Client($twilio_sid, $token);
@@ -20,7 +20,7 @@ trait TwilioTrait {
     {
         $data['phone'] = self::removeSpecialCharacterForPhone($data['phone']);
         // dd($data);
-        $twilio_verify_sid = env("TWILIO_VERIFY_SID");
+        $twilio_verify_sid = env("TWILIO_VERIFY_SID","VA82216eb0e0ec8baa00476dd95e7070e6");
         $twilio = self::TwilioSetup();
 
         // $phone_number = $twilio->lookups->v2->phoneNumbers("03030100987")
@@ -50,7 +50,7 @@ trait TwilioTrait {
     {
         try {
             $twilio = self::TwilioSetup();
-            $twilio_verify_sid = env("TWILIO_VERIFY_SID");
+            $twilio_verify_sid = env("TWILIO_VERIFY_SID","VA82216eb0e0ec8baa00476dd95e7070e6");
             $verification = $twilio->verify->v2->services($twilio_verify_sid)
             ->verificationChecks
             ->create([
