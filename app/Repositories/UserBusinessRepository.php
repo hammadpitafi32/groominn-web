@@ -65,6 +65,7 @@ class UserBusinessRepository implements UserBusinessInterface
             'name' => 'required|string',
             'description' => 'required',
             'address' => 'required',
+            'business_type_id' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
             'no_of_employees' => 'required|numeric|min:0|not_in:0',
@@ -124,6 +125,7 @@ class UserBusinessRepository implements UserBusinessInterface
         $user_business->latitude = $request->latitude;
         $user_business->longitude = $request->longitude;
         $user_business->no_of_employees = $request->no_of_employees;
+        $user_business->business_type_id = $request->business_type_id;
         $user_business->save();
         /*images*/
         $file_path = 'uploads/user/'.Auth::id().'/business/'.$user_business->id.'/';
@@ -397,6 +399,9 @@ class UserBusinessRepository implements UserBusinessInterface
 		// $latitude = 33.5842344;
 		// $longitude =73.1204018;
 		/*filteration*/
+		if($request->has('businessType') && $request->businessType!=''){
+			$user_business->where('business_type_id',$request->businessType);
+		}
 		if ($request->latitude && $request->longitude) 
 		{
 			$user_business->selectRaw(

@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\BookingInterface;
+use App\Services\PushNotificationService;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Review;
+use App\Models\UserBusiness;
 
 
 class BookingController extends Controller
@@ -102,13 +104,22 @@ class BookingController extends Controller
 
         ];
         $saveReview=Review::create($data);
+        $noti=new PushNotificationService();
+        $business=UserBusiness::find($request->user_business_id);
+
+        $token=User::find($business->user_id)->device_token;
+        $title='Feed back';
+        $body='Alert! Client submitted the feedback.';
+        // $token=$provider->device_token;
+        $from_user=auth()->user()->id;
+        $to_user=$business->user_id;
+        $type='FEEDBACK';
+        $noti->send($title, $body,$token,$from_user,$to_user,$type);
 
         return response()->json([
             'success' => true,
             'data' => $saveReview
         ], 200);
-        // echo "<pre>";
-        // print_r($request->all());
-        // die();
+ 
     }
 }

@@ -18,6 +18,7 @@ use Twilio\Rest\Client;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\BusinessHour;
+use App\Models\EmailTemplate;
 // traits
 use App\Traits\UserTrait;
 use App\Traits\TwilioTrait;
@@ -27,6 +28,7 @@ use App\Services\PushNotificationService;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Storage;
 use File;
+
 
 
 class ApiAuthController extends Controller
@@ -109,16 +111,19 @@ class ApiAuthController extends Controller
         }
         $isTimeAdded=false;
         $user = Auth::user();
-        // echo "<pre>";
-        // print_r($user->user_business);
-        // die();
+
         if($user && $user->user_business){
             $business=BusinessHour::where('user_businesses_id',$user->user_business->id)->first();
             if($business){
                 $isTimeAdded=true;
             }
         }
+        if($request->has('device_token')){
+            $user->device_token=$request->device_token;
+            $user->save();
+        }
         
+
         $data['name'] = $user->name;
         $data['email'] = $user->email;
         $data['role'] = $user->role->name;
@@ -237,7 +242,24 @@ class ApiAuthController extends Controller
         if ($request['type'] == 'email')
         {
             $user = $this->generateOtp($request);
-            $user->notify(new OtpNotification());
+
+            $getTemplate=EmailTemplate::where('title','otp')->first();
+
+            $content=$getTemplate->content;
+
+            $replaceAble=[$user->name,$user->two_factor_code];
+
+            $searchAble=['@name','@code'];
+
+            $newContent=str_replace($searchAble, $replaceAble, $content);
+            
+            $details = [
+                    'title' => $getTemplate->title,
+                    'subject' => $getTemplate->title,
+                    'body'=>$newContent
+            ];
+            \Mail::to($user->email)->send(new \App\Mail\GroomInnMail($details));
+            // $user->notify(new OtpNotification());
             return response()->json([
                 'success' => true,
                 'message' => 'Verification code sent to email',

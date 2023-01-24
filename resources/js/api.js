@@ -153,3 +153,6 @@ export const acceptBook = async (data) => {
 export const rejectBook = async (data) => {
     return await instance.post("/reject-booking", data);
 };
+export const getBusinessTypes = async () => {
+    return await instance.get("/get-business-types");
+};

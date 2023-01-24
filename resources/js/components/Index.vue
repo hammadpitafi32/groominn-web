@@ -101,26 +101,26 @@
                                         <h2 class="fw-bold text-color-2">Find the best</h2>
                                         <h4 class="text-orange">Services in the town</h4>
                                     </MDBCol>
-                                    <MDBCol col="12 col-sm-4" offset="0 offset-md-8">
+                                   <!--  <MDBCol col="12 col-sm-4" offset="0 offset-md-8">
                                         <MDBBtn class="btn-custom-white shadow-0 text-capitalize" @click="showAll = !showAll">
                                             {{
                                             showAll ? "Show Less catagories" : "Show All catagories"
                                             }}
                                         </MDBBtn>
-                                    </MDBCol>
+                                    </MDBCol> -->
                                 </MDBRow>
                                 <MDBRow>
                                     <MDBCol col="12 pt-5">
                                         <div class="category-boxes d-flex pb-5" :class="showAll && 'flex-wrap'">
-                                            <div v-for="(category, index) in categories" :key="index" class="category-box bg-white rounded-6 p-3 me-3 mb-3">
+                                            <div v-if='isBusinessTypeData' v-for="(category, index) in businessTypes" :key="index" class="category-box bg-white rounded-6 p-3 me-3 mb-3">
                                                 <div class="man-image" :style="{ backgroundColor: category.bgColor }">
                                                     <img :src="category.image" class="img-fluid" alt="" />
                                                 </div>
-                                                <h5 class="mt-5 mb-1 text-color-2">
-                                                    {{ category.title }}
+                                                <h5 style="cursor:pointer;" @click="openBusinessList(category.id)" class="mt-5 mb-1 text-color-2">
+                                                    {{ category.name }}
                                                 </h5>
                                                 <p class="small">
-                                                    <span :style="{ color: category.color }">25</span>
+                                                    <span :style="{ color: category.bgColor }">{{category.businesses.length}}</span>
                                                     Listing
                                                 </p>
                                             </div>
@@ -180,7 +180,7 @@
                             <div class="text-area">
                                 <h5 class="fw-bold text-orange">Men's Haircuts</h5>
                                 <p class="text-color-2 small">
-                                     The stylists at your local grominn salons are trained in a variety of men's haircuts. Whether you're looking for a fade, crew cut or just a trim, you can get the look you want at an affordable price at groominn salons. Want to make sure you get the same great cut.
+                                    The stylists at your local grominn salons are trained in a variety of men's haircuts. Whether you're looking for a fade, crew cut or just a trim, you can get the look you want at an affordable price at groominn salons. Want to make sure you get the same great cut.
                                 </p>
                             </div>
                         </div>
@@ -202,7 +202,7 @@
     </section>
     <!-- section 5 end -->
     <!-- section 6 -->
-    <section  class="section-6 py-5">
+    <section class="section-6 py-5">
         <MDBContainer>
             <MDBRow class="align-items-center">
                 <MDBCol col="12 col-sm-8 col-md-6">
@@ -253,7 +253,7 @@
                     <div class="ps-4">
                         <h2 class="fw-bold heading2">Top Categories</h2>
                         <p class="small text-color-1">
-                            Right now we have four top service categories.These are according to customer feedback and their services.You can checkin these services and get to know more about these services and the salons. 
+                            Right now we have four top service categories.These are according to customer feedback and their services.You can checkin these services and get to know more about these services and the salons.
                         </p>
                     </div>
                 </MDBCol>
@@ -268,7 +268,7 @@
                 <MDBCol col="12 col-sm-6 col-md-4">
                     <h2 class="fw-bold heading2">Groominn Applications</h2>
                     <p class="small text-color-1 mb-4">
-                        You can download groominn application from your play store and book your require service any time you want. 
+                        You can download groominn application from your play store and book your require service any time you want.
                     </p>
                     <MDBBtn class="bg-orange text-white text-capitalize shadow-0 f-w-400" size="md" rounded>
                         <MDBIcon iconStyle="fab" icon="apple" size="2xl" class="me-2"></MDBIcon>App store
@@ -286,9 +286,7 @@
     <NoAuthModal :show="modalShow" @closeModal="modalShow = false" />
     <!-- section 7 end -->
 </template>
-
 <script setup>
-
 import { ref } from "@vue/reactivity";
 import { computed, onMounted, watchEffect } from "@vue/runtime-core";
 import { MDBCarousel, MDBIcon } from "mdb-vue-ui-kit";
@@ -296,14 +294,17 @@ import NoAuthModal from "./modals/NoAuthModal.vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Filters from "./custom-components/Filters.vue";
+import { getBusinessTypes } from "../api";
 
 const carousel = ref(0);
 const showAll = ref(false);
 const modalShow = ref(false);
 const rightSide = ref(null);
 const imageHeight = ref(null);
+const businessTypes = ref("");
 const store = useStore();
 const router = useRouter();
+const isBusinessTypeData = ref(false);
 
 onMounted(() => {
     imageHeight.value = rightSide.value.clientHeight;
@@ -326,6 +327,29 @@ const items = [{
         alt: "...",
     },
 ];
+
+const openBusinessList = (type) => {
+    router.push({
+      path: "/booking-list",
+      query: {
+        ...({ businessType: type }),
+       
+      },
+    });
+    // router.push({"/booking-list",params:{businessType:type}});
+}
+getBusinessTypes()
+    .then((res) => {
+        
+        // console.log(res.data)
+        businessTypes.value = res.data.data
+        isBusinessTypeData.value = true;
+    })
+    .catch((err) => {
+
+        // success.value = null;
+        // errors.value = err.response.data.errors;
+    });
 
 const categories = ref([{
         title: "Beauty salons",
@@ -412,6 +436,5 @@ const categories = ref([{
         color: "#0517BD",
     },
 ]);
-
 
 </script>

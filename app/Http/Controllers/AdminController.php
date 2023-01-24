@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\UserService;
 use App\Models\UserBusinessCategoryService;
 use App\Models\UserBusiness;
+use App\Models\BusinessType;
 
 class AdminController extends Controller
 {
@@ -83,5 +84,59 @@ class AdminController extends Controller
         ]);
         
         
+    }
+
+    public function getBusinessTypes(Request $request){
+        
+        $types=BusinessType::get();
+        return view('admin.businessType.index',compact('types'));
+    }
+
+    public function createBusinessType(Request $request){
+
+        $request->validate([
+            'name' => 'required',
+            'image' => 'required',
+        ]);
+        
+        $data=['name'=>$request->name,'image'=>$request->image];
+        
+        $type=BusinessType::create($data);
+
+        return response()->json([
+                'success' => 200,
+                'data' => $type
+            ]);
+    }
+    public function updateBusinessType(Request $request){
+
+        $request->validate([
+            'id' => 'required',
+        ]);
+        $type = BusinessType::find($request['id']);
+        $type->name =$request->name;
+        $type->image =$request->image;
+        $type->save();
+        return response()->json([
+                'success' => 200,
+                'data' => $type
+            ]);
+    }
+    public function deleteBusinessType(Request $request){
+        
+        $type = BusinessType::find($request['id']);
+        
+        if($type){
+            $type->delete();
+            
+            return response()->json([
+                'success' => 200,
+                'data' => $type
+            ]);
+        }
+        return response()->json([
+            'success' => 400,
+            'data' => $type
+        ]);
     }
 }

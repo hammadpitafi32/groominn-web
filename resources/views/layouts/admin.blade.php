@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css.map" />
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" />
   
 
 </head>
@@ -126,6 +127,11 @@
         <a class="nav-link" href="{{route('user-businesses')}}">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>User Businesses</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('getBusinessTypes')}}">
+          <i class="fa fa-wrench"></i>
+          <span>Business Types</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{route('bookings')}}">
@@ -418,6 +424,8 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
+
   @stack('javascripts');
 </body>
 

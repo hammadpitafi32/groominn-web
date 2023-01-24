@@ -231,6 +231,9 @@ const setPlace = (data) => {
     formData.append("latitude", route.query.latitude);
    
     formData.append("longitude", route.query.longitude);
+
+    formData.append("business_type_id", route.query.businessType);
+    
     const checkRate=ref(null);
 
     const rating = computed(() =>{

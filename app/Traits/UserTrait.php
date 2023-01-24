@@ -9,10 +9,10 @@ use Illuminate\Validation\Rule;
 
 use App\Models\User;
 use App\Models\Role;
-
+use App\Models\EmailTemplate;
 use Auth;
 use App\Rules\MatchOldPassword;
-
+use App\Mail\GroomInnMail;
 use App\Notifications\RegisterNotification;
 use App\Notifications\OtpNotification;
 
@@ -124,6 +124,10 @@ trait UserTrait {
             $avatar_path = $avatar->store('avatars', 'public');
             $user->avatar_path = $avatar_path;
         }
+        if($request->has('device_token')){
+            $user->device_token=$request->device_token;
+           
+        }
         $user->save();
 
         $user->user_detail()->updateOrCreate(
@@ -146,7 +150,21 @@ trait UserTrait {
 
         if(!$request->id)
         {
-            $user->notify(new RegisterNotification());
+            $getTemplate=EmailTemplate::where('title','welcome')->first();
+            $content=$getTemplate->content;
+
+            $replaceAble=[$user->name,$user->phone,$user->email];
+
+            $searchAble=['@name','@phone','@email'];
+
+            $newContent=str_replace($searchAble, $replaceAble, $content);
+            $details = [
+                    'title' => $getTemplate->title,
+                    'subject' => $getTemplate->title,
+                    'body'=>$newContent
+            ];
+            \Mail::to($user->email)->send(new \App\Mail\GroomInnMail($details));
+            // $user->notify(new RegisterNotification());
         }
         if (!$user->is_verified) 
         {

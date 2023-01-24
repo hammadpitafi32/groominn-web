@@ -35,6 +35,8 @@ Route::group(['namespace' => 'Api'],function()
     Route::post('send-otp', 'ApiAuthController@sendOtp');
     Route::post('verify', 'ApiAuthController@otpVerify');
     Route::post('reset-password', 'ApiAuthController@resetPassword');
+
+    Route::get('get-business-types', 'UserBusinessController@getBusinessTypes');
     // Route::post('logout', 'ApiAuthController@logout');
     // Route::post('/demo','BusinessController@demo'); 
     Route::get('get-categories', 'UserBusinessController@getCategories');
@@ -91,9 +93,9 @@ Route::group(['namespace' => 'Api'],function()
 
             Route::post('reject-booking', 'BookingController@rejectBooking');
             Route::post('accept-booking', 'BookingController@acceptBooking');
-
-            
+ 
         });
+        
         /*service provider end*/
         /*client*/
         Route::group(['middleware' => 'client.jwt'], function () {

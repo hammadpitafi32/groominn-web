@@ -12,6 +12,13 @@
                                 <span v-if="errors && errors.name" class="text-danger small">{{ errors.name[0] }}</span>
                             </div>
                             <div class="form-group mb-3">
+                                <label for="name" class="mb-2 fw-bold small">Business Type</label>
+                                <select id="business-type" name="businessType" v-model='businessType'>
+                                    <option v-for='type in businessTypes' :value="type.id">{{type.name}}</option>
+                                </select>
+                                <span v-if="errors && errors.name" class="text-danger small">{{ errors.name[0] }}</span>
+                            </div>
+                            <div class="form-group mb-3">
                                 <label for="address" class="mb-2 fw-bold small">Address</label>
                                 <GMapAutocomplete class="form-control bg-white py-2" id="googleAutoComplete" placeholder="" @place_changed="setPlace" />
                                 <span v-if="errors && errors.address" class="text-danger small">{{ errors.address[0] }}</span>
@@ -226,7 +233,7 @@
 import { reactive, ref } from "@vue/reactivity";
 import { MDBInput, MDBTextarea, MDBFile } from "mdb-vue-ui-kit";
 import { useRoute, useRouter } from "vue-router";
-import { addShop, deleteBusinessImage, getUserBusiness } from "../../api";
+import { addShop, deleteBusinessImage, getUserBusiness,getBusinessTypes } from "../../api";
 import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useCookies } from "vue3-cookies";
@@ -261,6 +268,8 @@ const address = reactive({
 const employees = ref("");
 const loading = ref(false);
 const editMode = ref(false);
+const businessTypes = ref("");
+const businessType = ref("");
 
 const shopPics = ref([]);
 const cnicFront = ref("");
@@ -412,6 +421,7 @@ const addShopHandler = () => {
     formData.append("cnic_back", cnicBackForApi.value);
     formData.append("license", LiscenceForApi.value);
     formData.append("no_of_employees", employees.value);
+    formData.append("business_type_id", businessType.value);
     editMode.value && formData.append("id", route.params.id);
 
     for (let i = 0; i < shopPicsForApi.value.length; i++) {
@@ -450,6 +460,17 @@ const setPlace = (data) => {
     address.lng = data.geometry.location.lng();
     address.place = data.formatted_address;
 };
+    getBusinessTypes()
+        .then((res) => {
+            loading.value = false;
+            // console.log(res.data)
+            businessTypes.value=res.data.data
+        })
+        .catch((err) => {
+            
+            success.value = null;
+            errors.value = err.response.data.errors;
+        });
 
 </script>
 <style scoped>

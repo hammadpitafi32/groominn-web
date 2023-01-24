@@ -53,11 +53,22 @@ Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
 
         Route::post('delete-service', 'UserBusinessController@ServiceDelete')->name('delete-service');
     });
+    
     Route::get('categories', 'AdminController@getCategories')->name('categories');
+
     Route::get('services', 'AdminController@getServices')->name('services');
+    
     Route::post('change-service-status', 'AdminController@changeServiceStatus')->name('change-service-status');
 
     Route::post('update-service', 'AdminController@updateService')->name('update-service');
+
+    Route::get('business-type', 'AdminController@getBusinessTypes')->name('getBusinessTypes');
+    
+    Route::post('create-business-type', 'AdminController@createBusinessType')->name('create-business-type');
+    
+    Route::post('update-business-type', 'AdminController@updateBusinessType')->name('update-business-type');
+
+    Route::post('delete-business-type', 'AdminController@deleteBusinessType')->name('delete-business-type');
 
 });
 

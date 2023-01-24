@@ -11,6 +11,7 @@ use App\Models\BusinessHour;
 use App\Models\BusinessDay;
 use App\Traits\CategoryTrait;
 use App\Traits\ServiceTrait;
+use App\Models\BusinessType;
 
 class UserBusinessController extends Controller
 {
@@ -26,6 +27,7 @@ class UserBusinessController extends Controller
 
     public function createOrUpdate(Request $request)
     {
+
         return $this->user_business->createOrUpdate();
 
     }
@@ -99,6 +101,7 @@ class UserBusinessController extends Controller
 
     public function getBusinesseslist(Request $request)
     {
+
         return $this->user_business->getBusinesseslist();
     }
 
@@ -180,6 +183,18 @@ class UserBusinessController extends Controller
             'data' => $data
         ], 200);
        
+    }
+
+    public function getBusinessTypes(Request $request){
+        
+        $types=BusinessType::with('businesses')->get();
+        // echo "<pre>";
+        // print_r($types->toarray());
+        // die();
+        return response()->json([
+            'success' => true,
+            'data' => $types
+        ], 200);
     }
     
 }
