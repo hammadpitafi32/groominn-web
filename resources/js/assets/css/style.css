@@ -130,26 +130,31 @@ label[for="terms"] input:checked ~ .geekmark::after {
 }
 
 .side-menu .side-menu-item {
-        margin-bottom: 15px;
-        padding-left: 15px;
-        border-bottom: 1px solid white;
-        padding-bottom: 15px;
-        padding-top: 15px;
+       
+        
+       border-radius: 9px;
+  margin-bottom: 15px;
+        
 }
 
 .side-menu .side-menu-item a {
     font-size: 0.9rem;
-    color: #8c96a2;
+    color: #333 !important;
     font-weight: bold;
     transition: all 0.3s ease;
+    padding: 15px 0px;
+    
+    padding-left: 15px;
 }
 
 .side-menu .side-menu-item a.router-link-active {
-    color: var(--theme-orange-color);
+    color: white !important;
+    background: rgb(21, 21, 53) !important;
 }
 
 .side-menu .side-menu-item a:hover {
-    color: var(--theme-orange-color);
+    color: white !important;
+    background:rgb(21, 21, 53)!important;
 }
 
 .heading-color {
@@ -449,6 +454,13 @@ input.border-danger,
 
 .theme-custom-checkbox {
     visibility: hidden;
+    height: 11px;
+}
+.custom-checkboxs {
+    display: flex;
+    flex-direction: column;
+   
+    flex-direction: column-reverse;
 }
 
 .bg-light-grey {
@@ -845,11 +857,12 @@ input.border-danger,
 }
 
 aside.gradiant-list {
-    background: linear-gradient(175.79deg, #f05922 31.97%, #f07345 97.2%);
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
 }
 
 aside.gradiant-list a {
-    color: #fff !important;
+    color: #333 !important;
 }
 
 .multiselect-tag {

@@ -197,7 +197,7 @@
                             for="terms"
                             class="d-flex termss text-color-1"
                         >
-                            <div class="position-relative">
+                            <div class="position-relative custom-checkboxs">
                                 <input
                                     type="checkbox"
                                     id="terms"
