@@ -5,11 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SiteSetting;
 use App\Models\EmailTemplate;
+use App\Models\Notification;
+use View;
 
 
 class SettingController extends Controller
 {
    
+    protected $Listnotifications;
+    
+    public function __construct()
+    {
+        $this->Listnotifications = Notification::latest()->take(8)->get();
+
+        View::share('Listnotifications', $this->Listnotifications);
+    }
 
     public function index()
     {

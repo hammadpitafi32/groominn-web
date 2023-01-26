@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Notification;
+use View;
 
 class HomeController extends Controller
 {
@@ -11,9 +13,13 @@ class HomeController extends Controller
      *
      * @return void
      */
+    protected $Listnotifications;
     public function __construct()
     {
         $this->middleware('auth');
+        $this->Listnotifications = Notification::latest()->take(8)->get();
+
+        View::share('Listnotifications', $this->Listnotifications);
     }
 
     /**

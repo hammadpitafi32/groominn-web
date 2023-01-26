@@ -12,6 +12,8 @@ use App\Models\BusinessDay;
 use App\Traits\CategoryTrait;
 use App\Traits\ServiceTrait;
 use App\Models\BusinessType;
+use App\Models\Notification;
+use View;
 
 class UserBusinessController extends Controller
 {
@@ -19,10 +21,13 @@ class UserBusinessController extends Controller
     use ServiceTrait;
 
     protected $user_business;
-
+    protected $Listnotifications;
     public function __construct(UserBusinessInterface $user_business)
     {
         $this->user_business = $user_business;
+        $this->Listnotifications = Notification::latest()->take(8)->get();
+
+        View::share('Listnotifications', $this->Listnotifications);
     }
 
     public function createOrUpdate(Request $request)

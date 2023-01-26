@@ -9,15 +9,21 @@ use App\Traits\UserTrait;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Models\Notification;
+use View;
 
 
 class UserController extends Controller
 {
     use UserTrait;
     protected $user;
+    protected $Listnotifications;
     public function __construct(UserInterface $user)
     {
         $this->user = $user;
+        $this->Listnotifications = Notification::latest()->take(8)->get();
+
+        View::share('Listnotifications', $this->Listnotifications);
     }
 
     public function createOrUpdate(Request $request)
@@ -28,12 +34,14 @@ class UserController extends Controller
 
     public function list($role)
     {
-  
+    
         $roles = Role::all();
         $users = $this->user->list($role);
         $users->load('user_detail');
         $users->load('role');
-  
+        // echo "<pre>";
+        // print_r($users->toarray());
+        // die();
         return view('admin.users.index',compact('users','roles'));
     }
     public function changeUserStatus(Request $request)

@@ -70,6 +70,12 @@ Route::group(['prefix' =>'admin' ,'middleware' => 'checkAdmin'],function(){
 
     Route::post('delete-business-type', 'AdminController@deleteBusinessType')->name('delete-business-type');
 
+    Route::get('get-notifications', 'AdminController@getNotifications')->name('getNotifications');
+
+    Route::post('delete-notification', 'AdminController@deleteNotification')->name('delete-notification');
+
+    Route::get('get-notifications-count', 'AdminController@getNotificationsCount')->name('get-notifications-count');
+
 });
 
 /*for vue router*/

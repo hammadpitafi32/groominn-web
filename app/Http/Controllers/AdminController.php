@@ -9,11 +9,23 @@ use App\Models\UserService;
 use App\Models\UserBusinessCategoryService;
 use App\Models\UserBusiness;
 use App\Models\BusinessType;
+use App\Models\Notification;
+use View;
 
 class AdminController extends Controller
 {
     use CategoryTrait;
 
+    protected $Listnotifications;
+
+    public function __construct() 
+    {
+
+        // Fetch the Site Settings object
+        $this->Listnotifications = Notification::latest()->take(8)->get();
+
+        View::share('Listnotifications', $this->Listnotifications);
+    }
     public function index()
     {
         
@@ -139,4 +151,43 @@ class AdminController extends Controller
             'data' => $type
         ]);
     }
+    public function getNotifications(Request $request){
+        
+        $notifications=Notification::with('fromUser','toUser')->get();
+
+        return view('admin.notifications.index',compact('notifications'));
+    }
+
+    public function deleteNotification(Request $request){
+        
+        $notification = Notification::find($request['id']);
+        
+        if($notification){
+            $notification->delete();
+            
+            return response()->json([
+                'success' => 200,
+                'data' => $notification
+            ]);
+        }
+        return response()->json([
+            'success' => 400,
+            'data' => $notification
+        ]);
+    }
+    public function getNotificationsCount(Request $request){
+        
+        $count=Notification::where('seen',0)->count();
+
+        return response()->json([
+                'success' => 200,
+                'data' => $count
+            ]);
+    }
+    // public function getListNotifications(Request $request){
+        
+        // $notifications=Notification::latest()->take(8)->get();
+
+    //     return view('admin.notifications.index',compact('notifications'));
+    // }
 }

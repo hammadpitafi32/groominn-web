@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\Notification;
+use View;
 
 
 class BookingController extends Controller
@@ -11,9 +13,15 @@ class BookingController extends Controller
    
     protected $bookingStatus;
 
+    protected $Listnotifications;
+
     public function __construct()
     {
         $this->bookingStatus = [0=>'pending',1=>'accepted',2=>'rejected',3=>'completed',4=>'cancel',5=>'drop'];
+
+        $this->Listnotifications = Notification::latest()->take(8)->get();
+
+        View::share('Listnotifications', $this->Listnotifications);
     }
     public function index()
     {

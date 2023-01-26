@@ -19,7 +19,7 @@ class NotificationController extends Controller
     public function getNotifications(Request $request)
     {
         
-        $notifications=$this->notification->with('from_user')->where('to_user',auth()->user()->id)->latest()->take(8)->get();
+        $notifications=$this->notification->with('fromUser')->where('to_user',auth()->user()->id)->latest()->take(8)->get();
         
         return response()->json([
             'success' => true,
@@ -30,7 +30,7 @@ class NotificationController extends Controller
 
     public function getNotificationsCount(Request $request){
 
-        $notificationsCount=$this->notification->with('from_user')->where('to_user',auth()->user()->id)->where('seen',0)->count();
+        $notificationsCount=$this->notification->with('fromUser')->where('to_user',auth()->user()->id)->where('seen',0)->count();
         
         return response()->json([
             'success' => true,
