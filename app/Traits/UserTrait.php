@@ -24,7 +24,7 @@ trait UserTrait {
      */
     public function validation($request)
     {
-        
+        // die('asdsadasdas');
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
@@ -34,7 +34,7 @@ trait UserTrait {
                 Rule::unique('user_details')->where(function ($query) use ($request) {
                     return $query->where('user_id','!=',$request->id)->where('phone',$request->phone);
                 })
-            ],
+            ,'min:13','max:13'],
 
         ]);
 
@@ -57,7 +57,7 @@ trait UserTrait {
                     Rule::unique('user_details')->where(function ($query) use ($request) {
                         return $query->where('user_id','!=',$request->id)->where('phone',$request->phone);
                     })
-                ],
+                ,'min:13','max:13'],
 
                 'role' => 'required'
             ]);

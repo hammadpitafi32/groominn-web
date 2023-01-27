@@ -141,6 +141,7 @@
                             :class="errors && errors.phone && 'border-danger'"
                             placeholder="+923007867874"
                             v-model="user.phone"
+                           
                         />
                         <span
                             v-if="errors && errors.phone"
