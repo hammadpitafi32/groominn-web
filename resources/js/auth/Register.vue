@@ -2,7 +2,7 @@
     <MDBContainer class="py-5 my-5">
         <MDBRow class="align-items-center">
             <MDBCol :col="!serviceChoose ? '12 col-sm-8' : '12 col-sm-7'">
-                <img
+                <img style="width: 100% !important;"
                     src="../assets/img/signin-img.png"
                     class="img-fluid"
                     alt=""

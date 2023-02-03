@@ -2,7 +2,7 @@
     <MDBContainer class="pt-5 mt-5 px-5">
         <MDBRow>
             <MDBCol col="col-12 col-sm-7">
-                <img
+                <img style="width: 100% !important;" 
                     src="../assets/img/signin-img.png"
                     class="img-fluid"
                     alt=""
