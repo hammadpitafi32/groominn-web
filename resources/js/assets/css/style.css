@@ -110,12 +110,13 @@ label[for="terms"] input:checked ~ .geekmark::after {
 }
 
 .sidebar {
+    border-radius: 5px;
     position: fixed;
-    top: 68px;
+    top: 100px;
     bottom: 0;
     background-color: #fff;
     z-index: 1029;
-    height: calc(100vh - 68px);
+    height: calc(100vh - 100px);
     width: 270px;
     border-right: 1px solid #dadada;
     overflow: auto;
@@ -145,16 +146,17 @@ label[for="terms"] input:checked ~ .geekmark::after {
     padding: 15px 0px;
     
     padding-left: 15px;
+    border-radius: 5px;
 }
 
 .side-menu .side-menu-item a.router-link-active {
     color: white !important;
-    background: rgb(21, 21, 53) !important;
+    background: #f05922 !important;
 }
 
 .side-menu .side-menu-item a:hover {
     color: white !important;
-    background:rgb(21, 21, 53)!important;
+    background:#f05922!important;
 }
 
 .heading-color {
