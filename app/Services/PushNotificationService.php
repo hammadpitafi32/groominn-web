@@ -21,7 +21,7 @@ class PushNotificationService
     		->withNotification(Notification::create($title, $body));
     		// ->withData(['key' => 'value']);
 
-			Firebase::send($message);
+			// Firebase::send($message);
         }
         
 
