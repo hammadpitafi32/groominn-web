@@ -180,6 +180,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class, 
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
         Kreait\Laravel\Firebase\ServiceProvider::class,
+        GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
 
     ],
 
@@ -240,7 +241,8 @@ return [
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Firebase' => Kreait\Laravel\Firebase\Facade::class, 
+        'Firebase' => Kreait\Laravel\Firebase\Facade::class,
+        'GoogleMaps' => GoogleMaps\Facade\GoogleMapsFacade::class,
 
     ],
 

@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterAuthRequest;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Hash;
+use Http;
 
 // 3rd part packages
 use JWTAuth;
@@ -354,6 +355,78 @@ class ApiAuthController extends Controller
             
         }
     }
+    public function getShopData(){
+
+        $googleMapsApiKey = 'AIzaSyDoWPQ82mh0PFBOYhhHCK924wOffWOFSdc';
+
+        // Set the API endpoint and parameters
+        $endpoint = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
+        $params = [
+            'query' => 'barber+salon|beauty+salon',
+            'key' => $googleMapsApiKey
+        ];
+
+        // Send a GET request to the API
+        $response = Http::get($endpoint, $params);
+       
+        // Check if the response was successful
+        if ($response->successful()) {
+            // Get the JSON data from the response
+            $data = $response->json();
+            
+            // Loop through the results and extract the relevant data
+            foreach ($data['results'] as $result) {
+                $name = $result['name'];
+                $address = $result['formatted_address'];
+                $latitude = $result['geometry']['location']['lat'];
+                $longitude = $result['geometry']['location']['lng'];
+
+                // Do something with the data, e.g. save it to a database
+            }
+        } else {
+            // Handle the error
+            $error = $response->json()['error_message'];
+            // ...
+        }
+
+        try {
+            // $googleMaps = new GoogleMaps($googleMapsApiKey);
+      
+            $params = [
+                'query' => 'barber OR beauty salon',
+                'type' => 'establishment',
+                'location' => '31.5203696,74.35874729999999', // your location coordinates
+                'radius' => 1000, // search radius in meters
+            ];
+
+            $response = \GoogleMaps::load('geocoding')->setParam($params)->get();
+
+           
+
+            $results = $googleMaps->load('placeautocomplete')->setParam($params)->get();
+
+            $salons = [];
+
+            foreach ($results['predictions'] as $prediction) {
+                $placeDetails = $googleMaps->load('placedetails')->setParam(['placeid' => $prediction['place_id']])->get();
+
+                $salons[] = [
+                    'name' => $placeDetails['result']['name'],
+                    'address' => $placeDetails['result']['formatted_address'],
+                    'latitude' => $placeDetails['result']['geometry']['location']['lat'],
+                    'longitude' => $placeDetails['result']['geometry']['location']['lng'],
+                    'rating' => $placeDetails['result']['rating'],
+                    'types' => $placeDetails['result']['types'],
+                ];
+            }
+
+
+            return response()->json($salons);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
     public function getSocialLoginUserInfo(Request $request){
        
         if($request->plateform == 'facebook'){

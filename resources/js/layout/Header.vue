@@ -192,12 +192,16 @@ onMounted(() => {
             navbar.value.navbar.classList.remove("bg-color-show");
         }
     });
-    getNotificationsCount().then(({ data }) => {
+     console.log(store.state.auth)
+    if(store.state.auth){
+        getNotificationsCount().then(({ data }) => {
 
-        notificationsCount.value = data.data;
-        // console.log(notificationsCount.value)
-        loading.value = true;
-    });
+            notificationsCount.value = data.data;
+          
+            loading.value = true;
+        });
+    }
+    
 });
 
 watchEffect(() => {

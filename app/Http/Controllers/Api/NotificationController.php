@@ -29,7 +29,7 @@ class NotificationController extends Controller
     }
 
     public function getNotificationsCount(Request $request){
-
+        
         $notificationsCount=$this->notification->with('fromUser')->where('to_user',auth()->user()->id)->where('seen',0)->count();
         
         return response()->json([

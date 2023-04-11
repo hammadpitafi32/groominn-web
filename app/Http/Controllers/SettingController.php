@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
+use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
 use Illuminate\Http\Request;
 use App\Models\SiteSetting;
 use App\Models\EmailTemplate;
 use App\Models\Notification;
+
 use View;
 
 
@@ -127,5 +130,21 @@ class SettingController extends Controller
             'success' => true,
             'data' => $emails
         ], 200);
+    }
+    // generate site barcode
+
+    public function generateBarCode(Request $request)
+    {
+        $type='qrcode';
+        $code='https://groominn.co/';
+        if ($type == 'qrcode') {
+            $barcode = DNS2D::getBarcodePNG($code, 'QRCODE');
+        } else {
+            $barcode = DNS1D::getBarcodePNG($code, $type);
+        }
+
+        return response($barcode, 200, [
+            'Content-Type' => 'image/png'
+        ]);
     }
 }

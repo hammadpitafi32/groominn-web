@@ -676,13 +676,15 @@ class BookingRepository implements BookingInterface
 
     public function getUserEarning()
     {
+
         $request = $this->request;
 
-        $bookings =  Auth::user()->user_business->bookings()->whereNotIn('status',['cancelled']);
+        $bookings =  Auth::user()->user_business->bookings()->whereIn('status',['completed']);
 
         $data['total_earning'] = (clone $bookings)->sum('charges');
-        
-        $data['total_year_earning'] = (clone $bookings)->whereYear('created_at', date('Y'))->sum('charges');
+        // Get the monthly earnings of a shop
+        $month = now()->format('m'); // Get the current month as a two-digit string
+        $data['total_month_earning'] = (clone $bookings)->whereMonth('created_at', $month)->sum('charges');
 
         $data['total_weekly_earning'] = (clone $bookings)->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('charges');
 
@@ -777,6 +779,35 @@ class BookingRepository implements BookingInterface
         ], 200);
 
     }
+    
+    // public function getShopEarnings(){
+
+    //     $user_business = UserBusiness::with('user_business_schedules')->where('user_id',auth()->user()->id)->first();
+
+    //     $totalEarnings = Booking::where('user_business_id',$user_business->id)->where('status','completed')->sum('charges');
+
+    //     // Get the weekly earnings of a shop
+    //     $startDate = now()->subWeek(); // Calculate the start date of the week
+    //     $endDate = now(); // Use the current date as the end date
+        
+    //     $weeklyEarnings = Booking::where('user_business_id',$user_business->id)->where('status','completed')
+    //         ->whereBetween('created_at', [$startDate, $endDate])
+    //         ->sum('charges');
+
+    //     // Get the monthly earnings of a shop
+    //     $month = now()->format('m'); // Get the current month as a two-digit string
+    //     $monthlyEarnings = Booking::where('user_business_id',$user_business->id)->where('status','completed')
+    //         ->whereMonth('created_at', $month)
+    //         ->sum('charges');
+        
+    //     $collection=collect();
+    //     $collection->total_earning=$totalEarnings;
+    //     $collection->total_weekly_earning=$weeklyEarnings;
+    //     $collection->total_month_earning=$monthlyEarnings;
+
+    //     return $collection;
+
+    // }
 
 	
 }

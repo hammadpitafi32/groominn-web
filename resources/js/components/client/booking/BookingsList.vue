@@ -85,9 +85,9 @@
                     <div class="col-6">
                       <h5 class="fw-bold mb-0">{{ booking.name }}</h5>
                       <small
-                        v-if="booking.id === activeId"
-                        class="text-light-color address"
-                        >{{ booking.address }}</small
+
+                        class="text-light-color address" style="display:block !important;"
+                        ><i  class="fa-solid fa-location-pin" style="color:red;"></i> {{ booking.address }}</small
                       >
                       <p class="mt-2 text-color-1 small description">
                         {{ booking.description }}

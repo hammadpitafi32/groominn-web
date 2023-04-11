@@ -13,11 +13,13 @@
             <div class="w-fit-content mx-auto footer-links margin-none">
               <h6 class="fw-bold text-color-2 mb-3 heading-footer">Quick links</h6>
               <ul class="list-unstyled">
-                <li><a href="#" class="link">About</a></li>
-                <li><a href="#" class="link">Terms</a></li>
-                <li><a href="#" class="link">Privacy</a></li>
-                <li><a href="#" class="link">Affiliates</a></li>
-                <li><a href="#" class="link">Contact Support</a></li>
+                <li><router-link to="/about-us" class="nav-link">About</router-link></li>
+                <li><router-link to="/terms-policy" class="nav-link">Terms & policy</router-link></li>
+                <!-- <li><a href="#" class="link">Privacy</a></li> -->
+                <!-- <li><a href="#" class="link">Affiliates</a></li> -->
+                <li><router-link to="/contact-us" class="nav-link">Contact Support</router-link>
+                  <!-- <a href="{{url('contact-us')}}" class="link">Contact Support</a> -->
+                </li>
               </ul>
             </div>
           </MDBCol>

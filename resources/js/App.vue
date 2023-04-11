@@ -5,7 +5,8 @@
         <router-view />
     </main>
     <!-- <Footer v-if="route.name == 'home' || store.state.role == 'Client'" /> -->
-    <Footer v-if="route.name == 'home'" /> 
+    <Footer v-if="route.name == 'home'" />
+    
 </template>
 
 <script setup>

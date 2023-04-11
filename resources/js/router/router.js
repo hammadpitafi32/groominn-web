@@ -18,6 +18,7 @@ import AboutUs from "../components/AboutUs.vue";
 import ContactUs from "../components/ContactUs.vue";
 import store from "../store";
 import MyShopHours from "../components/provider/business-hours/BusinessHours.vue";
+import termsPolicy from "../components/Terms&Policy.vue";
 
 const routes = [
     {
@@ -33,6 +34,15 @@ const routes = [
         path: "/about-us",
         name: "about-us",
         component: AboutUs,
+        meta: {
+            sidebar: false,
+            auth: false,
+        },
+    },
+    {
+        path: "/terms-policy",
+        name: "terms-policy",
+        component: termsPolicy,
         meta: {
             sidebar: false,
             auth: false,

@@ -20,6 +20,7 @@
                         <table class="table booking-table" aria-describedby="booking-table">
                             <thead>
                                 <th>Saloon name</th>
+                                <th>Service</th>
                                 <th>Phone</th>
                                 <th>Estimated time</th>
                                 <th>Date</th>
@@ -43,11 +44,15 @@
                                     <td class="px-3">
                                         <div class="skelton"></div>
                                     </td>
+                                    <td class="px-3">
+                                        <div class="skelton"></div>
+                                    </td>
                                 </tr>
                             </tbody>
                             <tbody v-else-if="bookings.length">
                                 <tr v-for="(booking, index) in bookings" :key="index">
                                     <td>{{ booking.user_business.name }}</td>
+                                    <td>{{ booking.booking_services[0].service_name }}</td>
                                     <td>{{ booking.user.user_detail.phone }}</td>
                                     <td>
                                         {{
@@ -159,6 +164,7 @@ const stardisable=ref(false);
 const cancelReason=ref(null);
 
 getBooking().then(({ data }) => {
+   
     bookings.value = data.data;
     loading.value = false;
 });

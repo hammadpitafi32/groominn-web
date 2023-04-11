@@ -82,7 +82,7 @@
     <!-- Payment Preview -->
     <div class="payment-preview">
         <div class="p-4">
-            <h5 class="fw-bold mb-4">Shop Bookings</h5>
+            <h5 class="fw-bold mb-4">Customers on waiting</h5>
             <div v-if='isShopBookings'>
                 <ul>
                     <li v-for='booking in shopBookings' style="color:orange">

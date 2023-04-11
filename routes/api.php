@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api'],function()
 {
+    Route::post('getdata', 'ApiAuthController@getShopData');
     // google social login
     Route::any('auth/google', 'ApiAuthController@redirectToGoogle');
     Route::get('auth/google/callback','ApiAuthController@handleGoogleCallback');

@@ -47,10 +47,10 @@
                     <div class="earning-box">
                         <div>
                             <span class="text-orange mb-0 fw-bold"
-                                >Yearly Earnings</span
+                                >Monthly Earnings</span
                             >
                             <h4 class="mb-0">
-                                {{ earnings?.total_year_earning }}
+                                {{ earnings?.total_month_earning }}
                             </h4>
                         </div>
                         <div class="dollar-img">
