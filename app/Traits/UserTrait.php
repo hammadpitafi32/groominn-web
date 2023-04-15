@@ -114,6 +114,7 @@ trait UserTrait {
         $user->name = $request->name;
         $user->role_id = $request->role_id;
         $user->added_by = $request->added_by;
+        
         if (@$request->password) {
             $user->password = Hash::make($request->password);
         }
@@ -147,6 +148,7 @@ trait UserTrait {
                 'tax_id' => $request->tax_id
             ]
         );
+        $user->phone = $request->phone;
 
         if(!$request->id)
         {
@@ -168,6 +170,7 @@ trait UserTrait {
         }
         if (!$user->is_verified) 
         {
+
             return response()->json([
                 'success' => true,
                 'data' => $user,
