@@ -64,6 +64,7 @@ class ApiAuthController extends Controller
  
     public function login(Request $request)
     {
+
         $input = $request->only('email', 'password');
         $jwt_token = null;
         
@@ -128,6 +129,8 @@ class ApiAuthController extends Controller
         $data['name'] = $user->name;
         $data['email'] = $user->email;
         $data['role'] = $user->role->name;
+        $data['phone'] = $user->user_detail->phone;
+        $data['id'] = $user->id;
         $data['is_shop']=false;
         if($user && $user->user_business){
             $data['is_shop'] = ($user->user_business && $user->user_business->id?true:false);
