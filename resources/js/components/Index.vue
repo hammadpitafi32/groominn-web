@@ -164,7 +164,7 @@
                         </p>
                         <div class="side-card d-flex align-items-start mt-4 pt-3">
                             <div class="man-image me-4">
-                                <img src="../assets/img/man.svg" class="img-fluid" alt="" />
+                                <img src="../assets/img/man.png" class="img-fluid" alt="" />
                             </div>
                             <div class="text-area">
                                 <h5 class="fw-bold text-orange">Make up for Women</h5>
@@ -175,7 +175,7 @@
                         </div>
                         <div class="side-card d-flex align-items-start mt-4">
                             <div class="man-image me-4">
-                                <img src="../assets/img/man.svg" class="img-fluid" alt="" />
+                                <img src="../assets/img/man.png" class="img-fluid" alt="" />
                             </div>
                             <div class="text-area">
                                 <h5 class="fw-bold text-orange">Men's Haircuts</h5>
@@ -186,7 +186,7 @@
                         </div>
                         <div class="side-card d-flex align-items-start mt-4">
                             <div class="man-image me-4">
-                                <img src="../assets/img/man.svg" class="img-fluid" alt="" />
+                                <img src="../assets/img/man.png" class="img-fluid" alt="" />
                             </div>
                             <div class="text-area">
                                 <h5 class="fw-bold text-orange">Services for Seniors</h5>
@@ -210,7 +210,7 @@
                         <div class="boxes">
                             <div class="bg-white rounded-6 p-4 text-center white-box">
                                 <div class="man-image mx-auto mb-4">
-                                    <img src="../assets/img/salon.svg" class="img-fluid" alt="" />
+                                    <img src="../assets/img/salon.png" class="img-fluid" alt="" />
                                 </div>
                                 <h4 class="fw-bold heading2">Facial</h4>
                                 <p class="small text-color-1">
@@ -219,7 +219,7 @@
                             </div>
                             <div class="bg-white rounded-6 p-4 text-center white-box mt-4">
                                 <div class="man-image mx-auto mb-4">
-                                    <img src="../assets/img/spa.svg" class="img-fluid" alt="" />
+                                    <img src="../assets/img/spa.png" class="img-fluid" alt="" />
                                 </div>
                                 <h4 class="fw-bold heading2">SPA</h4>
                                 <p class="small text-color-1">
@@ -230,7 +230,7 @@
                         <div class="boxes mt-4 ms-4">
                             <div class="bg-white rounded-6 p-4 text-center white-box">
                                 <div class="man-image mx-auto mb-4">
-                                    <img src="../assets/img/man.svg" class="img-fluid" alt="" />
+                                    <img src="../assets/img/man.png" class="img-fluid" alt="" />
                                 </div>
                                 <h4 class="fw-bold heading2">Men's Hair Cut</h4>
                                 <p class="small text-color-1">
@@ -239,7 +239,7 @@
                             </div>
                             <div class="bg-white rounded-6 p-4 text-center white-box mt-4">
                                 <div class="man-image mx-auto mb-4">
-                                    <img src="../assets/img/skincare.svg" class="img-fluid" alt="" />
+                                    <img src="../assets/img/skincare.png" class="img-fluid" alt="" />
                                 </div>
                                 <h4 class="fw-bold heading2">Skin Care</h4>
                                 <p class="small text-color-1">
@@ -353,85 +353,85 @@ getBusinessTypes()
 
 const categories = ref([{
         title: "Beauty salons",
-        image: "../images/salon.svg",
+        image: "../images/salon.png",
         bgColor: "#FFDED2",
         color: "#F05922",
     },
     {
         title: "SPA",
-        image: "../images/spa.svg",
+        image: "../images/spa.png",
         bgColor: "#D3FFD2",
         color: "#33F82F",
     },
     {
         title: "Hair Dressers",
-        image: "../assets/img/man.svg",
+        image: "../assets/img/man.png",
         bgColor: "#D7F8FF",
         color: "#22CBF0",
     },
     {
         title: "Yoga Centers",
-        image: "../images/yoga.svg",
+        image: "../images/yoga.png",
         bgColor: "#FFFACC",
         color: "#F9A500",
     },
     {
         title: "Massage centers",
-        image: "../images/massage.svg",
+        image: "../images/massage.png",
         bgColor: "#FFDDDD",
         color: "#F02222",
     },
     {
         title: "Skin Cares",
-        image: "../images/skincare.svg",
+        image: "../images/skincare.png",
         bgColor: "#FDE9FF",
         color: "#E022F0",
     },
     {
         title: "Waxing Centers",
-        image: "../images/wax.svg",
+        image: "../images/wax.png",
         bgColor: "#DDE0FF",
         color: "#0517BD",
     },
     {
         title: "Beauty salons",
-        image: "../images/salon.svg",
+        image: "../images/salon.png",
         bgColor: "#FFDED2",
         color: "#F05922",
     },
     {
         title: "SPA",
-        image: "../images/spa.svg",
+        image: "../images/spa.png",
         bgColor: "#D3FFD2",
         color: "#33F82F",
     },
     {
         title: "Hair Dressers",
-        image: "../assets/img/man.svg",
+        image: "../assets/img/man.png",
         bgColor: "#D7F8FF",
         color: "#22CBF0",
     },
     {
         title: "Yoga Centers",
-        image: "../images/yoga.svg",
+        image: "../images/yoga.png",
         bgColor: "#FFFACC",
         color: "#F9A500",
     },
     {
         title: "Massage centers",
-        image: "../images/massage.svg",
+        image: "../images/massage.png",
         bgColor: "#FFDDDD",
         color: "#F02222",
     },
     {
         title: "Skin Cares",
-        image: "../images/skincare.svg",
+        image: "../images/skincare.png",
         bgColor: "#FDE9FF",
         color: "#E022F0",
     },
     {
         title: "Waxing Centers",
-        image: "../images/wax.svg",
+        image: "../images/wax.png",
         bgColor: "#DDE0FF",
         color: "#0517BD",
     },
