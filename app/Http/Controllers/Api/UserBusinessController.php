@@ -96,6 +96,7 @@ class UserBusinessController extends Controller
 
     public function deleteUserCategory($id)
     {
+        // die('jjjj');
         return $this->deleteCategory($id);
     }
 
@@ -138,12 +139,12 @@ class UserBusinessController extends Controller
         return $this->user_business->changeStatus();
 
     }
-    public function deleteCategory(Request $request)
-    {
+    // public function deleteCategory(Request $request)
+    // {
 
-        return $this->delCategory($request->id);
+    //     return $this->delCategory($request->id);
 
-    }
+    // }
     public function ServiceDelete(Request $request){
       
         return $this->deleteService($request->id);

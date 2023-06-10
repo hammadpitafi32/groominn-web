@@ -41,7 +41,7 @@
                         >Sign in</router-link
                     >
                 </p>
-                <div class="d-flex mt-4">
+   <!--              <div class="d-flex mt-4">
                     <MDBBtn
                         class="shadow-1-strong me-3 text-capitalize flex-grow-1 py-3"
                         size="lg"
@@ -66,7 +66,7 @@
                         ></MDBIcon>
                         Sign up with Facebook
                     </MDBBtn>
-                </div>
+                </div> -->
                 <div class="d-flex align-items-center mt-4">
                     <hr class="bg-secondary w-100" />
                     <span class="mx-2">or</span>

@@ -29,6 +29,7 @@ use App\Services\PushNotificationService;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Storage;
 use File;
+use GoogleMaps;
 
 
 
@@ -365,18 +366,22 @@ class ApiAuthController extends Controller
         // Set the API endpoint and parameters
         $endpoint = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
         $params = [
-            'query' => 'barber+salon|beauty+salon',
+            'query' => 'barber+salon+spa|beauty+salon+spa',
             'key' => $googleMapsApiKey
         ];
 
         // Send a GET request to the API
         $response = Http::get($endpoint, $params);
+
        
         // Check if the response was successful
         if ($response->successful()) {
             // Get the JSON data from the response
             $data = $response->json();
             
+        echo "<pre>";
+        print_r($data);
+        die();
             // Loop through the results and extract the relevant data
             foreach ($data['results'] as $result) {
                 $name = $result['name'];
@@ -389,6 +394,7 @@ class ApiAuthController extends Controller
         } else {
             // Handle the error
             $error = $response->json()['error_message'];
+            die('ssss');
             // ...
         }
 
