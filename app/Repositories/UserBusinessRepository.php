@@ -336,7 +336,10 @@ class UserBusinessRepository implements UserBusinessInterface
 		// $business['cnic_front'] = asset($business->cnic_front);
 		// $business['cnic_back'] = asset($business->cnic_back);
 		// $business['license'] = asset($business->license);
-
+		if($business && !empty($business->user_business_schedules)){
+			$business->user_business_schedules['is_open']=$business->is_open;
+		}
+ 
 		return response()->json([
             'success' => true,
             'data' => $business

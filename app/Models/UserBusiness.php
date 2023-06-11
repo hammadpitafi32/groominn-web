@@ -24,10 +24,16 @@ class UserBusiness extends Model
     }
     /*end*/
 
+    // public function user_business_schedules()
+    // {
+    //     // return $this->hasMany('App\Models\UserBusinessSchedule','user_business_id', 'id');
+    //     return $this->hasMany(UserBusinessSchedule::class);
+        
+    // }
     public function user_business_schedules()
     {
         // return $this->hasMany('App\Models\UserBusinessSchedule','user_business_id', 'id');
-        return $this->hasMany(UserBusinessSchedule::class);
+        return $this->hasOne(BusinessHour::class,'user_businesses_id');
         
     }
 

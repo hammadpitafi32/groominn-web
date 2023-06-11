@@ -96,7 +96,6 @@ class UserBusinessController extends Controller
 
     public function deleteUserCategory($id)
     {
-        // die('jjjj');
         return $this->deleteCategory($id);
     }
 
