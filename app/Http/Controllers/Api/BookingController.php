@@ -107,7 +107,16 @@ class BookingController extends Controller
         $noti=new PushNotificationService();
         $business=UserBusiness::find($request->user_business_id);
 
-        $token=User::find($business->user_id)->device_token;
+        $user=User::find($business->user_id);
+        
+        if(!$user){
+
+            return response()->json([
+                'success' => false,
+                'message' => 'user not found',
+            ], 404);
+        }
+        $token=$user->device_token;
         $title='Feed back';
         $body='Alert! Client submitted the feedback.';
         // $token=$provider->device_token;

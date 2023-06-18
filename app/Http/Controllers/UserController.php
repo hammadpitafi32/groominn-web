@@ -39,9 +39,7 @@ class UserController extends Controller
         $users = $this->user->list($role);
         $users->load('user_detail');
         $users->load('role');
-        // echo "<pre>";
-        // print_r($users->toarray());
-        // die();
+
         return view('admin.users.index',compact('users','roles'));
     }
     public function changeUserStatus(Request $request)
