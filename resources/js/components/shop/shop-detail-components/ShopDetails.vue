@@ -211,7 +211,9 @@
                 </router-link>
             </div>
         </div>
+       
     </div>
+
 </template>
 
 <script setup>
@@ -227,7 +229,7 @@ import {
 import { useStore } from "vuex";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { useRoute } from "vue-router";
-
+// import Footer from "../../../layout/Footer.vue";
 const stardisable=ref(true);
 
 const props = defineProps({

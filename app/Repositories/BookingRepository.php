@@ -294,7 +294,6 @@ class BookingRepository implements BookingInterface
         $stripe = StripeTrait::obj();
         /*create stripe customer*/
         $customer_object = UserStripeInfo::where('user_id',Auth::id())->first();
-        // dd($customer_object);
 
         try {
         	if ($customer_object) 
@@ -313,7 +312,7 @@ class BookingRepository implements BookingInterface
         } catch (Exception $e) {
             $customer = $this->createStripeCustomer($stripe);
         }
-        // dd($customer);
+       
         /*update or create in db*/
         $customer_object = UserStripeInfo::updateOrCreate([
             'user_id' => Auth::id()
@@ -321,7 +320,7 @@ class BookingRepository implements BookingInterface
         [
             'customer_id'   => $customer['id'],
         ]);
-        // dd($customer_object);
+       
         /*end*/
         try {
             $card_no = str_replace(' ', '', $request->card_no);
@@ -457,24 +456,24 @@ class BookingRepository implements BookingInterface
 
 	public function getEstimatedTime()
 	{
+
 		$request = $this->request;
 		$date = date('Y-m-d H:i:s',strtotime(date("Y-m-d")));
 		$day = date('l',strtotime($date));
 
 		$current_time = date('H:i:s');
-		$estimated_time = 600;
+		$estimated_time = 10;
 		$user_business = UserBusiness::with('user_business_schedules')->find($request->user_business_id);
+       
 		$no_of_employees = ($user_business->no_of_employees?:1);
      
-		$bookings = $this->booking->where('user_business_id',$user_business->id)->whereDate('date',$date)->where('status','pending')->get();
-
-        $total_time_left = $estimated_time;
-     
+		$bookings = $this->booking->where('user_business_id',$user_business->id)->whereDate('date',$date)->whereIn('status',['pending','accepted'])->get();
+        
         $currentDateTime = Carbon::now();
 
-        if ($bookings->count() > $no_of_employees) 
+        if ($bookings->count() >= $no_of_employees) 
         {
-
+            $total_time_left = 0;
             foreach ($bookings as $booking) 
             {
                 
@@ -482,17 +481,24 @@ class BookingRepository implements BookingInterface
                 $total_duration = $booking->total_duration;
                 $left = date('H:i:s', strtotime($current_time) - strtotime($created_duration));
                 $time_left = date('H:i:s', strtotime($total_duration) - strtotime($left));
+                
+       
                 $total_time_left = date('H:i:s', strtotime($total_time_left) + strtotime($time_left));
+    
                 $timeExpl=explode(':', $total_time_left);
-                $total_time_left=$timeExpl[1];
+                $total_time_left = $timeExpl[1];
+               
+
             }
+
+        }else{
+
+            $total_time_left = $estimated_time;
         }
-        
+
   
-        return $newTime = $currentDateTime->addSeconds($total_time_left);
-        // echo "<pre>";
-        // print_r($total_time_left);
-        // die();
+        return $newTime = $currentDateTime->addMinutes($total_time_left);
+
         // return date('Y-m-d H:i:s', strtotime($total_time_left));
         // return $total_time_left;
     

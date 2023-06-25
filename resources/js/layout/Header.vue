@@ -192,7 +192,7 @@ onMounted(() => {
             navbar.value.navbar.classList.remove("bg-color-show");
         }
     });
-     console.log(store.state.auth)
+     // console.log(store.state.auth)
     if(store.state.auth){
         getNotificationsCount().then(({ data }) => {
 

@@ -6,14 +6,14 @@
         <div v-if='loading' class="notification-list">
             <div v-for='notify in notifications' @click='openNotification(notify.id)' class="notifi p-3 d-flex align-items-center border-bottom">
                 <div class="user-img pe-2">
-                    <img :src="notificationsAvatar(notify.fromUser.avatar_path)" style="width:50px !important;" class="img-fluid rounded-circle" alt="" />
+                    <img :src="notificationsAvatar(notify.from_user.avatar_path)" style="width:50px !important;" class="img-fluid rounded-circle" alt="" />
                 </div>
                 <div class="user-data">
                     <div>
-                        <span class="fw-500">{{notify.fromUser.name}} </span>
+                        <span class="fw-500">{{notify.from_user.name}} </span>
                         <span><span class="text-color-1"></span> <span class="text-light-blue">{{notify.data}}</span></span>
                     </div>
-                    <small class="time text-light-blue">{{ dateFormat(notify.created_at)}}</small>
+                    <small class="time text-light-blue">{{ dateFormat(notify.updated_at)}}</small>
                 </div>
                 <div class="ms-auto">
                     <span v-if='notify.seen' class="active-icon-plus"></span>
@@ -55,14 +55,16 @@ watchEffect(() => {
   });
 });
 const notificationsAvatar = (path) => {
-  
+ 
    return 'storage/' +path;
 };
 const dateFormat =(date)=> {
-    return moment(date.created_at).fromNow()
+
+    return moment(date).fromNow()
 };
 
 const openNotification=(id)=>{
+
   const formData = new FormData(); 
   formData.append("id", id);
   

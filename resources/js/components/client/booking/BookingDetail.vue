@@ -149,7 +149,6 @@ import { useStore } from "vuex";
 import { useToast } from "vue-toastification";
 import moment from 'moment-timezone'
 
-
 const toast = useToast();
 const bookings = ref([]);
 const store = useStore();
