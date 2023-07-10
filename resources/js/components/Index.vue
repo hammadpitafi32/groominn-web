@@ -2,21 +2,34 @@
     <!-- section 1 -->
     <section class="banner-section home-bannner">
         <MDBContainer fluid class="p-0 position-relative">
-            <MDBCarousel v-model="carousel" fade :items="items" :pause="false" :interval="false" itemsClass="slider-image img-fluid" class="main-slider" />
+            <MDBCarousel
+                v-model="carousel"
+                fade
+                :items="items"
+                :pause="false"
+                :interval="false"
+                itemsClass="slider-image img-fluid"
+                class="main-slider"
+            />
             <div class="text-on-slider">
                 <h2 class="fw-bold">
                     Connecting to you salons
                     <span class="text-orange d-block">in your area</span>
                 </h2>
                 <p class="small">
-                    Groominn is here to book an Appointment for you without <br />
+                    Groominn is here to book an Appointment for you without
+                    <br />
                     making a call
                 </p>
-                <MDBBtn class="bg-orange text-white text-capitalize" @click="
-            store.state.auth
-              ? router.push('/booking-list')
-              : router.push('/register')
-          ">Get Started</MDBBtn>
+                <MDBBtn
+                    class="bg-orange text-white text-capitalize"
+                    @click="
+                        store.state.auth
+                            ? router.push('/booking-list')
+                            : router.push('/register')
+                    "
+                    >Get Started</MDBBtn
+                >
             </div>
         </MDBContainer>
     </section>
@@ -37,28 +50,63 @@
         <MDBContainer fluid>
             <MDBRow>
                 <MDBCol col="12  col-md-2 text-center img-none">
-                    <img src="../assets/img/pnik-grooming.svg" class="img-fluid" alt="" :style="{ height: imageHeight + 'px' }" />
+                    <img
+                        src="../assets/img/pnik-grooming.svg"
+                        class="img-fluid"
+                        alt=""
+                        :style="{ height: imageHeight + 'px' }"
+                    />
                 </MDBCol>
                 <MDBCol col="12  col-md-10">
                     <div ref="rightSide">
                         <MDBRow>
-                            <MDBCol col="12 col-sm-6 col-md-10" class="mx-auto text-center">
-                                <h2 class="text-orange fw-bold mb-3">Why choose Groominn?</h2>
+                            <MDBCol
+                                col="12 col-sm-6 col-md-10"
+                                class="mx-auto text-center"
+                            >
+                                <h2 class="text-orange fw-bold mb-3">
+                                    Why choose Groominn?
+                                </h2>
                                 <p class="text-color-1 small">
-                                    At Groominn, we care about the well-being of our customers and stylists. Explore hair salon franchising opportunities with Great groominn app.
-                                    We look forward to giving you the haircut you want or any service which will groom you. To make it more convenient for you, use Online groominn app to add your name to the waitlist at a hair salon near you.
+                                    At Groominn, we care about the well-being of
+                                    our customers and stylists. Explore hair
+                                    salon franchising opportunities with Great
+                                    groominn app. We look forward to giving you
+                                    the haircut you want or any service which
+                                    will groom you. To make it more convenient
+                                    for you, use Online groominn app to add your
+                                    name to the waitlist at a hair salon near
+                                    you.
                                 </p>
                             </MDBCol>
                         </MDBRow>
                         <MDBRow class="mt-5 custom-card">
                             <MDBCol col="12 col-sm-6 col-md-4">
                                 <div class="text-center h-100">
-                                    <MDBCard class="shadow-2 features-card h-100 pt-4">
-                                        <img src="../assets/img/fast-easy-booking.svg" alt="..." class="img-fluid" />
+                                    <MDBCard
+                                        class="shadow-2 features-card h-100 pt-4"
+                                    >
+                                        <img
+                                            src="../assets/img/fast-easy-booking.svg"
+                                            alt="..."
+                                            class="img-fluid"
+                                        />
                                         <MDBCardBody class="mt-4">
-                                            <MDBCardTitle class="mb-4">Fast & Easy Booking</MDBCardTitle>
-                                            <MDBCardText class="text-color-1 small">
-                                                We want all our customers to feel confident and happy leaving the beauty salon, which is why your complete satisfaction on all services and products is fully guaranteed. When you're at Groominn, you know It's Gonna Be Great.
+                                            <MDBCardTitle class="mb-4"
+                                                >Fast & Easy
+                                                Booking</MDBCardTitle
+                                            >
+                                            <MDBCardText
+                                                class="text-color-1 small"
+                                            >
+                                                We want all our customers to
+                                                feel confident and happy leaving
+                                                the beauty salon, which is why
+                                                your complete satisfaction on
+                                                all services and products is
+                                                fully guaranteed. When you're at
+                                                Groominn, you know It's Gonna Be
+                                                Great.
                                             </MDBCardText>
                                         </MDBCardBody>
                                     </MDBCard>
@@ -66,12 +114,26 @@
                             </MDBCol>
                             <MDBCol col="12 col-sm-6 col-md-4 second-col">
                                 <div class="text-center h-100 bg-after-orange">
-                                    <MDBCard class="shadow-4-strong features-card h-100 pt-4">
-                                        <img src="../assets/img/save-time.svg" alt="..." class="img-fluid" />
+                                    <MDBCard
+                                        class="shadow-4-strong features-card h-100 pt-4"
+                                    >
+                                        <img
+                                            src="../assets/img/save-time.svg"
+                                            alt="..."
+                                            class="img-fluid"
+                                        />
                                         <MDBCardBody class="mt-4">
-                                            <MDBCardTitle class="mb-4">Save time</MDBCardTitle>
-                                            <MDBCardText class="text-color-1 small">
-                                                Basic concept of groominn is to save the customer time, thats our first priority. So you can checkin in to any salon by groominn with out any hustle.
+                                            <MDBCardTitle class="mb-4"
+                                                >Save time</MDBCardTitle
+                                            >
+                                            <MDBCardText
+                                                class="text-color-1 small"
+                                            >
+                                                Basic concept of groominn is to
+                                                save the customer time, thats
+                                                our first priority. So you can
+                                                checkin in to any salon by
+                                                groominn with out any hustle.
                                             </MDBCardText>
                                         </MDBCardBody>
                                     </MDBCard>
@@ -80,12 +142,28 @@
                             <MDBCol col="12 col-sm-6 col-md-4 second-col">
                                 <div class="text-center h-100">
                                     <div class="text-center h-100">
-                                        <MDBCard class="shadow-2 features-card h-100 pt-4">
-                                            <img src="../assets/img/satisfied-customer.svg" alt="..." class="img-fluid" />
+                                        <MDBCard
+                                            class="shadow-2 features-card h-100 pt-4"
+                                        >
+                                            <img
+                                                src="../assets/img/satisfied-customer.svg"
+                                                alt="..."
+                                                class="img-fluid"
+                                            />
                                             <MDBCardBody class="mt-4">
-                                                <MDBCardTitle class="mb-4">Satisfied coustomers</MDBCardTitle>
-                                                <MDBCardText class="text-color-1 small">
-                                                    We want all our customers to feel confident and happy leaving the groominn, which is why your complete satisfaction on all services are fully guaranteed.
+                                                <MDBCardTitle class="mb-4"
+                                                    >Satisfied
+                                                    coustomers</MDBCardTitle
+                                                >
+                                                <MDBCardText
+                                                    class="text-color-1 small"
+                                                >
+                                                    We want all our customers to
+                                                    feel confident and happy
+                                                    leaving the groominn, which
+                                                    is why your complete
+                                                    satisfaction on all services
+                                                    are fully guaranteed.
                                                 </MDBCardText>
                                             </MDBCardBody>
                                         </MDBCard>
@@ -98,10 +176,14 @@
                             <MDBContainer fluid>
                                 <MDBRow>
                                     <MDBCol col="12">
-                                        <h2 class="fw-bold text-color-2">Find the best</h2>
-                                        <h4 class="text-orange">Services in the town</h4>
+                                        <h2 class="fw-bold text-color-2">
+                                            Find the best
+                                        </h2>
+                                        <h4 class="text-orange">
+                                            Services in the town
+                                        </h4>
                                     </MDBCol>
-                                   <!--  <MDBCol col="12 col-sm-4" offset="0 offset-md-8">
+                                    <!--  <MDBCol col="12 col-sm-4" offset="0 offset-md-8">
                                         <MDBBtn class="btn-custom-white shadow-0 text-capitalize" @click="showAll = !showAll">
                                             {{
                                             showAll ? "Show Less catagories" : "Show All catagories"
@@ -111,16 +193,52 @@
                                 </MDBRow>
                                 <MDBRow>
                                     <MDBCol col="12 pt-5">
-                                        <div class="category-boxes d-flex pb-5" :class="showAll && 'flex-wrap'">
-                                            <div v-if='isBusinessTypeData' v-for="(category, index) in businessTypes" :key="index" class="category-box bg-white rounded-6 p-3 me-3 mb-3">
-                                                <div class="man-image" :style="{ backgroundColor: category.bgColor }">
-                                                    <img :src="category.image" class="img-fluid" alt="" />
+                                        <div
+                                            class="category-boxes d-flex pb-5"
+                                            :class="showAll && 'flex-wrap'"
+                                        >
+                                            <div
+                                                v-if="isBusinessTypeData"
+                                                v-for="(
+                                                    category, index
+                                                ) in businessTypes"
+                                                :key="index"
+                                                class="category-box bg-white rounded-6 p-3 me-3 mb-3"
+                                            >
+                                                <div
+                                                    class="man-image"
+                                                    :style="{
+                                                        backgroundColor:
+                                                            category.bgColor,
+                                                    }"
+                                                >
+                                                    <img
+                                                        :src="category.image"
+                                                        class="img-fluid"
+                                                        alt=""
+                                                    />
                                                 </div>
-                                                <h5 style="cursor:pointer;" @click="openBusinessList(category.id)" class="mt-5 mb-1 text-color-2">
+                                                <h5
+                                                    style="cursor: pointer"
+                                                    @click="
+                                                        openBusinessList(
+                                                            category.id
+                                                        )
+                                                    "
+                                                    class="mt-5 mb-1 text-color-2"
+                                                >
                                                     {{ category.name }}
                                                 </h5>
                                                 <p class="small">
-                                                    <span :style="{ color: category.bgColor }">{{category.businesses.length}}</span>
+                                                    <span
+                                                        :style="{
+                                                            color: category.bgColor,
+                                                        }"
+                                                        >{{
+                                                            category.businesses
+                                                                .length
+                                                        }}</span
+                                                    >
                                                     Listing
                                                 </p>
                                             </div>
@@ -141,57 +259,108 @@
         <MDBContainer fluid class="ps-0">
             <MDBRow>
                 <MDBCol col="12 col-sm-6" class="position-relative">
-                    <div class="
-              orange-background
-              d-flex
-              align-items-center
-              justify-content-end
-              pe-5
-            ">
-                        <img src="../assets/img/girl.svg" alt="" class="img-fluid girl-img w-75" />
-                        <img src="../assets/img/map.svg" alt="" class="img-fluid w-25" />
+                    <div
+                        class="orange-background d-flex align-items-center justify-content-end pe-5"
+                    >
+                        <img
+                            src="../assets/img/girl.svg"
+                            alt=""
+                            class="img-fluid girl-img w-75"
+                        />
+                        <img
+                            src="../assets/img/map.svg"
+                            alt=""
+                            class="img-fluid w-25"
+                        />
                     </div>
                     <div class="text-box position-absolute text-center">
-                        <img src="../assets/img/logo-2.svg" class="img-fluid" alt="" />
-                        <small class="text-dark d-block mt-3">Groominn is here to book an Appointment without making a call</small>
+                        <img
+                            src="../assets/img/logo-2.svg"
+                            class="img-fluid"
+                            alt=""
+                        />
+                        <small class="text-dark d-block mt-3"
+                            >Groominn is here to book an Appointment without
+                            making a call</small
+                        >
                     </div>
                 </MDBCol>
                 <MDBCol col="12 col-sm-6 second-col">
                     <div class="right-side position-relative pt-5">
-                        <h2 class="fw-bold heading2">Hundreds of hair styles, one great service.</h2>
+                        <h2 class="fw-bold heading2">
+                            Hundreds of hair styles, one great service.
+                        </h2>
                         <p class="text-color-2 small">
-                            We look forward to giving you the best services you want. Lets have a look what we and our salons are offering.
+                            We look forward to giving you the best services you
+                            want. Lets have a look what we and our salons are
+                            offering.
                         </p>
-                        <div class="side-card d-flex align-items-start mt-4 pt-3">
+                        <div
+                            class="side-card d-flex align-items-start mt-4 pt-3"
+                        >
                             <div class="man-image me-4">
-                                <img src="../assets/img/man.png" class="img-fluid" alt="" />
+                                <img
+                                    src="../assets/img/man.png"
+                                    class="img-fluid"
+                                    alt=""
+                                />
                             </div>
                             <div class="text-area">
-                                <h5 class="fw-bold text-orange">Make up for Women</h5>
+                                <h5 class="fw-bold text-orange">
+                                    Make up for Women
+                                </h5>
                                 <p class="text-color-2 small">
-                                    Looking for a fresh, women's haircut or bridal make up? You're in luck! The stylists at your local groominn salons are committed to providing skilled haircuts like bobs, blunt cuts, layers, and more!
+                                    Looking for a fresh, women's haircut or
+                                    bridal make up? You're in luck! The stylists
+                                    at your local groominn salons are committed
+                                    to providing skilled haircuts like bobs,
+                                    blunt cuts, layers, and more!
                                 </p>
                             </div>
                         </div>
                         <div class="side-card d-flex align-items-start mt-4">
                             <div class="man-image me-4">
-                                <img src="../assets/img/man.png" class="img-fluid" alt="" />
+                                <img
+                                    src="../assets/img/man.png"
+                                    class="img-fluid"
+                                    alt=""
+                                />
                             </div>
                             <div class="text-area">
-                                <h5 class="fw-bold text-orange">Men's Haircuts</h5>
+                                <h5 class="fw-bold text-orange">
+                                    Men's Haircuts
+                                </h5>
                                 <p class="text-color-2 small">
-                                    The stylists at your local grominn salons are trained in a variety of men's haircuts. Whether you're looking for a fade, crew cut or just a trim, you can get the look you want at an affordable price at groominn salons. Want to make sure you get the same great cut.
+                                    The stylists at your local grominn salons
+                                    are trained in a variety of men's haircuts.
+                                    Whether you're looking for a fade, crew cut
+                                    or just a trim, you can get the look you
+                                    want at an affordable price at groominn
+                                    salons. Want to make sure you get the same
+                                    great cut.
                                 </p>
                             </div>
                         </div>
                         <div class="side-card d-flex align-items-start mt-4">
                             <div class="man-image me-4">
-                                <img src="../assets/img/man.png" class="img-fluid" alt="" />
+                                <img
+                                    src="../assets/img/man.png"
+                                    class="img-fluid"
+                                    alt=""
+                                />
                             </div>
                             <div class="text-area">
-                                <h5 class="fw-bold text-orange">Services for Seniors</h5>
+                                <h5 class="fw-bold text-orange">
+                                    Services for Seniors
+                                </h5>
                                 <p class="text-color-2 small">
-                                    At Groominn many Salons offers the same great beauty services for seniors. Whether your hair is thin, thick, colored, or natural, Our hair stylists know how to work with all hair types and textures. Don't forget to ask your stylist about a senior discount at your next service!
+                                    At Groominn many Salons offers the same
+                                    great beauty services for seniors. Whether
+                                    your hair is thin, thick, colored, or
+                                    natural, Our hair stylists know how to work
+                                    with all hair types and textures. Don't
+                                    forget to ask your stylist about a senior
+                                    discount at your next service!
                                 </p>
                             </div>
                         </div>
@@ -208,42 +377,76 @@
                 <MDBCol col="12 col-sm-8 col-md-6">
                     <div class="d-flex cards-flex justify-content-end py-5">
                         <div class="boxes">
-                            <div class="bg-white rounded-6 p-4 text-center white-box">
+                            <div
+                                class="bg-white rounded-6 p-4 text-center white-box"
+                            >
                                 <div class="man-image mx-auto mb-4">
-                                    <img src="../assets/img/salon.png" class="img-fluid" alt="" />
+                                    <img
+                                        src="../assets/img/salon.png"
+                                        class="img-fluid"
+                                        alt=""
+                                    />
                                 </div>
                                 <h4 class="fw-bold heading2">Facial</h4>
                                 <p class="small text-color-1">
-                                    A facial is a family of skin care treatments for the face, including steam, exfoliation (physical and chemical), extraction, creams and lotions.
+                                    A facial is a family of skin care treatments
+                                    for the face, including steam, exfoliation
+                                    (physical and chemical), extraction, creams
+                                    and lotions.
                                 </p>
                             </div>
-                            <div class="bg-white rounded-6 p-4 text-center white-box mt-4">
+                            <div
+                                class="bg-white rounded-6 p-4 text-center white-box mt-4"
+                            >
                                 <div class="man-image mx-auto mb-4">
-                                    <img src="../assets/img/spa.png" class="img-fluid" alt="" />
+                                    <img
+                                        src="../assets/img/spa.png"
+                                        class="img-fluid"
+                                        alt=""
+                                    />
                                 </div>
                                 <h4 class="fw-bold heading2">SPA</h4>
                                 <p class="small text-color-1">
-                                    Spa treatments often include a combination of deep cleansing, massages and moisturisation.
+                                    Spa treatments often include a combination
+                                    of deep cleansing, massages and
+                                    moisturisation.
                                 </p>
                             </div>
                         </div>
                         <div class="boxes mt-4 ms-4">
-                            <div class="bg-white rounded-6 p-4 text-center white-box">
+                            <div
+                                class="bg-white rounded-6 p-4 text-center white-box"
+                            >
                                 <div class="man-image mx-auto mb-4">
-                                    <img src="../assets/img/man.png" class="img-fluid" alt="" />
+                                    <img
+                                        src="../assets/img/man.png"
+                                        class="img-fluid"
+                                        alt=""
+                                    />
                                 </div>
                                 <h4 class="fw-bold heading2">Men's Hair Cut</h4>
                                 <p class="small text-color-1">
-                                    These are the coolest and most stylish men's haircuts. Show your barber one of these fresh new looks today.
+                                    These are the coolest and most stylish men's
+                                    haircuts. Show your barber one of these
+                                    fresh new looks today.
                                 </p>
                             </div>
-                            <div class="bg-white rounded-6 p-4 text-center white-box mt-4">
+                            <div
+                                class="bg-white rounded-6 p-4 text-center white-box mt-4"
+                            >
                                 <div class="man-image mx-auto mb-4">
-                                    <img src="../assets/img/skincare.png" class="img-fluid" alt="" />
+                                    <img
+                                        src="../assets/img/skincare.png"
+                                        class="img-fluid"
+                                        alt=""
+                                    />
                                 </div>
                                 <h4 class="fw-bold heading2">Skin Care</h4>
                                 <p class="small text-color-1">
-                                    No matter what your skin type is, a daily skin care routine can help you maintain overall skin health and improve specific concerns like acne and dark spots
+                                    No matter what your skin type is, a daily
+                                    skin care routine can help you maintain
+                                    overall skin health and improve specific
+                                    concerns like acne and dark spots
                                 </p>
                             </div>
                         </div>
@@ -253,8 +456,183 @@
                     <div class="ps-4">
                         <h2 class="fw-bold heading2">Top Categories</h2>
                         <p class="small text-color-1">
-                            Right now we have four top service categories.These are according to customer feedback and their services.You can checkin these services and get to know more about these services and the salons.
+                            Right now we have four top service categories.These
+                            are according to customer feedback and their
+                            services.You can checkin these services and get to
+                            know more about these services and the salons.
                         </p>
+                    </div>
+                    <div class="reviews-parrent">
+                        <div class="container">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button
+                                    class="nav-link active"
+                                    id="location-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#location"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="location"
+                                    aria-selected="true"
+                                >
+                                    Location
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button
+                                    class="nav-link"
+                                    id="location-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#reviews"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="reviews"
+                                    aria-selected="false"
+                                >
+                                    Reviews
+                                </button>
+                            </li>
+                          
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div
+                                class="tab-pane fade show active"
+                                id="location"
+                                role="tabpanel"
+                                aria-labelledby="location-tab"
+                            >
+                                <div class="content-parent">
+                                    <div class="map-wrapper">
+                                        <iframe  id="gmap_canvas" src="https://maps.google.com/maps?q=california&t=&z=10&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="tab-pane fade"
+                                id="reviews"
+                                role="tabpanel"
+                                aria-labelledby="reviews-tab"
+                            >
+                                 <div class="content-parent">
+                                    <div class="reviews">
+                                        <ul class="ul">
+                                        <li class="review-item">
+<div class="review-wrapper">
+    <div class="image">
+        <img src="https://groominn.co/storage/avatars/ceBCrHQ4nqzqMOxJ9Y7v6d7PDWy7freoHVxPtNKY.png" alt="">
+    </div>
+    <div class="content">
+        <h2 class="name">Hammad Ahmad</h2>
+    
+    <div class="stars">
+        <ul >
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+        </ul>
+    </div>
+    <p class="text">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos, minima pariatur impedit molestias, quo, tempora aperiam hic voluptatibus culpa mollitia quod voluptates perspiciatis ratione recusandae reprehenderit sequi totam esse provident!
+    </p>
+    <p class="date">
+        dec 15,2022
+    </p>
+</div>
+</div>
+                                        </li>
+                                         <li class="review-item">
+<div class="review-wrapper">
+    <div class="image">
+        <img src="https://groominn.co/storage/avatars/ceBCrHQ4nqzqMOxJ9Y7v6d7PDWy7freoHVxPtNKY.png" alt="">
+    </div>
+    <div class="content">
+        <h2 class="name">Hammad Ahmad</h2>
+    
+    <div class="stars">
+        <ul >
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+        </ul>
+    </div>
+    <p class="text">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos, minima pariatur impedit molestias, quo, tempora aperiam hic voluptatibus culpa mollitia quod voluptates perspiciatis ratione recusandae reprehenderit sequi totam esse provident!
+    </p>
+    <p class="date">
+        dec 15,2022
+    </p>
+</div>
+</div>
+                                        </li>
+                                         <li class="review-item">
+<div class="review-wrapper">
+    <div class="image">
+        <img src="https://groominn.co/storage/avatars/ceBCrHQ4nqzqMOxJ9Y7v6d7PDWy7freoHVxPtNKY.png" alt="">
+    </div>
+    <div class="content">
+        <h2 class="name">Hammad Ahmad</h2>
+    
+    <div class="stars">
+        <ul >
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+            <li>
+                <i class="fa fa-star"></i>
+            </li>
+        </ul>
+    </div>
+    <p class="text">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos, minima pariatur impedit molestias, quo, tempora aperiam hic voluptatibus culpa mollitia quod voluptates perspiciatis ratione recusandae reprehenderit sequi totam esse provident!
+    </p>
+    <p class="date">
+        dec 15,2022
+    </p>
+</div>
+</div>
+                                        </li>
+                                        </ul>
+                                        
+                                    </div>
+                                 </div>
+                            </div>
+                            
+                        </div>
+                        </div>
                     </div>
                 </MDBCol>
             </MDBRow>
@@ -268,17 +646,44 @@
                 <MDBCol col="12 col-sm-6 col-md-4">
                     <h2 class="fw-bold heading2">Groominn Applications</h2>
                     <p class="small text-color-1 mb-4">
-                        You can download groominn application from your play store and book your require service any time you want.
+                        You can download groominn application from your play
+                        store and book your require service any time you want.
                     </p>
-                    <MDBBtn class="bg-orange text-white text-capitalize shadow-0 f-w-400" size="md" rounded>
-                        <MDBIcon iconStyle="fab" icon="apple" size="2xl" class="me-2"></MDBIcon>App store
+                    <MDBBtn
+                        class="bg-orange text-white text-capitalize shadow-0 f-w-400"
+                        size="md"
+                        rounded
+                    >
+                        <MDBIcon
+                            iconStyle="fab"
+                            icon="apple"
+                            size="2xl"
+                            class="me-2"
+                        ></MDBIcon
+                        >App store
                     </MDBBtn>
-                    <MDBBtn class="bg-orange text-white text-capitalize shadow-0 ms-3 f-w-400" rounded>
-                        <MDBIcon iconStyle="fab" icon="android" size="2xl" class="me-2"></MDBIcon>Play store
+                    <MDBBtn
+                        class="bg-orange text-white text-capitalize shadow-0 ms-3 f-w-400"
+                        rounded
+                    >
+                        <MDBIcon
+                            iconStyle="fab"
+                            icon="android"
+                            size="2xl"
+                            class="me-2"
+                        ></MDBIcon
+                        >Play store
                     </MDBBtn>
                 </MDBCol>
-                <MDBCol col="12 col-sm-6 col-md-8" class="text-center second-col">
-                    <img src="../assets/img/mobile.svg" class="img-fluid" alt="" />
+                <MDBCol
+                    col="12 col-sm-6 col-md-8"
+                    class="text-center second-col"
+                >
+                    <img
+                        src="../assets/img/mobile.svg"
+                        class="img-fluid"
+                        alt=""
+                    />
                 </MDBCol>
             </MDBRow>
         </MDBContainer>
@@ -311,10 +716,11 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-    store.dispatch('clientRedirection');
+    store.dispatch("clientRedirection");
 });
 
-const items = [{
+const items = [
+    {
         src: "../images/banner-img-1.svg",
         alt: "...",
     },
@@ -330,28 +736,26 @@ const items = [{
 
 const openBusinessList = (type) => {
     router.push({
-      path: "/booking-list",
-      query: {
-        ...({ businessType: type }),
-       
-      },
+        path: "/booking-list",
+        query: {
+            ...{ businessType: type },
+        },
     });
     // router.push({"/booking-list",params:{businessType:type}});
-}
+};
 getBusinessTypes()
     .then((res) => {
-        
         // console.log(res.data)
-        businessTypes.value = res.data.data
+        businessTypes.value = res.data.data;
         isBusinessTypeData.value = true;
     })
     .catch((err) => {
-
         // success.value = null;
         // errors.value = err.response.data.errors;
     });
 
-const categories = ref([{
+const categories = ref([
+    {
         title: "Beauty salons",
         image: "../images/salon.png",
         bgColor: "#FFDED2",
@@ -436,5 +840,4 @@ const categories = ref([{
         color: "#0517BD",
     },
 ]);
-
 </script>
