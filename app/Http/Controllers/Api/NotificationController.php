@@ -19,7 +19,7 @@ class NotificationController extends Controller
     public function getNotifications(Request $request)
     {
         
-        $notifications=$this->notification->with('fromUser')->where('to_user',auth()->user()->id)->latest()->take(8)->get();
+        $notifications=$this->notification->with('fromUser')->where('to_user',auth()->user()->id)->latest()->take(10)->get();
         
         return response()->json([
             'success' => true,
