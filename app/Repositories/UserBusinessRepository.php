@@ -394,6 +394,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	/*get business list for client with radius*/
 	public function getBusinesseslist()
 	{
+
 		$request = $this->request;
 		// dd($request->all());
 		$user_business = UserBusiness::where('is_open',1)->where('status','active')
@@ -436,7 +437,7 @@ class UserBusinessRepository implements UserBusinessInterface
         {
             $user_business =$user_business->paginate(10);
         }
-
+        
         return response()->json([
             'success' => true,
             'data' => $user_business
