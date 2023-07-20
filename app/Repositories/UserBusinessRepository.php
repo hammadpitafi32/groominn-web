@@ -437,7 +437,7 @@ class UserBusinessRepository implements UserBusinessInterface
         {
             $user_business =$user_business->paginate(10);
         }
-        
+
         return response()->json([
             'success' => true,
             'data' => $user_business
