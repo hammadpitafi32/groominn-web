@@ -58,4 +58,6 @@ app.use(VueGoogleMaps, {
         libraries: "places",
     },
 });
+
+
 app.component("my-app", App).mount("#app");

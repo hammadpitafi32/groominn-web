@@ -12,11 +12,11 @@
                                 <span v-if="errors && errors.name" class="text-danger small">{{ errors.name[0] }}</span>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="name" class="mb-2 fw-bold small">Business Type</label>
+                                <label for="businessType" class="mb-2 fw-bold small">Business Type</label>
                                 <select id="business-type" name="businessType" v-model='businessType'>
                                     <option v-for='type in businessTypes' :value="type.id">{{type.name}}</option>
                                 </select>
-                                <span v-if="errors && errors.name" class="text-danger small">{{ errors.name[0] }}</span>
+                                <span v-if="errors && errors.business_type_id" class="text-danger small">{{ errors.business_type_id[0] }}</span>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="address" class="mb-2 fw-bold small">Address</label>
@@ -25,7 +25,8 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="employees" class="mb-2 fw-bold small">Numbers of Employees</label>
-                                <MDBInput id="employees" type="number" v-model="employees" class="bg-white py-2" />
+                                <MDBInput id="employees" required type="number" min="1" v-model="employees" class="bg-white py-2" />
+                                <span v-if="errors && errors.no_of_employees"  class="text-danger small">{{ errors.no_of_employees[0] }}</span>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="description" class="mb-2 fw-bold small">Description</label>
@@ -79,7 +80,7 @@
                                 </MDBCol>
                                 <MDBCol col="12 col-sm-6 col-md-3 sec-col">
                                     <div class="mb-2 fw-bold small">
-                                        Upload CNIC Front
+                                        Upload CNIC Front (Required)
                                     </div>
                                     <label for="cnic-front" class="custom-drag-label" :class="drag.front && 'drag-entered'" @dragover="drag.front = true" @dragleave="drag.front = false" @dragend="drag.front = false" @drop="drag.front = false">
                                         <svg width="26" height="17" viewBox="0 0 26 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -122,7 +123,7 @@
                                 </MDBCol>
                                 <MDBCol col="12 col-sm-6 col-md-3 sec-col">
                                     <div class="mb-2 fw-bold small">
-                                        Upload CNIC Back
+                                        Upload CNIC Back (Required)
                                     </div>
                                     <label for="cnic-back" class="custom-drag-label" :class="drag.back && 'drag-entered'" @dragover="drag.back = true" @dragleave="drag.back = false" @dragend="drag.back = false" @drop="drag.back = false">
                                         <svg width="26" height="17" viewBox="0 0 26 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -165,7 +166,7 @@
                                 </MDBCol>
                                 <MDBCol col="12 col-sm-6 col-md-3 sec-col">
                                     <div class="mb-2 fw-bold small">
-                                        Shop Liscence
+                                        Shop Liscence or any Doc (Required)
                                     </div>
                                     <label for="shop-liscence" class="custom-drag-label" :class="drag.liscence && 'drag-entered'" @dragover="drag.liscence = true" @dragleave="drag.liscence = false" @dragend="drag.liscence = false" @drop="drag.liscence = false">
                                         <svg width="26" height="17" viewBox="0 0 26 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -230,6 +231,7 @@
     </MDBContainer>
 </template>
 <script setup>
+
 import { reactive, ref } from "@vue/reactivity";
 import { MDBInput, MDBTextarea, MDBFile } from "mdb-vue-ui-kit";
 import { useRoute, useRouter } from "vue-router";
@@ -386,7 +388,7 @@ const uploadPics = (event, val, firstTimeSet) => {
 const dragHandlner = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log(event);
+    // console.log(event);
 };
 
 watch(cnicFront, () => {
@@ -406,7 +408,19 @@ watch(Liscence, () => {
 });
 
 watch("address.place", (val) => {
-    console.log(val);
+    // console.log(val);
+});
+watch(employees, (val) => {
+   
+      var value = parseFloat(val);
+
+        if (value < 0 || isNaN(value)) {
+
+            errors.value={'no_of_employees': ["The no of employees must be at least 1."]};
+           
+        }else{
+            errors.value=null;
+        } 
 });
 
 const addShopHandler = () => {
@@ -451,6 +465,7 @@ const addShopHandler = () => {
         .catch((err) => {
             loading.value = false;
             success.value = null;
+            // console.log(err.response.data.errors)
             errors.value = err.response.data.errors;
         });
 };

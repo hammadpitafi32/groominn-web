@@ -17,7 +17,8 @@
                                     <div class="card-body">
                                         <div class="form-group row">
                                             <div class="col-md-12" style="text-align:center;">
-                                                <img width="120" style="border-radius: 50%;" :src="avatar" alt="profile Image">
+                                                <img width="120" v-if="avatar!=''" style="border-radius: 20%;" :src="avatar" alt="profile Image">
+                                                <img width="120" v-else style="border-radius: 20%;" src="images/avatar.png" alt="profile Image">
                                             </div>
                                         </div>
                                         <MDBCol col="12 col-sm-6 col-md-3 ">
@@ -146,7 +147,7 @@ const uploadPics = (event, val, firstTimeSet) => {
     const fileReader = new FileReader();
     
     fileReader.addEventListener("load", () => {
-        console.log(files[0])
+        // console.log(files[0])
   
             avatarForApi.value=files[0];
        
@@ -167,6 +168,7 @@ getUserData().then(({ data }) => {
     
     if (user_detail.value) {
         avatar.value = 'storage/' + user_detail.value.avatar_path;
+        
         firstName.value = user_detail.value.first_name;
         if (user_detail.value.last_name) {
 
@@ -197,6 +199,10 @@ const saveUserHandler = () => {
                 user_detail.value = response.data.data;
             }
             toast.success("Changes Saved Successfully!");
+
+            setTimeout(function() {
+                location.reload();
+            }, 2000); // 3000 milliseconds = 3 seconds
         })
         .catch((err) => {
             errors.value = err.response.data.errors;

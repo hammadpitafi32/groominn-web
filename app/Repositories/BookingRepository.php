@@ -576,7 +576,7 @@ class BookingRepository implements BookingInterface
         {
             $user_id = Auth::id();
         }
-        // dd($id);
+        
         $booking_query = $this->booking
         ->when($id,function($q) use($id){
             $q->where('id',$id);
@@ -619,7 +619,7 @@ class BookingRepository implements BookingInterface
         
         $request = $this->request;
         $status=['pending','accepted'];
-        $bookings=$this->booking::with('user')->where('user_business_id',$request->user_business_id)->whereIn('status',$status)->get();
+        $bookings=$this->booking::with('user')->where('user_business_id',$request->user_business_id)->whereIn('status',$status)->orderByDesc('created_at')->get();
 
         return response()->json([
             'success' => true,
@@ -629,7 +629,7 @@ class BookingRepository implements BookingInterface
     public function getBookings()
     {
         
-        $bookings = $this->bookingQuery()->get();
+        $bookings = $this->bookingQuery()->orderByDesc('created_at')->get();
 
         return response()->json([
             'success' => true,
@@ -747,6 +747,16 @@ class BookingRepository implements BookingInterface
         $booking->status=$this->bookingStatus[1];
         $booking->cancel_by=auth()->user()->id;
         $booking->save();
+
+        $user=User::find($booking->user_id);
+        $title='Cancel Booking';
+        $body='Sorry! Your Booking has been accepted';
+        $token=$user->device_token;
+        $from_user=auth()->user()->id;
+        $to_user=$booking->user_id;
+        $type='BOOKING';
+        
+        $this->notify->send($title, $body,$token,$from_user,$to_user,$type);
        
         return response()->json([
             'success' => true,

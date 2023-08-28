@@ -17,8 +17,12 @@
                 <li><router-link to="/terms-policy" class="nav-link">Terms & policy</router-link></li>
                 <!-- <li><a href="#" class="link">Privacy</a></li> -->
                 <!-- <li><a href="#" class="link">Affiliates</a></li> -->
-                <li><router-link to="/contact-us" class="nav-link">Contact Support</router-link>
-                  <!-- <a href="{{url('contact-us')}}" class="link">Contact Support</a> -->
+                <li><router-link to="/contact-us" class="nav-link">Contact Us</router-link>
+                  
+                </li>
+
+                <li><router-link to="/support" class="nav-link">Support</router-link>
+                  
                 </li>
               </ul>
             </div>
@@ -39,3 +43,10 @@
 
 <script setup>
 </script>
+<style scoped>
+.nav-link {
+  padding: 0px !important;
+}
+
+
+</style>

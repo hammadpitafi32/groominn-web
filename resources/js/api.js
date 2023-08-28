@@ -26,6 +26,10 @@ export const login = async (data) => {
     return await instance.post(`/login`, data);
 };
 
+export const submitContactUs = async (data) => {
+    return await instance.post(`/submit-contact-us`, data);
+};
+
 export const register = async (data) => {
     return await instance.post(`/register`, data);
 };

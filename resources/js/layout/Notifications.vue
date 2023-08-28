@@ -39,6 +39,7 @@ import { useToast } from "vue-toastification";
 import moment from 'moment';
 import { useRoute, useRouter } from "vue-router";
 
+
 const store = useStore();
 const emits = defineEmits(['close']);
 const notifications = ref([]);
@@ -47,6 +48,7 @@ const loading = ref(false);
 const router = useRouter();
 
 watchEffect(() => {
+    // console.log('here')
   getNotifications().then(({ data }) => {
 
     notifications.value = data.data;

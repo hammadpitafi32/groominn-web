@@ -49,6 +49,7 @@
                 </div>
 
                 <form>
+                   
                     <div class="form-group mb-4">
                         <label for="email" class="mb-1">Email Address</label>
                         <MDBInput
@@ -57,7 +58,9 @@
                             v-model="credentials.email"
                             placeholder="Abc@abc.com"
                             class="rounded-6"
+                            @input="validateEmail"
                         />
+                        <span v-if="errors && errors.email" class="text-danger small">{{ errors.email[0] }}</span>
                     </div>
                     <div class="form-group mb-2">
                         <label for="password" class="mb-1">Password</label>
@@ -67,6 +70,7 @@
                             v-model="credentials.password"
                             placeholder="****************"
                             class="rounded-6"
+                            @keyup="handleKeyPress"
                         />
                     </div>
                     <div class="d-flex align-items-center mb-4">
@@ -89,6 +93,7 @@
                         :disabled="loading"
                         size="lg"
                         @click="handleLogin()"
+                        
                     >
                         <span v-if="!loading"> Login </span>
                         <BtnLoader v-else />
@@ -108,7 +113,7 @@
 <script setup>
 
 import { ref, reactive } from "@vue/reactivity";
-import { watch, watchEffect } from "@vue/runtime-core";
+import { onMounted, watch, watchEffect } from "@vue/runtime-core";
 import { MDBInput } from "mdb-vue-ui-kit";
 import { useCookies } from "vue3-cookies";
 import { login } from "../api";
@@ -116,11 +121,14 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import AccountVerify from "../components/modals/AccountVerify.vue";
+import { messaging } from '../firebaseConfig';
+import { getToken, onMessage } from 'firebase/messaging';
 
 const loading = ref(false);
 const credentials = reactive({
     email: "",
     password: "",
+    device_token:"",
 });
 
 const verificationType = ref("forgetPassword");
@@ -134,8 +142,36 @@ const showVeficationText = ref(false);
 const userForVerify = reactive({
     email: "",
     phone: "",
+    
 });
 
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        // Get the messaging token
+        getToken(messaging)
+          .then(token => {
+            // Send this token to your server to send notifications to this client
+            // console.log('User token:', token);
+            credentials.device_token=token;
+          })
+          .catch(err => {
+
+            console.log('Unable to get token', err);
+          });
+      }
+    });
+
+    onMessage(messaging, payload => {
+        console.log('Message received. ', payload);
+        // Handle the message
+    });
+
+const handleKeyPress=(event)=> {
+      if (event.keyCode === 13) {
+        handleLogin();
+       
+      }
+    };
 const closeModal = () => {
     showVerifyAccount.value = false;
 };
@@ -161,9 +197,11 @@ const handleFacebookLogin = () => {
 };
 
 const handleLogin = () => {
+    
     const formData = new FormData();
     formData.append("email", credentials.email);
     formData.append("password", credentials.password);
+    formData.append("device_token", credentials.device_token);
     if (credentials.email && credentials.password) {
         loading.value = true;
         login(formData)
@@ -188,6 +226,33 @@ const handleLogin = () => {
             .finally(() => {
                 loading.value = false;
             });
+    }else{
+        toast.error("Please insert the credentials!");
     }
+};
+</script>
+<script>
+export default {
+  data() {
+    return {
+    credentials:{    
+      email: '',
+      
+    },
+    errors: '',
+    };
+  },
+  methods: {
+    validateEmail() {
+    
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(this.credentials.email)) {
+        
+        this.errors={'email': ["Please enter a valid email address."]};
+      } else {
+        this.errors = '';
+      }
+    }
+  }
 };
 </script>

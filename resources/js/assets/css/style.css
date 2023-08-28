@@ -225,15 +225,15 @@ label[for="terms"] input:checked ~ .geekmark::after {
 }
 
 .main-slider .carousel-item:first-child:after {
-    background-image: url("../img/blue-grooming.png");
+    background-image: url("../img/blue-groominn.png");
 }
 
 .main-slider .carousel-item:nth-of-type(2):after {
-    background-image: url("../img/brown-grooming.png");
+    background-image: url("../img/brown-groominn.png");
 }
 
 .main-slider .carousel-item:last-child:after {
-    background-image: url("../img/white-grooming.png");
+    background-image: url("../img/white-groominn.png");
 }
 
 .main-slider .carousel-control-prev:hover,
@@ -378,8 +378,8 @@ label[for="terms"] input:checked ~ .geekmark::after {
 }
 
 .section-6 .boxes .white-box {
-    width: 315px;
-    height: 243px;
+    width: 285px;
+    height: 272px;
 }
 
 .section-7 {
@@ -597,7 +597,9 @@ input.border-danger,
 .booking-table td {
     font-weight: 500;
 }
-
+/*.form-check-input.type-radio::after{
+    background-color: #f05922 !important ;
+}*/
 .form-check-input.type-radio[type="radio"]:checked::after {
     background-color: var(--theme-orange-color);
     border-color: var(--theme-orange-color);

@@ -60,7 +60,7 @@ class UserBusinessRepository implements UserBusinessInterface
 	public function createOrUpdate()
 	{
 		$request = $this->request;
-		// dd($request->all());
+	
 		$validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'description' => 'required',
@@ -68,7 +68,7 @@ class UserBusinessRepository implements UserBusinessInterface
             'business_type_id' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',
-            'no_of_employees' => 'required|numeric|min:0|not_in:0',
+            'no_of_employees' => 'required|numeric|min:1|not_in:0',
 
 			'cnic_front' =>[Rule::requiredIf(function () use($request){
 				if (!empty(UserBusiness::find($request->id)->cnic_front)) {

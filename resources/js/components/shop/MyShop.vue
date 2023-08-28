@@ -1,5 +1,8 @@
 <template>
     <div v-if="!loading">
+        <div v-if='isVerified == "inactive"' class="alert alert-danger" role="alert">
+            Your business request sent to admin for approval, Your Business can be listed after approval.
+        </div>
         <MDBContainer
             v-if="apiResponse && apiResponse.data"
             :class="route.name == 'shopDetail' && 'mt-5 pt-4'"
@@ -50,12 +53,16 @@ const route = useRoute();
 const { cookies } = useCookies();
 const loading = ref(true);
 const apiResponse = ref(null);
+const isVerified = ref('inactive');
 
 // Get Business for provider without business id
 const getProviderBusiness = () => {
     getUserBusiness().then(({ data }) => {
+        // console.log(data)
         apiResponse.value = data;
         loading.value = false;
+        isVerified.value = data.data.status;
+        console.log(isVerified.value)
         if (!data.data) {
             let user = cookies.get("user");
             user.is_shop = false;

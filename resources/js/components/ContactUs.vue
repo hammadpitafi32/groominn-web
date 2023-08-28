@@ -24,6 +24,7 @@
                   id="name"
                   placeholder="Name"
                   class="form-control border-0 bg-white small py-2"
+                  v-model="credentials.name"
                 />
               </div>
             </MDBCol>
@@ -35,6 +36,7 @@
                   id="email"
                   placeholder="Email"
                   class="form-control border-0 bg-white small py-2"
+                  v-model="credentials.email"
                 />
               </div>
             </MDBCol>
@@ -44,14 +46,16 @@
                   >How can we help you?</label
                 >
                 <textarea
-                  name=""
+                  v-model="credentials.message"
                   id=""
                   class="no-resize form-control border-0 bg-white"
                   placeholder="Type here......."
                   rows="7"
+
                 ></textarea>
                 <div class="mt-5 text-end">
                   <MDBBtn
+                    @click="handleForm()"
                     class="
                       bg-orange
                       text-white
@@ -68,21 +72,118 @@
           </MDBRow>
         </form>
       </MDBCol>
+     <!--  <div class="map-container">
+        <div ref="map" class="google-map"></div>
+      </div> -->
       <MDBCol col="col-12 col-md-6 second-col" class="mt-2">
-        <Map :data="bookingList" />
+        <!-- <Map :data="bookingList" /> -->
+        <div ref="map" class="google-map"></div>
       </MDBCol>
     </MDBRow>
   </MDBContainer>
-  <!-- <Footer /> -->
+  <Footer />
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
-// import Footer from "../layout/Footer.vue";
+import { ref, reactive} from "@vue/reactivity";
+import Footer from "../layout/Footer.vue";
 import { MDBInput } from "mdb-vue-ui-kit";
 import Map from "./client/booking/Map.vue";
+import { submitContactUs } from "../api";
+import { useToast } from "vue-toastification";
 
+const loading = ref(false);
 const bookingList = ref(null);
+// const showVeficationText = ref(false);
+const credentials = reactive({
+    email: "",
+    name: "",
+    message:"",
+});
+
+const toast = useToast();
+
+const handleForm = () => {
+ 
+    const formData = new FormData();
+    formData.append("email", credentials.email);
+    formData.append("name", credentials.name);
+    formData.append("message", credentials.message);
+    if (credentials.email && credentials.name &&  credentials.message) {
+        loading.value = true;
+        submitContactUs(formData)
+            .then((res) => {
+                apiResponse.value = res.data;
+                toast.success("Your message has been sent successfully!");
+                // store.dispatch("setLogin", res.data);
+                store.dispatch("redirection");
+            })
+            .catch((error) => {
+                let errorData = error.response.data;
+                if (errorData.action_require) {
+                    // showVeficationText.value = true;
+                    console.log(errorData.data)
+                    // userForVerify.email = errorData.data.email;
+                    // userForVerify.phone = errorData.data.user_detail.phone;
+                }
+                toast.error(error.response.data.message, {
+                    timeout: 2000,
+                });
+                apiResponse.value = error.response.data;
+            })
+            .finally(() => {
+                loading.value = false;
+            });
+    }else{
+      toast.error("Please fill the form properly");
+    }
+    
+};
+</script>
+
+<script>
+export default {
+  data() {
+    return {
+      map: null,
+      marker: null,
+      coordinates: {
+        lat: 31.4827, // Replace with your specific latitude
+        lng: 74.2612, // Replace with your specific longitude
+      },
+    };
+  },
+  mounted() {
+    // console.log('ooooooooo')
+    this.initMap();
+  },
+  methods: {
+    initMap() {
+      // Load Google Maps API
+      const apiKey = 'AIzaSyDoWPQ82mh0PFBOYhhHCK924wOffWOFSdc';
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+
+      // Create the map
+      window.initMap = () => {
+        this.map = new window.google.maps.Map(this.$refs.map, {
+          center: this.coordinates,
+          zoom: 12, // Adjust the zoom level as needed
+        });
+
+        // Add a marker
+        this.marker = new window.google.maps.Marker({
+          position: this.coordinates,
+          map: this.map,
+          title: 'Johar town Lahore Pakistan',
+        });
+      };
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -91,5 +192,9 @@ const bookingList = ref(null);
 }
 .send-btn{
     padding: .4rem 2.5rem;
+}
+.google-map {
+  width: 100%;
+  height: 400px;
 }
 </style>

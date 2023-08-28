@@ -51,7 +51,7 @@
             <MDBRow>
                 <MDBCol col="12  col-md-2 text-center img-none">
                     <img
-                        src="../assets/img/pnik-grooming.svg"
+                        src="../assets/img/pink-groominn.png"
                         class="img-fluid"
                         alt=""
                         :style="{ height: imageHeight + 'px' }"

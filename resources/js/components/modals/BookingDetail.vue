@@ -80,12 +80,13 @@ import {
     MDBModalBody,
 } from "mdb-vue-ui-kit";
 import { acceptBook,rejectBook } from "../../api";
+import { useToast } from "vue-toastification";
 
 const props = defineProps({
     bookingModal: Boolean,
     data: Object,
 });
-
+const toast = useToast();
 const emit = defineEmits(["closeModal"]);
 
 const address = computed(() => {
@@ -104,16 +105,22 @@ const acceptBooking = (id) => {
     
     formData.append("id", id);
     acceptBook(formData).then(({ data }) => {
-        $('#booking-detail').modal('hide')
- 
+        toast.success('Booking accepted');
+        // $('#booking-detail').modal('hide')
+        emit('closeModal')
+        location.reload();
     });
 }
 const rejectBooking = (id) => {
     const formData = new FormData();
     
     formData.append("id", id);
+
     rejectBook(formData).then(({ data }) => {
-        $('#booking-detail').modal('hide')
+        toast.error('Booking has been rejected');
+        // $('#booking-detail').modal('hide')
+        emit('closeModal')
+        location.reload();
  
     });
 }

@@ -81,7 +81,7 @@
                                             }}
                                         </td>
                                         <td>{{ service.user_service.name }}</td>
-                                        <td>{{ service.charges + " $" }}</td>
+                                        <td>{{ "Rs "+ service.charges  }}</td>
                                         <td>{{ service.duration }}</td>
                                         <td>{{ service.type }}</td>
                                         <td>
@@ -151,6 +151,7 @@
         scrollable
         class="modal-width"
     >
+    <span class="close-btn" @click='closeModal()' id="closeModalBtn">&times;</span>
         <MDBModalHeader
             class="justify-content-center border-0 p-4 pb-3"
             :close="false"
@@ -232,7 +233,7 @@
                             </label>
                             <MDBInput
                                 id="add-charges"
-                                type="text"
+                                type="number"
                                 class="small category-input"
                                 placeholder="Charges"
                                 :class="
@@ -362,6 +363,11 @@ const editService = (service) => {
     type.value = service.type;
 };
 
+const closeModal= ()=>{
+   const modal = document.getElementById('add-new-category-modal');
+   modal.style.display = 'none';
+}
+
 const addNewServiceHandler = () => {
     const formData = new FormData();
 
@@ -403,6 +409,8 @@ const addBtnHandler = () => {
     getUserCategories(pagination).then((res) => {
         categoryOptions.value = res.data.data;
     });
+    const modal = document.getElementById('add-new-category-modal');
+    modal.style.display = 'block';
 };
 
 const deleteService = (id) => {
@@ -420,5 +428,12 @@ const deleteService = (id) => {
 }
 td {
     text-transform: capitalize;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
 }
 </style>

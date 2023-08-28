@@ -24,11 +24,10 @@ trait UserTrait {
      */
     public function validation($request)
     {
-        // die('asdsadasdas');
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'email' => "required|unique:users,email,{$request->id}",
+            'email' => "required|email|unique:users,email,{$request->id}",
 
             'phone' => ['required',
                 Rule::unique('user_details')->where(function ($query) use ($request) {
@@ -187,10 +186,19 @@ trait UserTrait {
 
     public function generateOtp($request)
     {
+   
         $code = rand(1000, 9999); //generate random code
         $request['code'] = $code; //add code in $request body
-        $user = User::with('user_detail')->where('email',$request['email'])->first();
+        $user = User::with('user_detail')->where('email',$request->email)->first();
 
+        if(!$user){
+            return [
+                'success' => false,
+                'message' => 'User Not found',
+                'action_require' => true
+            ];
+        }
+    
         $user->two_factor_code = $code;
         $user->is_verified = false;
         $user->save();

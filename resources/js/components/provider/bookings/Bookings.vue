@@ -68,7 +68,7 @@
                                         </td>
                                         <td>{{ booking.charges }} Rs</td>
                                         <td>{{ booking.total_duration }}</td>
-                                         <td v-if='booking.status=="droped"'><span style="color:red">Droped</span></td>
+                                         <td v-if='booking.status=="droped"'><span style="color:red">Dropped</span></td>
                                         <td v-if='booking.status=="pending"'><span style="color:blue">Pending</span></td>
                                         <td v-if='booking.status=="completed"'><span style="color:green">Completed</span></td>
                                         <td v-if='booking.status=="rejected"'><span style="color:orange">Rejected</span></td>

@@ -124,6 +124,7 @@
                             placeholder="Abc@abc.com"
                             :class="errors && errors.email && 'border-danger'"
                             v-model="user.email"
+                            
                         />
                         <span
                             v-if="errors && errors.email"
@@ -141,7 +142,6 @@
                             :class="errors && errors.phone && 'border-danger'"
                             placeholder="+923007867874"
                             v-model="user.phone"
-                           
                         />
                         <span
                             v-if="errors && errors.phone"
@@ -248,7 +248,7 @@ import { MDBInput } from "mdb-vue-ui-kit";
 import { register } from "../api";
 import AccountVerify from "../components/modals/AccountVerify.vue";
 import { useToast } from "vue-toastification";
-import { onMounted, watchEffect } from "@vue/runtime-core";
+import { onMounted, watchEffect, watch } from "@vue/runtime-core";
 
 const store = useStore();
 const router = useRouter();
@@ -278,6 +278,17 @@ watchEffect(() => {
     store.dispatch("redirection");
 });
 
+watch(user.email, () => {
+    console.log('ooo')
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(val)) {
+            
+            this.errors={'email': ["Please enter a valid email address."]};
+        } else {
+            this.errors = '';
+        }
+});
+
 const handleGoogleLogin = () => {
     let baseUrl=process.env.MIX_APP_API_URL+'/auth/google';
 
@@ -290,26 +301,39 @@ const handleFacebookLogin = () => {
 };
 
 const registerHandler = () => {
-    loading.value = true;
-    const formData = new FormData();
-    formData.append("first_name", user.firstName);
-    formData.append("last_name", user.lastName);
-    formData.append("email", user.email);
-    formData.append("password", user.password);
-    formData.append("password_confirmation", user.confirmPassword);
-    formData.append("role", serviceChoose.value);
-    formData.append("phone", user.phone);
 
-    register(formData)
-        .then(({ data }) => {
-            errors.value = null;
-            showVerifyAccount.value = true;
-            loading.value = false;
-        })
-        .catch(({ response }) => {
-            loading.value = false;
-            errors.value = response.data.errors;
-        });
-    confirmPasswordError.value = "";
+    loading.value = true;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(user.email)) {
+        
+        errors.value={'email': ["Please enter a valid email address."]};
+        loading.value = false;
+    }else{
+        errors.value='';
+        const formData = new FormData();
+        formData.append("first_name", user.firstName);
+        formData.append("last_name", user.lastName);
+        formData.append("email", user.email);
+        formData.append("password", user.password);
+        formData.append("password_confirmation", user.confirmPassword);
+        formData.append("role", serviceChoose.value);
+        formData.append("phone", user.phone);
+
+        register(formData)
+            .then(({ data }) => {
+                errors.value = null;
+                showVerifyAccount.value = true;
+                loading.value = false;
+            })
+            .catch(({ response }) => {
+                loading.value = false;
+                errors.value = response.data.errors;
+            });
+        confirmPasswordError.value = "";
+    }
+ 
 };
 </script>
+
+

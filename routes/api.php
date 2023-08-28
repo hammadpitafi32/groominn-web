@@ -32,6 +32,7 @@ Route::group(['namespace' => 'Api'],function()
     Route::post('auth/social/getUserInfo','ApiAuthController@getSocialLoginUserInfo');
 
     Route::post('login', 'ApiAuthController@login');
+    Route::post('submit-contact-us', 'ApiAuthController@submitContactUs');
     Route::post('register', 'ApiAuthController@register');
     Route::post('send-otp', 'ApiAuthController@sendOtp');
     Route::post('verify', 'ApiAuthController@otpVerify');

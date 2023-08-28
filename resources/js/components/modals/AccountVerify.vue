@@ -15,7 +15,7 @@
                 <h6 class="fw-light">Recieve otp through</h6>
                 <div class="d-flex align-items-center justify-content-center choose-method my-4">
                     <label for="phoneNumber" :class="{ active: method == 'phone' }">
-                        <input type="radio" class="custom-file-type" id="phoneNumber" value="phone" name="chooseMethod" v-model="method" />
+                        <input type="radio"  class="custom-file-type" id="phoneNumber" value="phone" name="chooseMethod" v-model="method" />
                         <span>Phone number</span>
                     </label>
                     <span class="mx-4">or</span>
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div v-if="screen == 'otpVerification'">
-                <p class="text-black-50">
+                <p style="text-align: center;" class="text-black-50">
                     Please Enter your 4 digits code here.
                 </p>
                 <div class="d-flex justify-content-center mt-3">

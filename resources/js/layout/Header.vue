@@ -54,7 +54,7 @@
                 >
                     Bookings
                 </MDBNavbarItem>
-                <MDBNavbarItem to="#" class="me-4" v-if="!store.state.auth">
+                <MDBNavbarItem to="/support" class="me-4" v-if="!store.state.auth">
                     Support
                 </MDBNavbarItem>
                 <MDBNavbarItem

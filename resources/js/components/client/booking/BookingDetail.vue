@@ -19,13 +19,13 @@
                     <div class="table-responsive">
                         <table class="table booking-table" aria-describedby="booking-table">
                             <thead>
-                                <th>Saloon name</th>
+                                <th>Business name</th>
                                 <th>Service</th>
                                 <th>Phone</th>
                                 <th>Estimated time</th>
                                 <th>Date</th>
                                 <th>Status</th>
-                                <th v-if="bookings.length"></th>
+                                <th v-if="bookings.length">Action</th>
                             </thead>
                             <tbody v-if="loading">
                                 <tr v-for="n in 4" :key="n">

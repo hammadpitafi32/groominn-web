@@ -28,6 +28,8 @@ use App\Notifications\OtpNotification;
 use App\Services\PushNotificationService;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\ContactFormMail;
+use Illuminate\Support\Facades\Mail;
 use File;
 use GoogleMaps;
 
@@ -554,5 +556,31 @@ class ApiAuthController extends Controller
         } catch (Exception $e) {
             dd($e->getMessage());
         }
+    }
+
+    public function submitContactUs(Request $request){
+
+        // Validate the form data
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'message' => 'required',
+        ]);
+
+        // Send the email
+        Mail::to('hammadrazaa32@gmail.com')->send(new ContactFormMail(
+            $request->name,
+            $request->email,
+            $request->message
+        ));
+
+        return response()->json([
+                    'success' => true,
+                    'message' => 'Your message has been sent successfully!',
+                    
+                ]);
+        // Redirect back or show a success message to the user
+        // return redirect()->back()->with('success', 'Your message has been sent successfully!');
+   
     }
 }

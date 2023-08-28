@@ -19,6 +19,7 @@ import ContactUs from "../components/ContactUs.vue";
 import store from "../store";
 import MyShopHours from "../components/provider/business-hours/BusinessHours.vue";
 import termsPolicy from "../components/Terms&Policy.vue";
+import support from "../components/Support.vue";
 
 const routes = [
     {
@@ -43,6 +44,15 @@ const routes = [
         path: "/terms-policy",
         name: "terms-policy",
         component: termsPolicy,
+        meta: {
+            sidebar: false,
+            auth: false,
+        },
+    },
+    {
+        path: "/support",
+        name: "support",
+        component: support,
         meta: {
             sidebar: false,
             auth: false,
