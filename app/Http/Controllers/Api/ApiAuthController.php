@@ -165,6 +165,10 @@ class ApiAuthController extends Controller
         }
  
         try {
+            $user = JWTAuth::authenticate($request->token);
+            $user->device_token=NULL;
+            $user->save();
+            
             JWTAuth::invalidate($request->token);
  
             return response()->json([

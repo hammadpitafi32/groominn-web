@@ -40,7 +40,7 @@
               </div>
             </div>
             <div class="row align-items-center mb-4">
-                <div class="col-6">
+                <div class="col-5">
                     <label for="exp-date" class="fw-500">Your Estimation Time</label>
                 </div>
                 <div class="col-6">
@@ -148,12 +148,17 @@ const props = defineProps({
     data: Object,
 });
 
-let shopId = JSON.parse(route.params.data);
-// console.log(shopId.user_business_id)
+// console.log(route.params.data,'v')
+
+let shopId = JSON.parse(localStorage.getItem("data"));
+// let shopId = props.data;
+
 const itemsForBooking = computed(() => props.data.item_in_cart);
+
 const shopInfo = computed(() => props.data.shopData);
+
 const totalPrice = computed(() => props.data.charges);
-// console.log(shopInfo.value)
+
 const toast = useToast();
 const isData=ref(false);
 const isWaitTime=ref(false);
@@ -169,32 +174,32 @@ const bookingSuccess = ref(false);
 const bookingData = ref(null);
 const shopData=ref(null);
 const waitTime=ref(null);
-// const getOwnerProfile = computed(() => {
+
+
     const formData = new FormData();
- 
-    formData.append("id", shopId.user_business_id);
-    
+
+    formData.append("id", shopId.id);
+   
     getShopInfo(formData)
         .then((response) => {
              
              shopData.value=response.data.data
              isData.value=true
-            // return response.data;
-            // console.log(shopData.value.name)
+         
     });
 
     const estimateData = new FormData();
  
-    estimateData.append("user_business_id", shopId.user_business_id);
+    estimateData.append("user_business_id", shopId.id);
     estimateData.append("date", new Date());
     getWaitEstimationTime(estimateData)
         .then((response) => {
-             
+            
              // waitTime.value=response.data.data
              waitTime.value=handleEstimationTime(response.data.data);
              isWaitTime.value=true
             // return response.data;
-            // console.log(waitTime.value)
+           
     });
    
 
@@ -256,7 +261,7 @@ watchEffect(() => {
         exp_year: expYear.value,
     });
 
-    // console.log(itemsForBooking.value);
+   
 });
 
 watch(expYear, (newValue, oldValue) => {
@@ -269,7 +274,7 @@ watch(expYear, (newValue, oldValue) => {
     }
 });
 const handleEstimationTime = (date) => {
-   
+  
     return  moment.tz(date, "Asia/Karachi").format('MMMM Do YYYY, HH:mm:ss a')
     
 }
@@ -282,15 +287,15 @@ const handlePayment = () => {
     // formData.append("exp_year", expYear.value);
     // formData.append("cvc", cvv.value);
     formData.append("user_business_id", props.data.business_id);
-
+    
     // formData.append("charges", props.data.charges);
-    formData.append("date", props.data.booking_date);
+    formData.append("date", shopId.date);
     let serviceIds = itemsForBooking.value.map((item) => item.id);
     formData.append("service_ids", serviceIds);
 
     createBooking(formData)
         .then((response) => {
-            // console.log(response.data.data)
+           
             bookingData.value=response.data.data
             bookingSuccess.value = true;
 

@@ -40,7 +40,7 @@ const images = ref(props.photos);
 
 const url = ref(asset.baseUrl);
 
-console.log(url.value );
+// console.log(url.value );
 
 </script>
 

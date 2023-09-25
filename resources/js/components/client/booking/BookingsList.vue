@@ -93,7 +93,7 @@
                         {{ booking.description }}
                       </p>
                       <div class="d-flex align-items-center stars">
-                        <vue3-star-ratings :disableClick='stardisable' :starSize='15' :showControl='false' controlBg='#f05922' v-model="rating" />
+                        <vue3-star-ratings :disableClick='stardisable' :starSize="'15'" :showControl='false' controlBg='#f05922' v-model="rating" />
 
                         <span class="rating ms-3">5.0 ({{gettotalReviews(booking)}})</span>
                       </div>
@@ -166,7 +166,7 @@
           </div>
         </div>
         <div class="col-12 col-sm-7">
-          <Map :data="bookingList" :activeShop="activeShop" />
+          <!-- <Map :data="bookingList" :activeShop="activeShop" /> -->
         </div>
       </div>
     </div>

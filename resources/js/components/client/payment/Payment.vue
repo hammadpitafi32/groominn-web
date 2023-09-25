@@ -28,17 +28,18 @@ const shopData = ref(null);
 const data = ref({});
 
 watchEffect(() => {
-    store.dispatch("client");
-    if (route.params.data) {
 
+    if (localStorage.getItem("data")) {
+        
         // setting Data in localStorage in real time
-        let dataForPayment = JSON.parse(route.params.data);
+        // let dataForPayment = JSON.parse(route.params.data);
+        let dataForPayment = JSON.parse(localStorage.getItem("data"));
         let jsondata = dataForPayment.items.map((item) => JSON.parse(item));
         itemsInCart.value = jsondata;
 
         business_id.value = dataForPayment.user_business_id;
         booking_date.value = dataForPayment.booking_date;
-
+        // console.log(dataForPayment.booking_date)
         localStorage.setItem(
             "data",
             JSON.stringify({
@@ -47,15 +48,19 @@ watchEffect(() => {
                 date: dataForPayment.booking_date,
             })
         );
-    } else if (localStorage.getItem("data")) {
-        // If page is refresh then get data from localStorage
+    } 
+    // else if (localStorage.getItem("data")) {
+     
+    //     // If page is refresh then get data from localStorage
 
-        // fetching data from localStorage
-        let items = localStorage.getItem("data");
-        itemsInCart.value = JSON.parse(JSON.parse(items).items);
-        business_id.value = JSON.parse(items).id;
-        booking_date.value = JSON.parse(items).date;
-    } else {
+    //     // fetching data from localStorage
+    //     let items = localStorage.getItem("data");
+    //     itemsInCart.value = JSON.parse(JSON.parse(items).items);
+    //     business_id.value = JSON.parse(items).id;
+    //     booking_date.value = JSON.parse(items).date;
+        
+    // } 
+    else {
         router.push("/booking-list");
     }
 });
@@ -63,6 +68,7 @@ watchEffect(() => {
 
 const itemsPrice = computed(() => {
     if (itemsInCart.value) {
+     
         let price = itemsInCart.value.reduce(
             (count, item) => count + item.price,
             0
@@ -70,8 +76,9 @@ const itemsPrice = computed(() => {
         return price.toFixed(2);
     }
 });
-// console.log(shopData.value)
+
 const sendData = (val) => {
+    
     data.value = {
         ...val,
         item_in_cart: itemsInCart.value,
@@ -80,6 +87,8 @@ const sendData = (val) => {
         charges: itemsPrice.value,
         // shopData:getOwnProfile.value,
     };
+   
+    
 };
 
 </script>

@@ -138,7 +138,7 @@ const convertUrlToFile = async (url) => {
 const dragHandlner = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log(event);
+    // console.log(event);
 };
 const uploadPics = (event, val, firstTimeSet) => {
     let array = [];

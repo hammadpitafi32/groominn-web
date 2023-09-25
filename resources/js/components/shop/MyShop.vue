@@ -62,7 +62,7 @@ const getProviderBusiness = () => {
         apiResponse.value = data;
         loading.value = false;
         isVerified.value = data.data.status;
-        console.log(isVerified.value)
+        // console.log(isVerified.value)
         if (!data.data) {
             let user = cookies.get("user");
             user.is_shop = false;

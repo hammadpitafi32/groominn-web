@@ -54,7 +54,7 @@ app.use(Toast, {
 });
 app.use(VueGoogleMaps, {
     load: {
-        key: "AIzaSyDoWPQ82mh0PFBOYhhHCK924wOffWOFSdc",
+        key: "AIzaSyB5rTgwoWfYM4wrSMsxihD6f0TECqfc3_0",
         libraries: "places",
     },
 });

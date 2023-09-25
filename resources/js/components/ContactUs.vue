@@ -122,7 +122,7 @@ const handleForm = () => {
                 let errorData = error.response.data;
                 if (errorData.action_require) {
                     // showVeficationText.value = true;
-                    console.log(errorData.data)
+                    // console.log(errorData.data)
                     // userForVerify.email = errorData.data.email;
                     // userForVerify.phone = errorData.data.user_detail.phone;
                 }
@@ -160,7 +160,7 @@ export default {
   methods: {
     initMap() {
       // Load Google Maps API
-      const apiKey = 'AIzaSyDoWPQ82mh0PFBOYhhHCK924wOffWOFSdc';
+      const apiKey = 'AIzaSyB5rTgwoWfYM4wrSMsxihD6f0TECqfc3_0';
       const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
       script.async = true;

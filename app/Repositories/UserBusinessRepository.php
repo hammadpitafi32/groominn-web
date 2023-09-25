@@ -396,18 +396,21 @@ class UserBusinessRepository implements UserBusinessInterface
 	{
 
 		$request = $this->request;
-		// dd($request->all());
+		
 		$user_business = UserBusiness::where('is_open',1)->where('status','active')
 			->whereHas('user_business_category_services')
 			->with('reviews.user:id,name,avatar_path','user_business_images','user_business_schedules','user_business_category_services','user_business_category_services.user_category','user_business_category_services.user_service','user_categories','user_categories.category');
+	
 		// $latitude = 33.5842344;
 		// $longitude =73.1204018;
 		/*filteration*/
-		if($request->has('businessType') && $request->businessType!=''){
-			$user_business->where('business_type_id',$request->businessType);
+		if($request->has('business_type_id') && $request->business_type_id!='' && $request->business_type_id!='undefined'){
+			
+			$user_business->where('business_type_id',$request->business_type_id);
 		}
-		if ($request->latitude && $request->longitude) 
+		if ($request->latitude && $request->longitude && $request->longitude != 'undefined' && $request->latitude != 'undefined' && $request->longitude != '' && $request->latitude != '') 
 		{
+			
 			$user_business->selectRaw(
 	        "user_businesses.*, (6371 * acos(
 	            cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude))
@@ -416,8 +419,9 @@ class UserBusinessRepository implements UserBusinessInterface
 		    ->having("distance", "<", $request->radius?:20);
 		}
 
-		if ($request->category_id) 
+		if ($request->category_id && $request->category_id !='undefined' && $request->category_id !='') 
 		{
+			
 			$user_business->whereHas('user_categories',function($q) use($request){
 				$q->where('category_id',$request->category_id);
 			});

@@ -24,7 +24,6 @@ class PushNotificationService
 			// Firebase::send($message);
         }
         
-
 		// Save in db
 		$data=[
 			'type'=>$type,

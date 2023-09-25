@@ -280,7 +280,7 @@ watchEffect(() => {
         .then((response) => {
 
             shopBookings.value = response.data.data
-            // console.log(shopBookings.value)
+            
             if (shopBookings.value.length > 0) {
                 isShopBookings.value = true
             }

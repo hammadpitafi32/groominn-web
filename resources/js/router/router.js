@@ -206,6 +206,7 @@ const routes = [
         path: "/checkin",
         name: "checkin",
         component: Payment,
+        props: true, // Enable props for this route
         meta: {
             sidebar: false,
             auth: true,
